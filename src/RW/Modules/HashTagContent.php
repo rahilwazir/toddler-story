@@ -342,6 +342,7 @@ class HashTagContent
                     </section>
                     <section class="tab_content">
                         <?php
+                            global $rcp_options;
                             $user_ID = user_info('ID');
                             if( rcp_is_recurring( $user_ID ) && ! rcp_is_expired( $user_ID ) ) {
                                 $date_text = __( 'Renewal Date', 'rcp' );
