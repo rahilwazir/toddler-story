@@ -1428,12 +1428,6 @@ footer {
 
 }
 
-.regist .main_sign_up {
-    width: 470px;
-    height: auto;
-    margin: 10px auto 0;
-}
-
 .regist .main_sign_up label.label {
     display: inline-block;
     float: left;
@@ -1505,12 +1499,6 @@ footer {
     width: 100%;
     margin: 10px auto;
     color: #ffffff;
-}
-.popup > .login {
-    max-height: 400px;
-}
-.popup > .regist {
-    max-height: 840px;
 }
 .login .forgetting {
     width: 100%;
@@ -2927,7 +2915,7 @@ div.wpcf7-validation-errors {
 }
 .main_sign_up {
     margin: 20px auto 0;
-    max-width: 349px;
+    width: 390px;
 }
 /* Overlay */
 #simplemodal-overlay {background-color:#000;}
