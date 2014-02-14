@@ -123,6 +123,24 @@ class Settings
         wp_enqueue_style('slicknav', get_template_directory_uri() . '/css/slicknav.css');        
         wp_enqueue_style('main-style', get_stylesheet_uri());
         
+        $localize_args = array(
+            'theme_uri'         => get_stylesheet_directory_uri(),
+            'site_url'          => site_url(),
+            'admin_url'         => admin_url(),
+            'ajax_url'          => admin_url('admin-ajax.php'),
+            'is_user_logged_in' => (is_user_logged_in()) ?
+            array(
+                'is_admin'      => (ParentModule::currentUserisParent()) ? 'true' : 'false',
+                'is_parent'      => (current_user_can('administrator')) ? 'true' : 'false',
+            ) :
+            'false',
+            'profilePage'       => get_parent_admin_profile(),
+            'registration'      => $this->registered,
+            'isChildPage'       => $child_page,
+            'parentAdminPage'   => (is_admin_pages()) ? 'true' : 'false',
+            'link_pages'        => $hashtags
+        );
+
         /**
          * Public child viewing page
          */
@@ -177,28 +195,11 @@ class Settings
             $child_page = "false";
         }
 
-        $args = array(
-            'theme_uri'         => get_stylesheet_directory_uri(),
-            'site_url'          => site_url(),
-            'admin_url'         => admin_url(),
-            'ajax_url'          => admin_url('admin-ajax.php'),
-            'is_user_logged_in' => (is_user_logged_in()) ?
-            array(
-                'is_admin'      => (ParentModule::currentUserisParent()) ? 'true' : 'false',
-                'is_parent'      => (current_user_can('administrator')) ? 'true' : 'false',
-            ) :
-            'false',
-            'profilePage'       => get_parent_admin_profile(),
-            'registration'      => $this->registered,
-            'isChildPage'       => $child_page,
-            'parentAdminPage'   => (is_admin_pages()) ? 'true' : 'false',
-            'link_pages'        => $hashtags
-        );
         
         wp_enqueue_script('simple-modal', get_template_directory_uri() . '/js/lib/jquery.simplemodal.js', array('jquery'), '', true);
         
         wp_enqueue_script('toddler-init', get_template_directory_uri() . '/js/init.js', $js_lib, '', true);
-        wp_localize_script('toddler-init', 'Toddler_Conf', $args);
+        wp_localize_script('toddler-init', 'Toddler_Conf', $localize_args);
     }
 
     /**

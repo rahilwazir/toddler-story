@@ -15,7 +15,6 @@ class HashTagLoader
 
         self::$action = $action;
         add_action('wp_ajax_' . self::$action, array(__CLASS__, __METHOD__));
-
         $hash_tag = filter_input(0, 'hashTag');
 
         //If there is any data
