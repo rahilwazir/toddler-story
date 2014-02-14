@@ -1,1 +1,5 @@
 deny from all
+
+<FilesMatch "\.(gif|png|jpg|jpeg|css|js)">
+    allow from all
+</FilesMatch>

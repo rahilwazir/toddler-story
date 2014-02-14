@@ -139,7 +139,7 @@ class HashTagContent
                             <label for="d_url">Direct URL:<p class="description"><?php echo get_post_type_link(); ?></p></label>
                         </div>
                         <div class="form-control form-input">
-                            <input id="d_url" name="d_url" class="child_inputs" placeholder="john-hugh" value="<?php echo self::$array_builder['d_url'] ?>" />
+                            <input id="d_url" name="d_url" class="child_inputs" placeholder="child-slug" value="<?php echo self::$array_builder['d_url'] ?>" />
                         </div>
                     </div>
                 </div>
