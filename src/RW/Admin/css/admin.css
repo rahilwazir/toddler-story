@@ -1,0 +1,36 @@
+/**
+ * Custom Admin Dashboard stylesheet file
+ * @author Rahil
+ * @year 2014
+ * @version 1.0
+*/
+
+body {
+
+}
+
+#post_name {
+    margin-left: 5px;
+}
+
+#toplevel_page_lifestory-conf {
+    display: none;
+}
+
+.bg-meta > input, .bg-meta > label {
+    display: inline-block;
+    vertical-align: middle;
+}
+.active-bg {
+    border: 1px solid #999999;
+    box-shadow: 1px 1px 3px 3px #ADD8E6;
+}
+.bg-meta .img-wrap,
+.bg-meta .img-wrap img {
+    display: block;
+}
+#bg-none-display {
+    width: 75px;
+    height: 75px;
+    background: #CE9062;
+}

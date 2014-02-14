@@ -1,0 +1,17 @@
+/**
+ * Custom Parent Dashboard stylesheet file
+ * @author Rahil
+ * @year 2014
+ * @version 1.0
+*/
+
+body {
+
+}
+#menu-posts {
+    display: none;
+}
+
+#content_woocommerce_shortcodes_button {
+    display: none;
+}
