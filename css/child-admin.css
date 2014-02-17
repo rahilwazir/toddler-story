@@ -268,8 +268,7 @@ input, select, textarea {
     word-wrap: break-word;
 }
 #form-top-puts {
-    clear: both;
-    overflow: hidden;
+    width: 100%;
 }
 #background-chooser ul li {
     list-style: none;
@@ -314,6 +313,11 @@ input, select, textarea {
 }
 #form_action_buttons {
     border-top: 1px solid #b4b4b9;
+}
+.tabs .submit-button {
+    border-width: 1px 1px 2px;
+    margin: 0 10px 0 0;
+    padding: 7px 20px;
 }
 .submit-button {
     border-radius: 20px;
@@ -471,13 +475,6 @@ input, select, textarea {
     margin: 0 auto;
     padding: 20px 0 40px;
 }
-.tabs > input[type="button"]{
-    height: 35px;
-    margin-right: 10px;
-    width: 120px;
-    border:1px solid #D4D4D6;
-    border-bottom:2px solid #D4D4D6;
-}
 .blog_btn{
     height: 35px;
     margin-right: 10px;
@@ -552,6 +549,10 @@ input, select, textarea {
 }
 .submit-button.active {
     background-color: #F1F1F2;
+    outline: 0;
+}
+.submit-button.small {
+    padding: 4px 10px;
 }
 label.submit-button {
     margin-top: 10px;
@@ -559,7 +560,7 @@ label.submit-button {
 small {
     font-size: 9pt;
 }
-#middle_hash_content .tab_content {
+.middle_hash_content .tab_content {
     display: none;
 }
 .offset1 {
@@ -567,4 +568,13 @@ small {
 }
 .offset2 {
     margin-left: 20px;
+}
+.tab_content table {
+    width: 100%;
+}
+.tab_content table tr:first-child {
+    border-bottom: 1px solid #B4B4B9;
+}
+.tab_content table tr td {
+    text-align: center;
 }

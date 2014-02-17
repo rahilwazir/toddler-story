@@ -499,11 +499,11 @@ var Toddler = {
 
             var currentIndex = $(this).index();
 
-            $(this).parents('.tabs').find('.submit-button').removeClass('active');
+            $(this).parents('.tabs').find(' > .submit-button.active').removeClass('active');
             $(this).addClass('active');
 
-            $('#middle_hash_content .tab_content').removeClass('enable');
-            $(document).find('#middle_hash_content .tab_content:eq(' + currentIndex + ')').addClass('enable');
+            $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content').removeClass('enable');
+            $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content:eq(' + currentIndex + ')').addClass('enable');
         });
     }
 };

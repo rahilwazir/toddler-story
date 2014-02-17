@@ -134,7 +134,6 @@ function user_info($data_string, $user_id = null)
     } else {
         $current_user = get_userdata($user_id);
     }
-
     $result = null;
 
     switch ($data_string) {
@@ -155,6 +154,9 @@ function user_info($data_string, $user_id = null)
             break;
         case 'role':
             $result = $current_user->roles;
+            break;
+        case 'created_on':
+            $result = $current_user->user_registered;
             break;
         case 'ID':
         case 'id':

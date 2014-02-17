@@ -265,18 +265,18 @@ class HashTagContent
     public static function userinfo()
     {
     ?>
-       <form method="post" name="update_user">
-           <input type="hidden" name="rw_nonce" value="<?php echo wp_create_nonce('update_user'); ?>">
-            <section id="form-top-puts" class="clearfix">
-                <section class="tab_action">
-                    <div class="tabs">
-                        <input type="button" class="submit-button no-bordrad active" value="Edit Info"/>
-                        <input type="button" class="submit-button no-bordrad" value="Subscription"/>
-                        <input type="button" class="submit-button no-bordrad" value="Message"/>
-                    </div>
-                </section>
-                <section id="middle_hash_content">
-                    <section class="tab_content enable">
+        <section id="form-top-puts" class="clearfix">
+            <section class="tab_action">
+                <div class="tabs">
+                    <input type="button" class="submit-button no-bordrad active" value="Edit Info"/>
+                    <input type="button" class="submit-button no-bordrad" value="Subscription"/>
+                    <input type="button" class="submit-button no-bordrad" value="Message"/>
+                </div>
+            </section>
+            <section class="middle_hash_content">
+                <section class="tab_content enable">
+                    <form method="post" name="update_user">
+                        <input type="hidden" name="rw_nonce" value="<?php echo wp_create_nonce('update_user'); ?>">
                         <div class="user_image">
                             <div class="" id="preview-image" class="clearfix">
                             <?php
@@ -339,53 +339,125 @@ class HashTagContent
                                 </div>   
                             </div>   
                         </div>
+                        <section id="form_action_buttons" class="clearfix users_update_sec">
+                            <div class="fright">
+                                <input type="button" name="cancel" class="submit-button cancel-btn ajaxify" value="Cancel" />
+                                <input type="submit" name="save_changes" class="submit-button" value="Save Changes" />
+                            </div>
+                        </section>
+                    </form>
+                </section>
+                <section class="tab_content">
+                    <section class="tab_action">
+                        <div class="tabs">
+                            <input type="button" value="Subscription" class="submit-button small no-bordrad active">
+                            <input type="button" value="Payments" class="submit-button small no-bordrad">
+                        </div>
                     </section>
-                    <section class="tab_content">
-                        <?php
-                            global $rcp_options;
-                            $user_ID = user_info('ID');
-                            if( rcp_is_recurring( $user_ID ) && ! rcp_is_expired( $user_ID ) ) {
-                                $date_text = __( 'Renewal Date', 'rcp' );
-                            } else {
-                                $date_text = __( 'Expiration Date', 'rcp' );
-                            }
+                    <section class="middle_hash_content">
+                        <section class="tab_content enable">
+                            <?php
+                                global $rcp_options;
+                                $user_ID = user_info('ID');
+                                /*
+                                if( rcp_is_recurring( $user_ID ) && ! rcp_is_expired( $user_ID ) ) {
+                                    $date_text = __( 'Renewal Date', 'rw' );
+                                } else {
+                                    $date_text = __( 'Expiration Date', 'rw' );
+                                }
 
-                            $details = '<ul id="rcp_subscription_details">';
-                                $details .= '<li><span class="rcp_subscription_name">' . __( 'Subscription Level', 'rcp' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_level">' . rcp_get_subscription( $user_ID ) . '</span></li>';
-                                if( rcp_get_expiration_date( $user_ID ) ) {
-                                    $details .= '<li><span class="rcp_sub_details_exp">' . $date_text . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_exp_date">' . rcp_get_expiration_date( $user_ID ) . '</span></li>';
-                                }
-                                $details .= '<li><span class="rcp_sub_details_recurring">' . __( 'Recurring', 'rcp' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_is_recurring">';
-                                $details .= rcp_is_recurring( $user_ID ) ? __( 'yes', 'rcp' ) : __( 'no', 'rcp' ) . '</span></li>';
-                                $details .= '<li><span class="rcp_sub_details_status">' . __( 'Current Status', 'rcp' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_status">' . rcp_print_status( $user_ID ) . '</span></li>';
-                                if( ( rcp_is_expired( $user_ID ) || rcp_get_status( $user_ID ) == 'cancelled' ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                    $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rcp' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rcp' ) . '</a></li>';
-                                } elseif( !rcp_is_active( $user_ID ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                    $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rcp' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rcp' ) . '</a></li>';
-                                } elseif( rcp_is_active( $user_ID ) && get_user_meta( $user_ID, 'rcp_paypal_subscriber', true) ) {
-                                    $details .= '<li class="rcp_cancel"><a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rcp' ) . '">' . __( 'Cancel your subscription', 'rcp' ) . '</a></li>';
-                                }
-                                $details = apply_filters( 'rcp_subscription_details_list', $details );
-                            $details .= '</ul>';
-                            $details .= '<div class="rcp-payment-history">';
-                                $details .= '<h3 class="payment_history_header">' . __( 'Your Payment History', 'rcp' ) . '</h3>';
-                                $details .= rcp_print_user_payments( $user_ID );
-                            $details .= '</div>';
-                            echo $details;
-                        ?>
-                    </section>
-                    <section class="tab_content">
-                        
+                                $details = '<ul id="rcp_subscription_details">';
+                                    $details .= '<li><span class="rcp_subscription_name">' . __( 'Subscription Level', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_level">' . rcp_get_subscription( $user_ID ) . '</span></li>';
+                                    if( rcp_get_expiration_date( $user_ID ) ) {
+                                        $details .= '<li><span class="rcp_sub_details_exp">' . $date_text . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_exp_date">' . rcp_get_expiration_date( $user_ID ) . '</span></li>';
+                                    }
+                                    $details .= '<li><span class="rcp_sub_details_recurring">' . __( 'Recurring', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_is_recurring">';
+                                    $details .= rcp_is_recurring( $user_ID ) ? __( 'yes', 'rw' ) : __( 'no', 'rw' ) . '</span></li>';
+                                    $details .= '<li><span class="rcp_sub_details_status">' . __( 'Current Status', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_status">' . rcp_print_status( $user_ID ) . '</span></li>';
+                                    if( ( rcp_is_expired( $user_ID ) || rcp_get_status( $user_ID ) == 'cancelled' ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
+                                        $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rw' ) . '</a></li>';
+                                    } elseif( !rcp_is_active( $user_ID ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
+                                        $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rw' ) . '</a></li>';
+                                    } elseif( rcp_is_active( $user_ID ) && get_user_meta( $user_ID, 'rcp_paypal_subscriber', true) ) {
+                                        $details .= '<li class="rcp_cancel"><a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rw' ) . '">' . __( 'Cancel your subscription', 'rw' ) . '</a></li>';
+                                    }
+                                    $details = apply_filters( 'rcp_subscription_details_list', $details );
+                                $details .= '</ul>';
+                                $details .= '<div class="rcp-payment-history">';
+                                    $details .= '<h3 class="payment_history_header">' . __( 'Your Payment History', 'rw' ) . '</h3>';
+                                    $details .= rcp_print_user_payments( $user_ID );
+                                $details .= '</div>';
+                                echo $details;
+                                 */
+                            ?>
+                            <table>
+                                <tr>
+                                    <th><?php echo __('Level', 'rw'); ?></th>
+                                    <th><?php echo __('Status', 'rw'); ?></th>
+                                    <th><?php echo __('Created On', 'rw'); ?></th>
+                                    <th><?php echo __('Expires On', 'rw'); ?></th>
+                                    <th><?php echo __('Recurring', 'rw'); ?></th>
+                                    <th><?php echo __('Actions', 'rw'); ?></th>
+                                </tr>
+                                <tr>
+                                    <td><?php echo rcp_get_subscription( $user_ID ); ?></td>
+                                    <td><?php echo rcp_print_status( $user_ID ); ?></td>
+                                    <td><?php echo date_i18n( get_option('date_format'), strtotime(user_info('created_on') ) ); ?></td>
+                                    <td><?php echo (rcp_get_expiration_date( $user_ID )) ? rcp_get_expiration_date( $user_ID ) : 'None'; ?></td>
+                                    <td><?php echo rcp_is_recurring( $user_ID ) ? __( 'Yes', 'rw' ) : __( 'No', 'rw' ); ?></td>
+                                    <?php
+                                        if( ( rcp_is_expired( $user_ID ) || rcp_get_status( $user_ID ) == 'cancelled' ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
+                                            $action = '<a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rw' ) . '</a>';
+                                        } elseif( !rcp_is_active( $user_ID ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
+                                            $action = '<a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rw' ) . '</a>';
+                                        } elseif( rcp_is_active( $user_ID ) && get_user_meta( $user_ID, 'rcp_paypal_subscriber', true) ) {
+                                            $action = '<a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rw' ) . '">' . __( 'Cancel your subscription', 'rw' ) . '</a>';
+                                        }
+                                    ?>
+                                    <td><?php echo $action; ?></td>
+                                </tr>
+                            </table>
+
+                        </section>
+                        <section class="tab_content">
+                            <table>
+                                <tr>
+                                    <th><?php echo __('Subscription', 'rw'); ?></th>
+                                    <th><?php echo __('Payment Type', 'rw'); ?></th>
+                                    <th><?php echo __('Subscription Key', 'rw'); ?></th>
+                                    <th><?php echo __('Amount', 'rw'); ?></th>
+                                    <th><?php echo __('Date', 'rw'); ?></th>
+                                </tr>
+                                <?php
+                                    $payments = new \RCP_Payments();
+                                    $user_payments = $payments->get_payments( array( 'user_id' => $user_ID ) );
+                                    $payments_list = '';
+                                    if( $user_payments ) :
+                                            foreach( $user_payments as $payment ) :
+                                ?>
+                                <tr>
+                                    <td><?php echo $payment->subscription; ?></td>
+                                    <td><?php echo $payment->payment_type; ?></td>
+                                    <td><?php echo $payment->subscription_key; ?></td>
+                                    <td><?php echo rcp_currency_filter( $payment->amount ); ?></td>
+                                    <td><?php echo date_i18n( get_option('date_format'), strtotime($payment->date) ); ?></td>
+                                </tr>
+                                <?php
+                                        endforeach;
+                                    else :
+                                        echo '<tr><td colspan="5">No payments recorded</td></tr>';
+                                    endif;
+                                ?>
+
+                            </table>
+                        </section>
                     </section>
                 </section>
-                <section id="form_action_buttons" class="clearfix users_update_sec">
-                    <div class="fright">
-                        <input type="button" name="cancel" class="submit-button cancel-btn ajaxify" value="Cancel" />
-                        <input type="submit" name="save_changes" class="submit-button" value="Save Changes" />
-                    </div>
+                <section class="tab_content">
+
                 </section>
             </section>
-        </form>
+        </section>
 
        <!--<section id="form-top-puts" class="clearfix blog">
                 <section class="tab_action">
