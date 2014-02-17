@@ -4,7 +4,7 @@
  */
 get_header(); the_post(); ?>
 <section class="wrapper rcplr rcp-register">
-    <?php the_content(); ?>
+    <?php echo do_shortcode('[register_form]'); ?>
     <br clear="all">
     <?php rw_register_link(); ?>
 </section>
