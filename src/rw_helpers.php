@@ -335,11 +335,18 @@ function is_admin_pages($template = 'parent-admin-tpl')
 }
 
 /**
- * Retrieve parent profile
+ * Retrieve user (parent) profile
+ * @param string Append string to url
  * @return string
  */
 function get_parent_admin_profile($str = '')
 {
+    global $hashtags;
+    
+    if ( '' === $str ) {
+        $str = '#' . $hashtags[4];
+    }
+    
     return esc_url(get_permalink(351) . $str);
 }
 

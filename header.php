@@ -37,6 +37,11 @@
                     <a href="<?php echo get_permalink(332); ?>" data-load-popup="value" class="basic signin window">Sign In</a>
                     <a href="<?php echo get_permalink(330); ?>" data-load-popup="value_R" class="basic join window">Join</a>
                 </div>
+            <?php else : ?>
+                <div class="login_sec">
+                    <a href="<?php echo get_parent_admin_profile(); ?>" class="signin window">Profile</a>
+                    <a href="<?php echo wp_logout_url(); ?>" class="join window">Logout</a>
+                </div>
             <?php endif; ?>
             <br clear="all" />
         </header>
