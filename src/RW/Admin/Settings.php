@@ -302,11 +302,7 @@ class Settings
                 $user_id = wp_insert_user($_new_user_id);
                 
                 //RCP Free membership
-                $subscription_key = rcp_generate_subscription_key();
-                update_user_meta($user_id, 'rcp_subscription_key', $subscription_key);
-                update_user_meta($user_id, 'rcp_subscription_level', 2); //2 as Free
-                update_user_meta($user_id, 'rcp_status', 'free'); //2 as Free
-                update_user_meta($user_id, 'rcp_expiration', 'none');
+                update_rcp_meta($user_id);
 
                 //Registration succeed
                 $this->registered = true;

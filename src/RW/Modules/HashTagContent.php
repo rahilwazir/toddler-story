@@ -407,11 +407,11 @@ class HashTagContent
                                     <td><?php echo rcp_is_recurring( $user_ID ) ? __( 'Yes', 'rw' ) : __( 'No', 'rw' ); ?></td>
                                     <?php
                                         if( ( rcp_is_expired( $user_ID ) || rcp_get_status( $user_ID ) == 'cancelled' ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                            $action = '<a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rw' ) . '</a>';
+                                            $action = '<a target="_blank" href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rw' ) . '</a>';
                                         } elseif( !rcp_is_active( $user_ID ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                            $action = '<a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rw' ) . '</a>';
+                                            $action = '<a target="_blank" href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rw' ) . '</a>';
                                         } elseif( rcp_is_active( $user_ID ) && get_user_meta( $user_ID, 'rcp_paypal_subscriber', true) ) {
-                                            $action = '<a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rw' ) . '">' . __( 'Cancel your subscription', 'rw' ) . '</a>';
+                                            $action = '<a target="_blank" href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rw' ) . '">' . __( 'Cancel your subscription', 'rw' ) . '</a>';
                                         }
                                     ?>
                                     <td><?php echo $action; ?></td>

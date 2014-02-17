@@ -470,3 +470,18 @@ function get_post_type_link()
 {
     return site_url(Children::$slug . user_info('login') . '/');
 }
+
+/**
+ * Update RCP user meta
+ * @param int $user_id
+ * @return void
+ */
+
+function update_rcp_meta( $user_id )
+{
+    $subscription_key = rcp_generate_subscription_key();
+    update_user_meta($user_id, 'rcp_subscription_key', $subscription_key);
+    update_user_meta($user_id, 'rcp_subscription_level', 2); //2 as Free
+    update_user_meta($user_id, 'rcp_status', 'free'); //2 as Free
+    update_user_meta($user_id, 'rcp_expiration', 'none');
+}

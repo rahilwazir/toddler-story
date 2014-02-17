@@ -81,3 +81,11 @@ if ( is_user_logged_in() ) {
     remove_action('wp_footer', 'jfb_output_facebook_callback');
     remove_action('wp_footer', 'jfb_output_facebook_init');
 }
+
+/**
+ * Update user meta after registered from facebook
+ */
+add_action('wpfb_inserted_user', function( $args ) {
+    //RCP Free membership
+    update_rcp_meta($args['WP_ID']);
+});
