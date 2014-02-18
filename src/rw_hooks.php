@@ -89,3 +89,10 @@ add_action('wpfb_inserted_user', function( $args ) {
     //RCP Free membership
     update_rcp_meta($args['WP_ID']);
 });
+
+// Filter hook to rename Credit Card to Braintree
+function rcp_register_braintree_gateway_override( $gateways ) {
+	$gateways['braintree'] = __( 'Credit Card (Braintree)', 'rcp_braintree' );
+	return $gateways;
+}
+add_filter( 'rcp_payment_gateways', 'rcp_register_braintree_gateway_override' );
