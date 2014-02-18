@@ -60,7 +60,7 @@ add_action('admin_init', function () {
 });
 
 /**
- * Redirect non-admins to the homepage after logging into the site.
+ * Redirect non-admins to profile page after logging into the site.
  */
 add_filter( 'login_redirect', function ( $redirect_to, $request, $user ) {
     if (!is_wp_error($user)) {
@@ -90,9 +90,24 @@ add_action('wpfb_inserted_user', function( $args ) {
     update_rcp_meta($args['WP_ID']);
 });
 
-// Filter hook to rename Credit Card to Braintree
-function rcp_register_braintree_gateway_override( $gateways ) {
-	$gateways['braintree'] = __( 'Credit Card (Braintree)', 'rcp_braintree' );
-	return $gateways;
-}
-add_filter( 'rcp_payment_gateways', 'rcp_register_braintree_gateway_override' );
+/**
+ * Filter hook to rename Credit Card to Braintree
+ */
+add_filter( 'rcp_payment_gateways', function ( $gateways ) {
+    $gateways['braintree'] = __( 'Credit Card (Braintree)', 'rcp_braintree' );
+    return $gateways;
+});
+
+/**
+ * Add language selection to RCP registration form
+ */
+add_action('rcp_after_password_registration_field', function () {
+    echo qtrans_language_dropdown();
+});
+
+/**
+ * Process language selection of RCP registration form
+ */
+add_action('rcp_form_processing', function ($global_post, $user_id, $price) {
+    update_user_meta($user_id, 'user_default_lang', sanitize_text_field($_POST['reg_lang']));
+}, 10, 3);

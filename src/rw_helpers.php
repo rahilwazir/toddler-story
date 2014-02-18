@@ -492,3 +492,31 @@ function update_rcp_meta( $user_id )
     update_user_meta($user_id, 'rcp_status', 'free'); //2 as Free
     update_user_meta($user_id, 'rcp_expiration', 'none');
 }
+
+/**
+ * Genereate dropdown language selection
+ * @param array $params
+ * @return mixed If success return string, otherwise false
+ */
+function qtrans_language_dropdown($params = array())
+{
+    $output = false;
+    $atts = ' ';
+    
+    extract($params);
+    
+    $atts .= ( $id ) ? 'id="'.$id.'"' : 'id="reg_lang"';
+    $atts .= ( $id ) ? 'class="'.$class.'"' : '';
+    $atts .= ( $id ) ? 'name="'.$name.'"' : 'name="reg_lang"';
+    
+    if ( qtrans_getAvailableLanguages(',') ) :
+        $output = '';
+        $output = '<select'.$atts.'>';
+            foreach ( qtrans_getAvailableLanguages(',') as $lang ) :
+                $output .= '<option value="' . $lang . '">' . qtrans_getLanguageName($lang) . '</option>';
+            endforeach;
+        $output .= '</select>';
+    endif;
+    
+    return $output;
+}

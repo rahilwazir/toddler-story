@@ -2924,7 +2924,7 @@ div.wpcf7-validation-errors {
 #simplemodal-container .simplemodal-data {padding:8px;}
 #simplemodal-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
 #simplemodal-container a.modalCloseImg {background:url(images/cross.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
-.form-control {margin: 10px 0;}
+.form-control {margin: 10px 0; clear: both;}
 .form-control label {width: 110px; text-align: left; margin-bottom: 10px; display: inline-block;}
 .rw-error {border: 1px solid #FF0000;}
 .cgmp-centering-container-handle { clear: both; }

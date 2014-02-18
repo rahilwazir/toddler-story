@@ -108,7 +108,7 @@ class Settings
             return 'da_DK';
         }
 
-        return $locale;*/
+        return $locale; // Default language */
     }
 
     /**
@@ -303,6 +303,8 @@ class Settings
                 
                 //RCP Free membership
                 update_rcp_meta($user_id);
+
+                update_user_meta($user_id, 'user_default_lang', $rd['reg_lang']);
 
                 //Registration succeed
                 $this->registered = true;

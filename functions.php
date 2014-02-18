@@ -249,6 +249,15 @@ function twentythirteen_widgets_init()
         'before_title' => '<h1 class="widget-title">',
         'after_title' => '</h1>',
     ));
+    register_sidebar(array(
+        'name' => __('Language Selector', 'twentyfourteen'),
+        'id' => 'sidebar-5',
+        'description' => __('Display language selector.', 'twentyfourteen'),
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h1 class="widget-title">',
+        'after_title' => '</h1>',
+    ));
 }
 
 add_action('widgets_init', 'twentythirteen_widgets_init');

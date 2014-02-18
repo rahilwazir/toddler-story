@@ -26,6 +26,15 @@ class ParentModule
         return (check_user_role('parent')) ? true : false;
     }
     
+    public static function defautlLang()
+    {
+        $lang = get_user_meta($user_id, 'user_default_lang', true);
+        if ( $lang )
+            return $lang;
+        
+        return 'en';
+    }
+    
     public static function update($action)
     {
         self::$_action = $action;

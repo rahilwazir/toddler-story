@@ -117,6 +117,10 @@
                         <label class="label" for="reg_repass">Re-enter password</label>
                         <input type="password" id="reg_repass" required name="reg_repass" class="small" placeholder="Re-Enter password"/>
                     </div>
+                    <div class="form-control">
+                        <label class="label" for="reg_lang">Default language:</label>
+                        <?php echo qtrans_language_dropdown(); ?>
+                    </div>
                     <br clear="all"/>
                     <div class="footer_para">
                         <div class="clearfix">
