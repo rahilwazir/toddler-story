@@ -7,9 +7,11 @@ use RW\PostTypes\Background;
 use RW\PostTypes\MetaBoxes\BlockAccessContent;
 use RW\Modules\CreateChild;
 use RW\Modules\HashTagLoader;
+use RW\Shortcodes\ShortcodePack;
 
 $rw_settings = new Settings();
 
+new ShortcodePack();
 new Children();
 new Background();
 new BlockAccessContent();

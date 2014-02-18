@@ -1,6 +1,6 @@
 <?php
 /**
- * The main template file
+ * Template Name: Home
  */
 get_header();
 ?>
@@ -62,24 +62,14 @@ get_header();
                     <div class="img_sec"><?php echo the_post_thumbnail(); ?></div>
                     <h1><?php echo the_title(); ?></h1>
                     <p><?php echo the_content(); ?></p>
-                <?php endwhile; ?>
+                <?php endwhile; wp_reset_postdata(); ?>
                 <div class="bottom"></div>
             </div>
 
             <br clear="all" />
         </div>
 
-        <div class="video_sec">
-            <div class="left">
-                <h1>Watch Your Baby story in <span class="orange">2 minutes!</span></h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean interdum tellus ac velit faucibus dignissim, eros elementum porttitor tempor, massa ligula cursus libero, vel ullamcorper dui ipsum </p>
-                <a href="#" class="get_started">Get Started</a>
-            </div>
-            <div class="right"><img src="<?php echo bloginfo('template_url'); ?>/images/video_img.png" /></div>
-            <br clear="all" />
-        </div>
-
-        <br clear="all" />
+        <?php the_post(); the_content(); ?>
     </div>
 </section>
 

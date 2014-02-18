@@ -89,7 +89,12 @@ var RW_Utils = {
 var Toddler = {
     init: function() {
         var self = this;
-
+        
+        /**
+        * Remove empty <p /> tags
+        */
+        $('p:empty').remove();
+        
         $('#menu').slicknav();
 
         if (Toddler_Conf.isChildPage === "true") {
