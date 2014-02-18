@@ -7,8 +7,8 @@ use RW\Modules\ParentModule;
 remove_filter( 'post_type_link', 'woocommerce_product_post_type_link', 10, 2 );
 add_filter( 'post_type_link', 'woocommerce_product_post_type_link', 600, 2 );
 
-//Remove admin notice from post/pages
-remove_filter('the_editor', 'qtrans_modifyRichEditor');
+// Remove admin notice from post/pages
+// remove_filter('the_editor', 'qtrans_modifyRichEditor');
 
 /**
  * Set html headers for wordpress email sender
