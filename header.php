@@ -35,24 +35,21 @@
             </div>
             <div class="login_sec">
             <?php if(is_user_logged_in() === false) : ?>
-                <a href="<?php echo get_permalink(332); ?>" data-load-popup="value" class="basic signin window">Sign In</a>
                 <a href="<?php echo get_permalink(330); ?>" data-load-popup="value_R" class="basic join window">Join</a>
+                <a href="<?php echo get_permalink(332); ?>" data-load-popup="value" class="basic signin window">Sign In</a>
             <?php
                 else :
                     if ( ParentModule::currentUserisParent() ) :
             ?>
-                <a href="<?php echo get_parent_admin_profile(); ?>" class="signin window">Profile</a>
                 <a href="<?php echo wp_logout_url(); ?>" class="join window">Logout</a>
+                <a href="<?php echo get_parent_admin_profile(); ?>" class="signin window">Profile</a>
             <?php
                     endif;
                 endif;
             ?>
-            </div>
-
-            <section class="lang-dropper">
                 <?php generate_language_dropdown(array(
                     'sidebar' => true
                 )); ?>
-            </section>
+            </div>
             <br clear="all" />
         </header>

@@ -501,10 +501,12 @@ function update_rcp_meta( $user_id )
 function qtrans_language_dropdown($params = array())
 {
     $output = false;
-    $atts = ' ';
+    $atts = $active = ' ';
     
     extract($params);
     
+    $selector = (( $selector ) ? $selector : 'select');
+    $selectorChild = (( $selectorChild ) ? $selectorChild : 'option');
     $atts .= ' id="' . (( $id ) ? $id : '') . '" ';
     $atts .= ' class="' . (( $class ) ? $class : 'lang_selector') . '" ';
     $atts .= ' name="' . (( $name ) ? $name : 'reg_lang') . '" ';
@@ -513,11 +515,20 @@ function qtrans_language_dropdown($params = array())
     
     if ( qtrans_getAvailableLanguages(',') ) :
         $output = '';
-        $output = '<select'.$atts.'>';
+        $output = '<' . $selector . $atts . '>';
             foreach ( qtrans_getAvailableLanguages(',') as $lang ) :
-                $output .= '<option value="' . $lang . '" '.  selected($selected, $lang, false).'>' . qtrans_getLanguageName($lang) . '</option>';
+                
+                if ( $selector === 'select' ) {
+                    $active = selected($selected, $lang, false);
+                    $value = 'value="' . $lang . '"';
+                } else if (  $selector === 'ul'  ) {
+                    $active = active_class($lang, $selected, false);
+                    $value = 'data-lang-value="' . $lang . '"';
+                }
+                
+                $output .= '<' . $selectorChild . ' ' . $value . ' ' . $active . '>' . qtrans_getLanguageName($lang) . '</' . $selectorChild . '>';
             endforeach;
-        $output .= '</select>';
+        $output .= '</'.$selector.'>';
     endif;
     
     return $output;

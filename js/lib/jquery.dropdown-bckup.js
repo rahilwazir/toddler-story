@@ -84,7 +84,7 @@
 
                 var $this = $(this),
                         val = isNaN($this.attr('value')) ? $this.attr('value') : Number($this.attr('value')),
-                        classes = (val === Toddler_Conf.defaultLanguage.langCode) ? 'active' : $this.attr('class'),
+                        classes = (val === Toddler_Conf.defaultLanguage.langCode) ? 'active ' + $this.attr('class') : $this.attr('class'),
                         selected = $this.attr('selected'),
                         label = $this.text();
 
@@ -102,7 +102,7 @@
             });
 
             this.listopts = $('<ul/>').append(optshtml);
-            this.selectlabel = $('<span/>').append('<span class="lang-icon"></span>');
+            this.selectlabel = $('<span/>').append(selectlabel);
             this.dd = $('<div class="cd-dropdown"/>').append(this.selectlabel, this.listopts).insertAfter(this.$el);
             this.$el.remove();
 
@@ -119,7 +119,7 @@
                         $(this).css({
                             zIndex: self.minZIndex + self.optsCount - 1 - i,
                             top: self.options.slidingIn ? (i + 1) * (self.size.height + self.options.gutter) : 0,
-                            right: 0,
+                            left: 0,
                             marginLeft: self.options.slidingIn ? i % 2 === 0 ? self.options.slidingIn : -self.options.slidingIn : 0,
                             opacity: self.options.slidingIn ? 0 : 1,
                             transform: 'none'
@@ -129,13 +129,13 @@
             if ( !this.options.slidingIn ) {
                 this.opts
                         .eq(this.optsCount - 1)
-                        .css({top: this.options.stack ? 9 : 0, right: this.options.stack ? 4 : 0, width: this.options.stack ? this.size.width - 8 : this.size.width, transform: 'none'})
+                        .css({top: this.options.stack ? 9 : 0, left: this.options.stack ? 4 : 0, width: this.options.stack ? this.size.width - 8 : this.size.width, transform: 'none'})
                         .end()
                         .eq(this.optsCount - 2)
-                        .css({top: this.options.stack ? 6 : 0, right: this.options.stack ? 2 : 0, width: this.options.stack ? this.size.width - 4 : this.size.width, transform: 'none'})
+                        .css({top: this.options.stack ? 6 : 0, left: this.options.stack ? 2 : 0, width: this.options.stack ? this.size.width - 4 : this.size.width, transform: 'none'})
                         .end()
                         .eq(this.optsCount - 3)
-                        .css({top: this.options.stack ? 3 : 0, right: 0, transform: 'none'});
+                        .css({top: this.options.stack ? 3 : 0, left: 0, transform: 'none'});
             }
 
         },
@@ -153,9 +153,8 @@
                 if ( self.opened ) {
                     var opt = $(this);
                     self.options.onOptionSelect(opt);
-                    this.listopts.hide();
                     self.inputEl.val(opt.data('value'));
-                    //self.selectlabel.html(opt.html());
+                    self.selectlabel.html(opt.html());
                     self.close();
                 }
             });
@@ -170,9 +169,8 @@
                 $(this).css({
                     opacity: 1,
                     top: self.options.rotated ? self.size.height + self.options.gutter : (i + 1) * (self.size.height + self.options.gutter),
-                    right: self.options.random ? Math.floor(Math.random() * 11 - 5) : 0,
-                    width: 140,
-                    left: 'auto',
+                    left: self.options.random ? Math.floor(Math.random() * 11 - 5) : 0,
+                    width: 220,
                     marginLeft: 0,
                     transform: self.options.random ?
                             'rotate(' + Math.floor(Math.random() * 11 - 5) + 'deg)' :

@@ -843,7 +843,7 @@ a.logo {
 }
 
 .nav {
-    width: 500px;
+    width: 460px;
     height: 40px;
     float: left;
     margin: 40px 0 0 40px;
@@ -876,7 +876,7 @@ a.logo {
 }
 
 .login_sec {
-    width: 210px;
+    width: 260px;
     float: right;
     margin-top: 30px;
 }
@@ -890,11 +890,7 @@ a.signin {
     background: -ms-linear-gradient(top, #b3cd12 0%, #9db314 100%); /* IE10+ */
     background: linear-gradient(to bottom, #b3cd12 0%, #9db314 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b3cd12', endColorstr='#9db314', GradientType=0); /* IE6-9 */
-
     color: #fff;
-    width: 111px;
-    height: 48px;
-    padding: 0px;
     box-shadow: inset 0px 1px 0px #dae789;
     font-size: 16px;
     border: none;
@@ -922,11 +918,7 @@ a.join {
     background: -ms-linear-gradient(top, #eeb133 0%, #df9a11 100%); /* IE10+ */
     background: linear-gradient(to bottom, #eeb133 0%, #df9a11 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeb133', endColorstr='#df9a11', GradientType=0); /* IE6-9 */
-
     color: #fff;
-    width: 73px;
-    height: 48px;
-    padding: 0px;
     box-shadow: inset 0px 1px 0px #f7d99a;
     font-size: 16px;
     border: none;
@@ -942,7 +934,6 @@ a.join {
     -o-border-radius: 4px 4px 4px 4px;
     -webkit-border-radius: 4px 4px 4px 4px;
     text-transform: uppercase;
-    margin-left: 5px;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -2950,11 +2941,6 @@ div.wpcf7-validation-errors {
 .main_sign_up .form-control input {float: right;}
 .rw-error {border: 1px solid #FF0000;}
 .cgmp-centering-container-handle { clear: both; }
-.lang-dropper {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 .header .lang_selector {display: none;}
 .child_inputs {
     border: 1px solid #c8ced3;
@@ -2965,4 +2951,18 @@ div.wpcf7-validation-errors {
     color: #000;
     padding: 3px 0 3px 10px;
     width: 220px;
+}
+.login_sec > a {
+    float: right;
+    margin-right: 5px;
+    position: relative;
+    padding: 0 10px;
+}
+.lang-icon {
+    background: url('images/lang-icon-32.png') no-repeat 50% 50% #C5D321;
+    padding: 24px;
+    display: block;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
