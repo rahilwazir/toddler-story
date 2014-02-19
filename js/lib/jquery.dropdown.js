@@ -153,7 +153,6 @@
                 if ( self.opened ) {
                     var opt = $(this);
                     self.options.onOptionSelect(opt);
-                    this.listopts.hide();
                     self.inputEl.val(opt.data('value'));
                     //self.selectlabel.html(opt.html());
                     self.close();
