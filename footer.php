@@ -15,7 +15,6 @@
             <?php echo do_shortcode('[cn-social-icon]'); ?>
         </div>
 
-
         <div class="address">
             <?php dynamic_sidebar('sidebar-2'); ?>
         </div>
@@ -45,11 +44,11 @@
                 <div class="svr_messages"></div>
                 <div class="reg_preloader"><img src="<?php echo get_template_directory_uri(); ?>/images/preload.gif" alt=""></div>
                 <form id="login_form" name="login_form" method="POST" class="clearfix">
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="login_username">Username</label>
                         <input type="text" required id="login_username" name="login_username" />
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="login_password">Password</label>
                         <input type="password" required id="login_password" placeholder="" name="login_password" />
                     </div>
@@ -93,33 +92,35 @@
                 <div class="svr_messages"></div>
                 <div class="reg_preloader"><img src="<?php echo get_template_directory_uri(); ?>/images/preload.gif" alt=""></div>
                 <form id="reg_form" name="reg_form" method="POST" class="clearfix">
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label for="reg_firstname" class="label">First name</label>
                         <input type="text" placeholder="First Name" required id="reg_firstname" name="reg_firstname" />
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="reg_lastname">Last name</label>
                         <input type="text" id="reg_lastname" required name="reg_lastname" placeholder="Last Name" />
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="reg_username">Username</label>
                         <input type="text" id="reg_username" required name="reg_username" placeholder="Username" />
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                     <label class="label" for="reg_email">Email</label>
                     <input type="text" id="reg_email" required name="reg_email" placeholder="Email Address" />
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="reg_pass">Password</label>
                         <input type="password" id="reg_pass" required name="reg_pass" class="small" placeholder="Enter password"/>
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="reg_repass">Re-enter password</label>
                         <input type="password" id="reg_repass" required name="reg_repass" class="small" placeholder="Re-Enter password"/>
                     </div>
-                    <div class="form-control">
+                    <div class="form-control clearfix">
                         <label class="label" for="reg_lang">Default language:</label>
-                        <?php echo qtrans_language_dropdown(); ?>
+                        <?php echo qtrans_language_dropdown(array(
+                            'class' => 'child_inputs fright'
+                        )); ?>
                     </div>
                     <br clear="all"/>
                     <div class="footer_para">
@@ -132,7 +133,6 @@
                             <label for="subs_news">Subscribe for newsletter</label>
                         </div>
                     </div>
-                    <br clear="all"/>
                     <div class="signin_reg"><input type="submit" class="anc" value="Sign Up Now" name="sign_up"></div>
                     <input type="hidden" value="<?php echo wp_create_nonce('user_reg'); ?>" name="user_reg_nonce" id="user_reg_nonce">
                 </form>

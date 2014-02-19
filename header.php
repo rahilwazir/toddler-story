@@ -47,7 +47,12 @@
                     endif;
                 endif;
             ?>
-            <?php dynamic_sidebar(5); ?>
             </div>
+
+            <section class="lang-dropper">
+                <?php generate_language_dropdown(array(
+                    'sidebar' => true
+                )); ?>
+            </section>
             <br clear="all" />
         </header>

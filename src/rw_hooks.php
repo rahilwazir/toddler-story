@@ -102,7 +102,13 @@ add_filter( 'rcp_payment_gateways', function ( $gateways ) {
  * Add language selection to RCP registration form
  */
 add_action('rcp_after_password_registration_field', function () {
-    echo qtrans_language_dropdown();
+    echo '<p id="rcp_password_again_wrap">
+            <label for="reg_lang">Default language</label>';
+    echo qtrans_language_dropdown(array(
+        'class' => 'child_inputs',
+        'id' => 'reg_lang'
+    ));
+    echo '</p>';
 });
 
 /**

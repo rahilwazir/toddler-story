@@ -49,6 +49,16 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     vertical-align: baseline;
 }
 
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 article,
 aside,
 details,
@@ -334,6 +344,20 @@ legend {
     white-space: normal;
 }
 
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
 button,
 input,
 select,
@@ -341,7 +365,6 @@ textarea {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    font-size: 100%;
     margin: 0;
     max-width: 100%;
     vertical-align: baseline;
@@ -807,6 +830,7 @@ body {
     width: 1000px;
     height: 115px;
     margin: 0 auto;
+    position: relative;
 }
 
 a.logo {
@@ -1477,6 +1501,7 @@ footer {
 .regist .footer_para {
     width: 100%;
     margin: 0 auto 10px;
+    text-align: left;
 }
 
 .regist .footer_para p {
@@ -1560,7 +1585,7 @@ footer {
     display: block;
     color: #FFF;
     box-shadow: 0 0 10px #bd7d00;
-    
+
 }
 
 .login .signin_reg p {
@@ -2907,11 +2932,6 @@ div.wpcf7-validation-errors {
     margin: 0 0 24px;
     padding: 11px 12px 0;
 }
-.clearfix, .clearfix:after, .clearfix:before {
-    clear: both;
-    display: table;
-    content: "";
-}
 .main_sign_up {
     margin: 20px auto 0;
     width: 390px;
@@ -2926,5 +2946,23 @@ div.wpcf7-validation-errors {
 #simplemodal-container a.modalCloseImg {background:url(images/cross.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
 .form-control {margin: 10px 0; clear: both;}
 .form-control label {width: 110px; text-align: left; margin-bottom: 10px; display: inline-block;}
+.main_sign_up .form-control label {width: 33.33%;}
+.main_sign_up .form-control input {float: right;}
 .rw-error {border: 1px solid #FF0000;}
 .cgmp-centering-container-handle { clear: both; }
+.lang-dropper {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.header .lang_selector {display: none;}
+.child_inputs {
+    border: 1px solid #c8ced3;
+    box-shadow: 1px 1px 5px #CCCCCC inset;
+    -moz-box-shadow: 1px 1px 5px #CCCCCC inset;
+    -webkit-box-shadow: 1px 1px 5px #CCCCCC inset;
+    background: #FFF;
+    color: #000;
+    padding: 3px 0 3px 10px;
+    width: 220px;
+}

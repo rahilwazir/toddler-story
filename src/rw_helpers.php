@@ -505,18 +505,40 @@ function qtrans_language_dropdown($params = array())
     
     extract($params);
     
-    $atts .= ( $id ) ? 'id="'.$id.'"' : 'id="reg_lang"';
-    $atts .= ( $id ) ? 'class="'.$class.'"' : '';
-    $atts .= ( $id ) ? 'name="'.$name.'"' : 'name="reg_lang"';
+    $atts .= ' id="' . (( $id ) ? $id : '') . '" ';
+    $atts .= ' class="' . (( $class ) ? $class : 'lang_selector') . '" ';
+    $atts .= ' name="' . (( $name ) ? $name : 'reg_lang') . '" ';
+    
+    $selected = ($selected) ? $selected : qtrans_getLanguage();
     
     if ( qtrans_getAvailableLanguages(',') ) :
         $output = '';
         $output = '<select'.$atts.'>';
             foreach ( qtrans_getAvailableLanguages(',') as $lang ) :
-                $output .= '<option value="' . $lang . '">' . qtrans_getLanguageName($lang) . '</option>';
+                $output .= '<option value="' . $lang . '" '.  selected($selected, $lang, false).'>' . qtrans_getLanguageName($lang) . '</option>';
             endforeach;
         $output .= '</select>';
     endif;
     
     return $output;
+}
+
+/**
+ * Generate language dropdown selection
+ * @return void
+ */
+function generate_language_dropdown($params = array())
+{
+    extract($params);
+
+    if ( is_active_sidebar(5) && $sidebar ) {
+        echo '<div class="hide">';
+            dynamic_sidebar(5);
+        echo '</div>';
+    }
+
+    echo qtrans_language_dropdown(array (
+        'class' => 'lang_selector',
+        'selected' => qtrans_getLanguage()
+    ));
 }

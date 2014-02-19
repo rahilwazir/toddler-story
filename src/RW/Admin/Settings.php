@@ -119,9 +119,13 @@ class Settings
         global $hashtags;
         $js_lib = explode(',', (is_admin_pages()) ? 'jquery,jquery-ui-datepicker,underscore' : 'jquery,underscore');
 
-        wp_enqueue_script('slickNav', get_template_directory_uri() . '/js/jquery.slicknav.min.js', array('jquery'), '', true);
-        wp_enqueue_style('slicknav', get_template_directory_uri() . '/css/slicknav.css');        
+        wp_enqueue_style('slicknav', get_template_directory_uri() . '/css/slicknav.css');
+        wp_enqueue_style('dropdown-css', get_template_directory_uri() . '/css/lib/dropdown.css');
         wp_enqueue_style('main-style', get_stylesheet_uri());
+        
+        wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/lib/modernizr.custom.63321.js', array('jquery'), '', true);
+        wp_enqueue_script('slickNav', get_template_directory_uri() . '/js/jquery.slicknav.min.js', array('jquery'), '', true);
+        wp_enqueue_script('dropdown-js', get_template_directory_uri() . '/js/lib/jquery.dropdown.js', array('jquery'), '', true);
         
         $localize_args = array(
             'theme_uri'         => get_stylesheet_directory_uri(),
@@ -138,7 +142,11 @@ class Settings
             'registration'      => $this->registered,
             'isChildPage'       => $child_page,
             'parentAdminPage'   => (is_admin_pages()) ? 'true' : 'false',
-            'link_pages'        => $hashtags
+            'link_pages'        => $hashtags,
+            'defaultLanguage'  => array (
+                'langCode' => qtrans_getLanguage(),
+                'langName' => qtrans_getLanguageName( qtrans_getLanguage() ) 
+            ),
         );
 
         /**

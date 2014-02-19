@@ -25,7 +25,7 @@ if (ParentModule::currentUserisParent()) {
     }
    
     /**
-     * Doing Ajax request
+     * Handling Ajax request
      */
     if (is_request_ajax()) {
         switch (filter_input(0, 'action')) {

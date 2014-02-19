@@ -96,7 +96,9 @@ var Toddler = {
         $('p:empty').remove();
         
         $('#menu').slicknav();
-
+        
+        self.dropDown();
+        
         if (Toddler_Conf.isChildPage === "true") {
             $('#menu').slicknav();
         } else {
@@ -331,7 +333,7 @@ var Toddler = {
             } else if ( $(e.target).is('.join') ) {
                 RW_Utils.modalIt({
                     selector: '#value_R',
-                    minHeight: 710
+                    minHeight: 720
                 });
             }
             
@@ -509,6 +511,20 @@ var Toddler = {
 
             $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content').removeClass('enable');
             $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content:eq(' + currentIndex + ')').addClass('enable');
+        });
+    },
+    
+    dropDown: function () {
+        $('.lang_selector').each(function() {
+            $(this).dropdown({
+                stack: false,
+                onOptionSelect: function (elem) {
+                    var curIndex = elem.index();
+                    $('.qts-lang-menu').trigger('click')
+                            .find('option:eq('+curIndex+')').prop('selected', true)
+                            .trigger('change');
+                },
+            });
         });
     }
 };
