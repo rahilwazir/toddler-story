@@ -2890,39 +2890,6 @@ div.wpcf7-validation-errors {
     -o-transform: scale(2);
     transform: scale(2);
 }
-.rcplr {
-    margin-bottom:20px;
-}
-.rcp_login_data p,
-.rcp_user_fieldset p label {
-    margin: 10px 0;
-}
-.rcp_login_data p label,
-.rcp_user_fieldset p label {
-    width: 20%;
-    display: inline-block;
-}
-.rcp_login_data {
-    width: 100%;
-}
-.rcp_form {
-    max-width: 500px;
-}
-.rcp_login_data #rcp_user_remember {
-    float: left;
-}
-.rcp_lost_password {
-    display: block;
-    clear: both;
-}
-#rcp_subscription_levels {
-    list-style: none;
-}
-.rcp-lost-password .woocommerce {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 0 0 24px;
-    padding: 11px 12px 0;
-}
 .main_sign_up {
     margin: 20px auto 0;
     width: 410px;
