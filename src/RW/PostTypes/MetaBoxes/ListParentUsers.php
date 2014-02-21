@@ -3,8 +3,6 @@ namespace RW\PostTypes\MetaBoxes;
 
 use RW\PostTypes\Children;
 
-if (!defined('ABSPATH')) exit;
-
 class ListParentUsers extends Children
 {
 
@@ -44,8 +42,6 @@ class ListParentUsers extends Children
 
                 $output .= '</select>';
                 echo $output;
-                
-                #var_dump($blogusers);
             ?>
             <p class="description">If <strong>None</strong> is selected, the child will be independent and not linked with any parent user.</p>
         </div>

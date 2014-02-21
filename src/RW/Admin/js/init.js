@@ -19,7 +19,7 @@ var ToddlerAdmin = {
     },
     
     chosen: function () {
-        $('select[name="toddler_parent_user"]').chosen();
+        $('select[name^="toddler"]').chosen();
     },
 
     featureShow: function() {

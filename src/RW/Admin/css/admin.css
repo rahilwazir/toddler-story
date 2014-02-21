@@ -29,3 +29,6 @@
     height: 75px;
     background: #CE9062;
 }
+select[name^="toddler"] {
+    width: 100%;
+}

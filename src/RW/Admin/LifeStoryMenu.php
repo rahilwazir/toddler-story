@@ -27,7 +27,7 @@ class LifeStoryMenu
     {
         echo 'Empty';
     }
-    
+
     /**
      * Menu hook
      */
@@ -36,7 +36,7 @@ class LifeStoryMenu
         add_menu_page('Life Story', 'Life Story', (!ParentModule::currentUserisParent()) ? 'administrator' : 'parent', "lifestory-conf", array($this, 'lifestory_setup'), ADMIN_URI . '/images/life_story.png');
         add_action('admin_init', array($this, 'register_settings'));
     }
-    
+
     /**
      * Register Settings, optional for now
      */

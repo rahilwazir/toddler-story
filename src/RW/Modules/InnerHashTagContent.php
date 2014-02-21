@@ -14,6 +14,7 @@ class InnerHashTagContent extends HashTagContent
     {
         if ( (string) __FUNCTION__ === (string) $data['action']) {
             if ( Child::exists($data['id']) ) {
+
                 Child::getCurrent( $data['id'] );
                 
                 createHiddenTitle( Child::fullName(), 'Gallery' );
@@ -21,6 +22,7 @@ class InnerHashTagContent extends HashTagContent
                 $tab_menu = Children::$lifeStoryMenu; $i = 0;
                 ?>
                 <section id="form-top-puts" class="clearfix blog">
+                    
                     <section class="tab_action">
                         <div class="tabs">
                             <?php foreach ($tab_menu->tabs_menu as $key => $val) : ?>
@@ -28,6 +30,7 @@ class InnerHashTagContent extends HashTagContent
                             <?php $i++; endforeach; ?>
                         </div>
                     </section>
+                    
                     <section class="life-story-section middle_hash_content">
                         <section id="gallery" class="tab_content enable">
                             
@@ -37,33 +40,35 @@ class InnerHashTagContent extends HashTagContent
                                 <h1>Blogs</h1>
                                 <div class="bl_user"><input type="button" class="blog_btn" value="Add Post"/></div>
                                 <span class="clearfix"></span>
-                            </div>  
-                            <article class="blog_post">
-                                <div class="date_box">
-                                    <span class="date">25</span><span>December</span><span>2013</span>
-                                </div>
-                                <div class="blog_details">
-                                    <h1>My Child New Teeth!!</h1>
-                                    <span>0 comments</span>
-                                    <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                                </div>
-                                <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                                <span class="clearfix"></span>
-                            </article>  
-                            <article class="blog_post">
-                                <div class="date_box">
-                                    <span class="date">25</span><span>December</span><span>2013</span>
-                                </div>
-                                <div class="blog_details">
-                                    <h1>My Child New Teeth!!</h1>
-                                    <span>0 comments</span>
-                                    <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                                </div>
-                                <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                                <span class="clearfix"></span>
-                            </article>               
+                            
+                                <?php
+                                    $childBlogPosts = Child::blogPosts( $data['id'] );
+                                    if ( $childBlogPosts ) {
+                                        foreach ($childBlogPosts as $_post) {
+                                ?>
+                                <article class="blog_post">
+                                    <div class="date_box">
+                                        <span class="date"><?php echo $_post->day ?></span>
+                                        <span><?php echo $_post->month ?></span>
+                                        <span><?php echo $_post->year ?></span>
+                                    </div>
+                                    <div class="blog_details">
+                                        <h1><?php echo $_post->title; ?></h1>
+                                        <span><?php echo $_post->total_comments; ?> comments</span>
+                                        <p><?php echo trimIt($_post->content); ?></p>
+                                    </div>
+                                    <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
+                                    <span class="clearfix"></span>
+                                </article>
+                                <?php }
+                                    } else {
+                                        echo '<p>No blog posts found. Click add post to create new blog post for your child.</p>';
+                                    }
+                                ?>
+                            </div>
                         </section>
                     </section>
+
                 </section>
                 <?php
             }

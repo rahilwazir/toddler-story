@@ -477,7 +477,6 @@ input, select, textarea {
 }
 .blog_btn{
     height: 35px;
-    margin-right: 10px;
     width: 80px;
     border:1px solid #D4D4D6;
     border-bottom:2px solid #D4D4D6;
@@ -510,7 +509,6 @@ input, select, textarea {
 .date_box {
     background: none repeat scroll 0 0 #F1F1F3;
     float: left;
-    margin: 0 0 0 20px;
     padding: 10px;
 }
 
@@ -520,11 +518,10 @@ input, select, textarea {
     width: 740px;
 }
 
-.blog_user {
-    padding: 0 0 30px 20px;
-}
 .blog_details > span {
     color: #F6AE20;
+    clear: both;
+    display: block;
 }
 
 .blog_post { 
@@ -562,6 +559,9 @@ small {
 }
 .middle_hash_content .tab_content {
     display: none;
+}
+.life-story-section .tab_content {
+    padding: 0 20px 30px;
 }
 .offset1 {
     margin-left: 10px;

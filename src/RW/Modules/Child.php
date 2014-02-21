@@ -2,6 +2,7 @@
 namespace RW\Modules;
 
 use RW\PostTypes\Children;
+use RW\PostTypes\ChildBlog;
 
 /**
  * Toddler Child Module
@@ -17,6 +18,11 @@ class Child extends ParentModule
 {
     public static $post_id = 0;
     
+    /**
+     * @var int
+     */
+    public static $global_post_id = 0;
+
     public static function customPost()
     {
         return (self::$post_id > 0) ? self::$post_id : false;
@@ -162,11 +168,28 @@ class Child extends ParentModule
 
         return ($query !== 0) ? true : false;
     }
+
+    public static function blogPosts()
+    {
+        $blog_posts = \get_custom_posts(array(
+            'post_type' => ChildBlog::$post_type,
+            'author__in' => array(1),
+        ));
+        
+        return $blog_posts;
+    }
     
     public static function getCurrent($id)
     {
         global $post;
+        self::$global_post_id = $post->ID;
         $post = get_post( $id, OBJECT );
         setup_postdata( $post );
+    }
+
+    public static function setCurrent()
+    {
+        global $post;
+        $post = self::$global_post_id;
     }
 }

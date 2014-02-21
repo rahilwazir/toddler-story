@@ -234,7 +234,6 @@ class HashTagContent
                 $childs_query = get_custom_posts(array(
                     'post_type'         => Children::$post_type,
                     'posts_per_page'    => 10,
-                    'post_status'       => 'publish',
                     'author'            => user_info('ID')
                 ), 'chmng_dp');
                 

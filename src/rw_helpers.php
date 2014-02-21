@@ -80,6 +80,17 @@ function get_custom_posts($args = array(), $thumb_size = 'full')
             $array[$i]->title = get_the_title();
             $array[$i]->permalink = get_permalink();
 
+            $array[$i]->time = get_the_time('d F, Y');
+
+            $array[$i]->day = get_the_time('d');
+            $array[$i]->month = get_the_time('F');
+            $array[$i]->year = get_the_time('Y');
+
+            $comments = wp_count_comments( $post->ID );
+
+            $array[$i]->approved = $comments->approved;
+            $array[$i]->total_comments = $comments->total_comments;
+
             $large_image_url = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), $thumb_size);
             $array[$i]->thumbnail = (!$large_image_url[0]) ? image_placeholder() : $large_image_url[0];
 
@@ -91,12 +102,15 @@ function get_custom_posts($args = array(), $thumb_size = 'full')
             
             $i++;
         endwhile;
+        
+        wp_reset_postdata();
+
         $post = $originalpost;
+
         return $array;
-    } else {
-        return 0;
     }
-    
+
+    return 0;
 }
 
 /**
@@ -562,4 +576,12 @@ function createHiddenTitle($title, $default = '')
 {
     echo '<input type="hidden" value="' . $title . '" id="title_name">';
     if ( $default ) echo '<input type="hidden" value="' . $default . '" id="title_desc">';
+}
+
+/**
+ * Trim content
+ */
+function trimIt($content, $start = 0, $end = 100, $cStr = '...')
+{
+    return substr($content, $start, $end) . $cStr;
 }

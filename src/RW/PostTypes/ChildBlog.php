@@ -4,6 +4,7 @@ namespace RW\PostTypes;
 
 use RW\Admin\LifeStoryMenu;
 use RW\Modules\ParentModule;
+use RW\PostTypes\MetaBoxes\ListParentChilds;
 
 class ChildBlog
 {
@@ -32,14 +33,16 @@ class ChildBlog
     public function __construct()
     {
         $this->registerPostType();
+
+        new ListParentChilds();
     }
 
     public function registerPostType()
     {
         // The following is all the names, in our tutorial, we use "Project"
         $labels = array(
-            'name' => _x($this->label, self::$post_type),
-            'singular_name' => _x($this->label, self::$post_type),
+            'name' => _x(self::$label, self::$post_type),
+            'singular_name' => _x(self::$label, self::$post_type),
             'add_new' => _x('Add Blog', self::$post_type),
             'add_new_item' => __('Add Blog'),
             'edit_item' => __('Edit Blog'),
