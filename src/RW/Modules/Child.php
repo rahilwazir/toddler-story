@@ -77,6 +77,11 @@ class Child extends ParentModule
                 : '';
     }
     
+    public static function fullName($split_by = ' ')
+    {
+        return self::firstName() . $split_by . self::lastName();
+    }
+
     public static function description()
     {
         global $post;
@@ -156,5 +161,12 @@ class Child extends ParentModule
         $query = get_custom_posts($args);
 
         return ($query !== 0) ? true : false;
+    }
+    
+    public static function getCurrent($id)
+    {
+        global $post;
+        $post = get_post( $id, OBJECT );
+        setup_postdata( $post );
     }
 }

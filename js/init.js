@@ -263,6 +263,8 @@ var Toddler = {
             successCallback: function(data) {
                 $('#form-section').html(data);
                 $('.process-loading').removeClass('show');
+                
+                self.changeMainTitle();
             },
             completeCallback: function() {
                 $('.process-loading').removeClass('show');
@@ -501,6 +503,8 @@ var Toddler = {
         });
     },
     tabSwitcher: function() {
+        var self = this;
+        
         $(document).on('click', '.tabs > .submit-button', function(e) {
             e.preventDefault();
 
@@ -508,10 +512,21 @@ var Toddler = {
 
             $(this).parents('.tabs').find(' > .submit-button.active').removeClass('active');
             $(this).addClass('active');
-
+            
             $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content').removeClass('enable');
             $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content:eq(' + currentIndex + ')').addClass('enable');
+            
+            self.changeMainTitle( $(this).val() );
         });
+    },
+    
+    changeMainTitle: function ( custom_default ) {
+        var childName = $('#title_name').val(),
+            childDesc = $('#title_desc').val();
+
+        if ( childName ) {
+            $('.wrap_simple .fleft').text( childName + ( ( (custom_default || childDesc) ) ? ' ' + (custom_default || childDesc) : '') );
+        }
     },
     
     dropDown: function () {

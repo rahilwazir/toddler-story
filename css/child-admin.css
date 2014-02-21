@@ -496,7 +496,7 @@ input, select, textarea {
 .clearfix.blog {
     width: 100%;
 }
-#user_blog {
+.life-story-section {
     background: none repeat scroll 0 0 #FFFFFF;
     padding: 20px 0;
 }

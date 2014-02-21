@@ -8,6 +8,7 @@ use RW\PostTypes\MetaBoxes\BlockAccessContent;
 use RW\Modules\CreateChild;
 use RW\Modules\HashTagLoader;
 use RW\Shortcodes\ShortcodePack;
+use RW\PostTypes\ChildBlog;
 
 $rw_settings = new Settings();
 
@@ -15,6 +16,7 @@ new ShortcodePack();
 new Children();
 new Background();
 new BlockAccessContent();
+new ChildBlog();
 
 if (ParentModule::currentUserisParent()) {
     /* On admin screen */

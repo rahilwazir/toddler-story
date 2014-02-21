@@ -553,3 +553,13 @@ function generate_language_dropdown($params = array())
         'selected' => qtrans_getLanguage()
     ));
 }
+
+/**
+ * Output input hidden field
+ * @param string $title
+ */
+function createHiddenTitle($title, $default = '')
+{
+    echo '<input type="hidden" value="' . $title . '" id="title_name">';
+    if ( $default ) echo '<input type="hidden" value="' . $default . '" id="title_desc">';
+}

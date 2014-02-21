@@ -19,19 +19,19 @@ class Children implements PostTypeBase
     public static $post_type = 'child';
     public static $taxonomy = 'childs';
     public static $slug = 'user/';
+    
+    /**
+     * @var array 
+     */
+    public static $lifeStoryMenu = null;
 
     public function __construct()
     {
-        // We call this function to register the custom post type
         $this->registerPostType();
-//        $this->registerTaxonomy();
-//        $this->removePostTypeSlug();
         
         if (current_user_can('administrator') || get_custom_posts() !== 0) {
-            /**
-             * If parent has 1 or more than 1 child
-             */
-            new LifeStoryMenu();
+            // if parent has 1 or more than 1 child
+            self::$lifeStoryMenu = new LifeStoryMenu();
         }
 
         //Add Gender Metabox
@@ -58,8 +58,6 @@ class Children implements PostTypeBase
         add_filter('manage_edit-' . self::$post_type . '_columns', array($this, 'children_unset_column'));
 
         add_filter('enter_title_here', array($this, 'change_default_title'));
-
-        add_filter( 'map_meta_cap', array($this, 'my_map_meta_cap'), 10, 4 );
         
         add_filter( 'post_row_actions', array($this, 'go_to_life_story'), 10, 2 );
         
@@ -153,91 +151,6 @@ class Children implements PostTypeBase
 
         return $title;
     }
-
-    public function removePostTypeSlug()
-    {
-        #add_filter('post_type_link', array($this, 'vipx_remove_cpt_slug'), 10, 3);
-        #add_action('pre_get_posts', array($this, 'vipx_parse_request_tricksy'));
-    }
-
-    /**
-     * Remove the slug from published post permalinks. Only affect our CPT though.
-     */
-    public function vipx_remove_cpt_slug($post_link, $post, $leavename)
-    {
-
-        if (!in_array($post->post_type, array(self::$post_type)) || 'publish' != $post->post_status)
-            return $post_link;
-
-        $post_link = str_replace('/' . $post->post_type . '/', '/', $post_link);
-
-        return $post_link;
-    }
-
-    /**
-     * Some hackery to have WordPress match postname to any of our public post types
-     * All of our public post types can have /post-name/ as the slug, so they better be unique across all posts
-     * Typically core only accounts for posts and pages where the slug is /post-name/
-     */
-    public function vipx_parse_request_tricksy($query)
-    {
-
-        // Only noop the main query
-        if (!$query->is_main_query())
-            return;
-
-        // Only noop our very specific rewrite rule match
-        if (2 != count($query->query) || !isset($query->query['page'])
-        )
-            return;
-
-        // 'name' will be set if post permalinks are just post_name, otherwise the page rule will match
-        if (!empty($query->query['name']))
-            $query->set('post_type', array(self::$post_type));
-    }
-
-    public function my_map_meta_cap($caps, $cap, $user_id, $args)
-    {
-
-        /* If editing, deleting, or reading a movie, get the post and post type object. */
-        if ('edit_' . self::$post_type == $cap || 'delete_' . self::$post_type == $cap || 'read_' . self::$post_type == $cap) {
-            $post = get_post($args[0]);
-            $post_type = get_post_type_object($post->post_type);
-
-            /* Set an empty array for the caps. */
-            $caps = array();
-        }
-
-        /* If editing a movie, assign the required capability. */
-        if ('edit_' . self::$post_type == $cap) {
-            if ($user_id == $post->post_author)
-                $caps[] = $post_type->cap->edit_posts;
-            else
-                $caps[] = $post_type->cap->edit_others_posts;
-        }
-
-        /* If deleting a movie, assign the required capability. */
-        elseif ('delete_' . self::$post_type == $cap) {
-            if ($user_id == $post->post_author)
-                $caps[] = $post_type->cap->delete_posts;
-            else
-                $caps[] = $post_type->cap->delete_others_posts;
-        }
-
-        /* If reading a private movie, assign the required capability. */
-        elseif ('read_' . self::$post_type == $cap) {
-
-            if ('private' != $post->post_status)
-                $caps[] = 'read';
-            elseif ($user_id == $post->post_author)
-                $caps[] = 'read';
-            else
-                $caps[] = $post_type->cap->read_private_posts;
-        }
-
-        /* Return the capabilities required by the user. */
-        return $caps;
-    }
     
     /*
      * Add the row actions to post type
@@ -266,5 +179,10 @@ class Children implements PostTypeBase
         $post_link = str_replace('%author%', $author, $post_link);
 
         return $post_link;
+    }
+    
+    public function removePostTypeSlug()
+    {
+        //;
     }
 }

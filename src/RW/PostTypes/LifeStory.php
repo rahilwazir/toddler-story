@@ -11,10 +11,7 @@ class LifeStory implements PostTypeBase
 
     public function __construct()
     {
-        //register the custom post type
         $this->registerPostType();
-//        $this->registerTaxonomy();
-//        $this->removePostTypeSlug();
 
         add_filter('manage_edit-' . self::$post_type . '_columns', array($this, 'life_story_unset_column'));
 
@@ -107,46 +104,10 @@ class LifeStory implements PostTypeBase
 
         return $title;
     }
-
+    
     public function removePostTypeSlug()
     {
-        add_filter('post_type_link', array($this, 'vipx_remove_cpt_slug'), 10, 3);
-        add_action('pre_get_posts', array($this, 'vipx_parse_request_tricksy'));
-    }
-
-    /**
-     * Remove the slug from published post permalinks. Only affect our CPT though.
-     */
-    public function vipx_remove_cpt_slug($post_link, $post, $leavename)
-    {
-
-        if (!in_array($post->post_type, array(self::$post_type)) || 'publish' != $post->post_status)
-            return $post_link;
-
-        $post_link = str_replace('/' . $post->post_type . '/', '/', $post_link);
-
-        return $post_link;
-    }
-
-    /**
-     * Some hackery to have WordPress match postname to any of our public post types
-     * All of our public post types can have /post-name/ as the slug, so they better be unique across all posts
-     * Typically core only accounts for posts and pages where the slug is /post-name/
-     */
-    public function vipx_parse_request_tricksy($query)
-    {
-
-        // Only noop the main query
-        if (!$query->is_main_query())
-            return;
-
-        // Only noop our very specific rewrite rule match
-        if (2 != count($query->query) || !isset($query->query['page']))
-            return;
-
-        // 'name' will be set if post permalinks are just post_name, otherwise the page rule will match
-        if (!empty($query->query['name']))
-            $query->set('post_type', array(self::$post_type));
+        //;
     }
 
 }

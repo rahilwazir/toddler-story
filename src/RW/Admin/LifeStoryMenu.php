@@ -7,7 +7,17 @@ use RW\Modules\Child;
 
 class LifeStoryMenu
 {
-
+    /**
+     * @var array
+     */
+    public $tabs_menu = array (
+        'gallery' => 'Gallery',
+        'blog' => 'Blog',
+        'development' => 'Physical Development',
+        'journal' => 'Journal',
+        'follow' => 'Follow'
+    );
+    
     public function __construct()
     {
         add_action('admin_menu', array($this, 'lifestory_menu'));
@@ -47,15 +57,8 @@ class LifeStoryMenu
             <?php
                 settings_errors();
 
-                $tabs = array (
-                    'gallery' => 'Gallery',
-                    'blog' => 'Blog',
-                    'development' => 'Physical Development',
-                    'journal' => 'Journal',
-                    'follow' => 'Follow'
-                );
+                $actab = \array_keys($this->tabs_menu);
 
-                $actab = \array_keys($tabs);
                 $active_tab = (\array_key_exists('tab', $_GET)) ? \rw_get('tab') : $actab[0];
 
                 $cid = (rw_get('cid')) ? '&cid=' . rw_get('cid') : '';
@@ -68,14 +71,14 @@ class LifeStoryMenu
             ?>
 
             <h2 class="nav-tab-wrapper">
-                <?php foreach ($tabs as $tab_key => $tab) : ?>
+                <?php foreach ($this->tabs_menu as $tab_key => $tab) : ?>
                     <a href="?page=lifestory-conf&tab=<?php echo $tab_key . $cid; ?>" class="nav-tab<?php echo ($active_tab === $tab_key) ? ' nav-tab-active' : '' ?>"><?php echo $tab; ?></a>
                 <?php endforeach; ?>
             </h2>
 
             <div class="wrap">
                 <?php
-                    foreach ($tabs as $tab_key => $tab) :
+                    foreach ($this->tabs_menu as $tab_key => $tab) :
                         if ($tab_key === $active_tab && \is_callable(array($this, $tab_key))) :
                             \call_user_func(array($this, $tab_key));
                         endif;

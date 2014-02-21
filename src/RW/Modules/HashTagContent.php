@@ -57,7 +57,8 @@ class HashTagContent
         self::$array_builder['d_url'] = ($update) ? Child::dURL() : '';
         self::$array_builder['thumbnail'] = Child::thumb('chmng_dp');
         self::$array_builder['public_access'] = ($update) ? Child::publicAccess() : '';
-
+        
+        
     ?>
         <form method="post" name="<?php echo self::$array_builder['form_name']; ?>" enctype="multipart/form-data">
             <?php
@@ -226,6 +227,7 @@ class HashTagContent
     
     public static function childmanagement()
     {
+        createHiddenTitle( 'My Children Management' );
     ?>
         <ul id="child_listings" class="container"> <!-- nothing-cool -->
             <?php
@@ -264,6 +266,7 @@ class HashTagContent
 
     public static function userinfo()
     {
+        createHiddenTitle( 'User Account Setting' );
     ?>
         <section id="form-top-puts" class="clearfix">
             <section class="tab_action">
@@ -359,36 +362,6 @@ class HashTagContent
                             <?php
                                 global $rcp_options;
                                 $user_ID = user_info('ID');
-                                /*
-                                if( rcp_is_recurring( $user_ID ) && ! rcp_is_expired( $user_ID ) ) {
-                                    $date_text = __( 'Renewal Date', 'rw' );
-                                } else {
-                                    $date_text = __( 'Expiration Date', 'rw' );
-                                }
-
-                                $details = '<ul id="rcp_subscription_details">';
-                                    $details .= '<li><span class="rcp_subscription_name">' . __( 'Subscription Level', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_level">' . rcp_get_subscription( $user_ID ) . '</span></li>';
-                                    if( rcp_get_expiration_date( $user_ID ) ) {
-                                        $details .= '<li><span class="rcp_sub_details_exp">' . $date_text . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_exp_date">' . rcp_get_expiration_date( $user_ID ) . '</span></li>';
-                                    }
-                                    $details .= '<li><span class="rcp_sub_details_recurring">' . __( 'Recurring', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_is_recurring">';
-                                    $details .= rcp_is_recurring( $user_ID ) ? __( 'yes', 'rw' ) : __( 'no', 'rw' ) . '</span></li>';
-                                    $details .= '<li><span class="rcp_sub_details_status">' . __( 'Current Status', 'rw' ) . '</span><span class="rcp_sub_details_separator">:&nbsp;</span><span class="rcp_sub_details_current_status">' . rcp_print_status( $user_ID ) . '</span></li>';
-                                    if( ( rcp_is_expired( $user_ID ) || rcp_get_status( $user_ID ) == 'cancelled' ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                        $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Renew your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Renew your subscription', 'rw' ) . '</a></li>';
-                                    } elseif( !rcp_is_active( $user_ID ) && rcp_subscription_upgrade_possible( $user_ID ) ) {
-                                        $details .= '<li><a href="' . esc_url( get_permalink( $rcp_options['registration_page'] ) ) . '" title="' . __( 'Upgrade your subscription', 'rw' ) . '" class="rcp_sub_details_renew">' . __( 'Upgrade your subscription', 'rw' ) . '</a></li>';
-                                    } elseif( rcp_is_active( $user_ID ) && get_user_meta( $user_ID, 'rcp_paypal_subscriber', true) ) {
-                                        $details .= '<li class="rcp_cancel"><a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist" target="_blank" title="' . __( 'Cancel your subscription', 'rw' ) . '">' . __( 'Cancel your subscription', 'rw' ) . '</a></li>';
-                                    }
-                                    $details = apply_filters( 'rcp_subscription_details_list', $details );
-                                $details .= '</ul>';
-                                $details .= '<div class="rcp-payment-history">';
-                                    $details .= '<h3 class="payment_history_header">' . __( 'Your Payment History', 'rw' ) . '</h3>';
-                                    $details .= rcp_print_user_payments( $user_ID );
-                                $details .= '</div>';
-                                echo $details;
-                                 */
                             ?>
                             <table>
                                 <tr>
@@ -458,90 +431,6 @@ class HashTagContent
                 </section>
             </section>
         </section>
-
-       <!--<section id="form-top-puts" class="clearfix blog">
-                <section class="tab_action">
-                    <div class="tabs">
-                        <input type="button" class="submit-button no-bordrad" value="Gallery"/>
-                        <input type="button" class="submit-button no-bordrad" value="Blog"/>
-                        <input type="button" class="submit-button no-bordrad" value="Development"/>
-                        <input type="button" class="submit-button no-bordrad" value="Journal"/>
-                    </div>
-                </section>
-                <section  id="user_blog">
-                    <div class="blog_user">
-                        <h1>Blogs</h1>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Add Post"/></div>
-                        <span class="clearfix"></span>
-                    </div>  
-                    <article class="blog_post">
-                        <div class="date_box">
-                            <span class="date">25</span><span>December</span><span>2013</span>
-                        </div>
-                        <div class="blog_details">
-                            <h1>My Child New Teeth!!</h1>
-                            <span>0 comments</span>
-                            <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                        </div>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                        <span class="clearfix"></span>
-                    </article>  
-                    <article class="blog_post">
-                        <div class="date_box">
-                            <span class="date">25</span><span>December</span><span>2013</span>
-                        </div>
-                        <div class="blog_details">
-                            <h1>My Child New Teeth!!</h1>
-                            <span>0 comments</span>
-                            <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                        </div>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                        <span class="clearfix"></span>
-                    </article>               
-                </section>
-        </section>-->
-
-        <!--<section id="form-top-puts" class="clearfix">
-                <section class="tab_action">
-                    <div class="tabs">
-                        <input type="button" class="submit-button no-bordrad" value="Gallery"/>
-                        <input type="button" class="submit-button no-bordrad" value="Blog"/>
-                        <input type="button" class="submit-button no-bordrad" value="Development"/>
-                        <input type="button" class="submit-button no-bordrad" value="Journal"/>
-                    </div>
-                </section>
-                <section  id="user_blog">
-                    <div class="blog_user">
-                        <h1>Blogs</h1>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Add Post"/></div>
-                        <span class="clearfix"></span>
-                    </div>  
-                    <article class="blog_post">
-                        <div class="date_box">
-                            <span class="date">25</span><span>December</span><span>2013</span>
-                        </div>
-                        <div class="blog_details">
-                            <h1>My Child New Teeth!!</h1>
-                            <span>0 comments</span>
-                            <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                        </div>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                        <span class="clearfix"></span>
-                    </article>  
-                    <article class="blog_post">
-                        <div class="date_box">
-                            <span class="date">25</span><span>December</span><span>2013</span>
-                        </div>
-                        <div class="blog_details">
-                            <h1>My Child New Teeth!!</h1>
-                            <span>0 comments</span>
-                            <p>Here you can add movie from youTube so you have the opportunity to collect...</p>
-                        </div>
-                        <div class="bl_user"><input type="button" class="blog_btn" value="Read Blog"/></div>
-                        <span class="clearfix"></span>
-                    </article>               
-                </section>
-        </section>-->
         <?php    
     }
 }
