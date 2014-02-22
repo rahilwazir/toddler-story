@@ -48,7 +48,7 @@ class ListParentChilds extends Children
 
                             if ( $childBlogPosts ) {    
                                 foreach ($childBlogPosts as $_post) :
-                                    $output .= '<option value="' . $_post->ID . '">' . $_post->title . '</option>';
+                                    $output .= '<option value="' . $_post->ID . '"' . selected($parent_child_user_id, $_post->ID, false).'>' . $_post->title . '</option>';
                                 endforeach;
                             }
                         $output .= '</optgroup>';
@@ -70,6 +70,20 @@ class ListParentChilds extends Children
 
             if ($child_id > 1) {
                 update_post_meta($post_id, '_toddler_parent_child_user', $child_id);
+                
+                remove_action('save_post', array($this, __FUNCTION__));
+
+                $child_author = get_custom_posts(array(
+                    'p' => $child_id,
+                    'post_type' => Children::$post_type
+                ));
+
+                wp_update_post(array(
+                    'ID' => $post_id,
+                    'post_author' => $child_author[0]->authorID
+                ));
+
+                add_action('save_post', array($this, __FUNCTION__));
             }
         }
     }

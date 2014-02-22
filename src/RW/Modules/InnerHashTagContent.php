@@ -43,6 +43,7 @@ class InnerHashTagContent extends HashTagContent
                             
                                 <?php
                                     $childBlogPosts = Child::blogPosts( $data['id'] );
+
                                     if ( $childBlogPosts ) {
                                         foreach ($childBlogPosts as $_post) {
                                 ?>

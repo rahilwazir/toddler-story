@@ -79,9 +79,9 @@ function get_custom_posts($args = array(), $thumb_size = 'full')
             $array[$i]->ID = get_the_ID();
             $array[$i]->title = get_the_title();
             $array[$i]->permalink = get_permalink();
+            $array[$i]->authorID = get_the_author_meta('ID');
 
             $array[$i]->time = get_the_time('d F, Y');
-
             $array[$i]->day = get_the_time('d');
             $array[$i]->month = get_the_time('F');
             $array[$i]->year = get_the_time('Y');

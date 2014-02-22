@@ -169,11 +169,13 @@ class Child extends ParentModule
         return ($query !== 0) ? true : false;
     }
 
-    public static function blogPosts()
+    public static function blogPosts($id)
     {
         $blog_posts = \get_custom_posts(array(
             'post_type' => ChildBlog::$post_type,
-            'author__in' => array(1),
+            'author__in' => array($id),
+            'meta_key' => '_toddler_parent_child_user',
+            'meta_value' => $id,
         ));
         
         return $blog_posts;
