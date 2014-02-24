@@ -51,7 +51,22 @@ class InnerHashTagContent extends HashTagContent
     public static function addComment(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['action']) {
-            echo 'Comment';
+            $_comment_id = wp_insert_comment(array(
+                'comment_post_ID' => $data['id'],
+                'user_id' => user_info('ID'),
+                'comment_author' => (user_info('ID')) ? user_info('display_name') : '',
+                'comment_content' => esc_textarea($data['commentContent'])
+            ));
+
+            if ( $_comment_id > 0 ) {
+                $comment = get_comment( $_comment_id );
+                $output = '';
+                $output .= '<article class="single-comment comment-input" data-comment-id="' . $comment->comment_ID .'">';
+                $output .= '<span class="comment-meta">Commented by: ' . $comment->comment_author . ', ' . $comment->comment_date . '</span>';
+                $output .= '<div class="comment-content">' . $comment->comment_content . '</div>';
+                $output .= '</article>';
+                echo $output;
+            }
         }
     }
 }

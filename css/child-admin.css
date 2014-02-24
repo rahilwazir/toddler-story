@@ -133,7 +133,7 @@ input, select, textarea {
     text-decoration: none;
     display: inline-block;
     margin: 5px 10px 0;
-    font-size: 13px; 
+    font-size: 13px;
 }
 #secondary_menu {
     background-color: #f5a200;
@@ -219,7 +219,6 @@ input, select, textarea {
     bottom: 0;
     left: 0;
     z-index: 2;
-    display: none;
 }
 .process-loading.show {
     display: block;
@@ -522,7 +521,7 @@ input, select, textarea {
     display: block;
 }
 
-.blog_post { 
+.blog_post {
     padding: 11px 0;
     border-bottom:1px dashed #ddd;
 }
@@ -581,17 +580,30 @@ small {
 .tab_content table tr td {
     text-align: center;
 }
-.comment-box {
+.comment-input {
     background: #ccc;
     padding: 10px;
     border-radius: 5px;
-    display: inline-block;
-    margin-top: 10px;
+    float: left;
+    margin: 10px 0;
 }
-.comment-box textarea {
-    margin-bottom: 10px;
+.single-comment.comment-input {
     width: 100%;
 }
-.comment-box input {
+.comment-input textarea {
+    margin-bottom: 10px;
+    display: block;
+}
+.comment-input input {
     float: right;
+}
+.specific-loader {
+    position: relative;
+}
+.single-comment .comment-meta {
+    font-size: 9pt;
+    font-style: italic;
+}
+.comments-list {
+    width: 100%;
 }

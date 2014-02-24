@@ -28,12 +28,32 @@
                                 </div>
                                 <div class="blog_details">
                                     <h1 class="post-title"><a href="#" data-blog-value="<?php echo $_post->ID; ?>" class="read-blog"><?php echo $_post->title; ?></a></h1>
-                                    <span class="comment-counter"><?php echo $_post->total_comments; ?> comments</span>
+                                    <span class="comment-counter">
+                                        <span class="comment-count"><?php echo $_post->total_comments; ?></span> comments
+                                    </span>
                                     <p class="post-content"><?php echo $_post->fullContent; ?></p>
 
                                     <section class="comment-box disable">
-                                        <textarea rows="7" cols="30"></textarea>
-                                        <input type="button" class="blog_btn ajaxify clearfix" value="Add Comment" data-action='{"action" : "add_comment", "id" : <?php echo $_post->ID; ?>}'>
+                                        <div class="comment-input clearfix specific-loader">
+                                            <textarea name="comment-content" rows="7" cols="30" required=""></textarea>
+                                            <input type="button" class="blog_btn ajaxify clearfix specific" value="Add Comment" data-action='{"action" : "add_comment", "id" : <?php echo $_post->ID; ?>}'>
+                                        </div>
+                                        <?php $comments = get_comments($_post->ID); ?>
+                                        <section class="comments-list clearfix">
+                                            <?php
+                                                if ( !empty($comments) ) {
+                                                    foreach ($comments as $comment) {
+                                            ?>
+                                                <article class="single-comment comment-input" data-comment-id="<?php echo $comment->comment_ID; ?>">
+                                                    <span class="comment-meta">Commented by: <?php echo $comment->comment_author; ?>, <?php echo $comment->comment_date; ?></span>
+                                                    <div class="comment-content"><?php echo $comment->comment_content; ?></div>
+                                                </article>
+                                            <?php   }
+                                                } else {
+                                                    echo '<h3 id="no-comments-yet">No comments yet.</h3>';
+                                                }
+                                            ?>
+                                        </section>
                                     </section>
                                 </div>
                                 <div class="bl_user"><input type="button" class="blog_btn read-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Read Blog"/></div>

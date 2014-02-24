@@ -18,11 +18,11 @@ class HashTagLoader
         $hash_tag = filter_input(0, 'hashTag');
 
         //If there is any data
-        if (filter_input(0, 'dataSet')) {
+        if ( filter_input(0, 'dataSet') ) {
             $full_data = json_decode(filter_input(0, 'dataSet'), TRUE);
 
             foreach ($full_data as $key => $value) {
-                if ($key === 'action') $full_data['action'] = convert_to_cc($value);
+                if ($key === 'action') $full_data['action'] = convert_to_cc($value); break;
             }
 
             $inner_action = $full_data['action'];

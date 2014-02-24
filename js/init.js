@@ -82,6 +82,20 @@ var RW_Utils = {
         }
         
         $(data.selector).modal(all_setup);
+    },
+
+    loaderElem: null,
+
+    initLoader: function(elem) {
+        if ( this.loaderElem === null ) {
+            this.loaderElem = elem;
+        }
+        this.loaderElem.prepend('<div class="process-loading"></div>');
+    },
+
+    removeLoader: function() {
+        this.loaderElem.find('.process-loading').remove();
+        this.loaderElem = null;
     }
 
 };
@@ -133,7 +147,7 @@ var Toddler = (function() {
                         processData: false,
                         contentType: false,
                         beforeCallback: function() {
-                            $('.process-loading').addClass('show');
+                            RW_Utils.initLoader(this.loader);
                         },
                         successCallback: function(responseText) {
                             var result = JSON.parse(responseText), resulted_errors = result.errors, my_array = {}, count_array_length, obj_keys;
@@ -200,7 +214,7 @@ var Toddler = (function() {
                             self.ajaxifying({
                                 data: ajaxifying_data,
                                 beforeCallback: function() {
-                                    $('.process-loading').addClass('show');
+                                    RW_Utils.initLoader(this.loader);
                                 },
                                 successCallback: function(data) {
                                     var result = JSON.parse(data);
@@ -213,9 +227,42 @@ var Toddler = (function() {
                             });
                         });
                     } else {
-                        self.ajaxifying({
-                            data: ajaxifying_data
-                        });
+                        if ( $(this).hasClass('specific') ) {
+                            var $elem = $(this);
+
+                            var extraData = {
+                                commentContent: $(this).prev().val()
+                            };
+
+                            ajaxifying_data.dataSet = JSON.parse(ajaxifying_data.dataSet);
+
+                            _.each(extraData, function(value, index) {
+                                ajaxifying_data.dataSet[index] = value;
+                            });
+
+                            ajaxifying_data.dataSet = JSON.stringify(ajaxifying_data.dataSet);
+
+                            self.ajaxifying({
+                                loader: $(this).parents('.specific-loader'),
+                                data: ajaxifying_data,
+                                beforeCallback: function() {
+                                    RW_Utils.initLoader( this.loader );
+                                },
+                                successCallback: function(data) {
+                                    var commentLength = $('.comments-list').prepend(data).children('.single-comment').length;
+                                    $('.comment-counter .comment-count').text(commentLength);
+                                    $('#no-comments-yet').remove();
+                                    $elem.prev().val('');
+                                },
+                                completeCallback: function() {
+                                    RW_Utils.removeLoader();
+                                }
+                            });
+                        } else {
+                            self.ajaxifying({
+                                data: ajaxifying_data
+                            });
+                        }
                     }
                     //}
 
@@ -251,22 +298,26 @@ var Toddler = (function() {
 
             var Defaults = {
                 req_method: 'POST',
+
+                loader: $('body > .container'),
+
                 URL: Toddler_Conf.admin_url,
+
                 data: {
                     all_data: 'something_to_send'
                 },
+
                 beforeCallback: function() {
+                    RW_Utils.initLoader(obj.loader || Defaults.loader);
                     $('#form-section').empty().removeClass('nothing-cool');
-                    $('.process-loading').addClass('show');
                 },
                 successCallback: function(data) {
                     $('#form-section').html(data);
-                    $('.process-loading').removeClass('show');
 
                     self.changeMainTitle();
                 },
                 completeCallback: function() {
-                    $('.process-loading').removeClass('show');
+                    RW_Utils.removeLoader();
 
                     if ($('#form-section').find('*').length <= 1) {
                         $('#form-section').addClass('nothing-cool');
