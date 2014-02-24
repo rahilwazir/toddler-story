@@ -95,7 +95,8 @@ function get_custom_posts($args = array(), $thumb_size = 'full')
             $array[$i]->thumbnail = (!$large_image_url[0]) ? image_placeholder() : $large_image_url[0];
 
             $array[$i]->content = get_the_excerpt();
-            
+            $array[$i]->fullContent = get_the_content();
+
             if ( Child::age() ) {
                 $array[$i]->age = Child::age();
             }
@@ -528,7 +529,6 @@ function qtrans_language_dropdown($params = array())
     $selected = ($selected) ? $selected : qtrans_getLanguage();
     
     if ( qtrans_getAvailableLanguages(',') ) :
-        $output = '';
         $output = '<' . $selector . $atts . '>';
             foreach ( qtrans_getAvailableLanguages(',') as $lang ) :
                 
@@ -550,6 +550,7 @@ function qtrans_language_dropdown($params = array())
 
 /**
  * Generate language dropdown selection
+ * @param array $params
  * @return void
  */
 function generate_language_dropdown($params = array())
@@ -570,7 +571,8 @@ function generate_language_dropdown($params = array())
 
 /**
  * Output input hidden field
- * @param string $title
+ * @param string $title Value for title
+ * @param string $default Default value for descriptino
  */
 function createHiddenTitle($title, $default = '')
 {

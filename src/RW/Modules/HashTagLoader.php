@@ -26,7 +26,6 @@ class HashTagLoader
             }
 
             $inner_action = $full_data['action'];
-
             if (method_exists(__NAMESPACE__ . '\InnerHashTagContent', $inner_action)) {
                 InnerHashTagContent::$inner_action($full_data);
             }

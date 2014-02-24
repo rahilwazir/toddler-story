@@ -55,7 +55,8 @@ class ParentModule
 
             Error::set_error(self::USER_ERROR_CODE, 'fname', ($rd['fname'] === '') ? __('Required.') : '');
             Error::set_error(self::USER_ERROR_CODE, 'lname', ($rd['lname'] === '') ? __('Required.') : '');
-            Error::set_error(self::USER_ERROR_CODE, 'email', ($rd['email'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'email', ($rd['email'] === '') ? __('Required.') :
+                ( (!is_email($rd['email']) ) ? 'Email is not valid' : ''));
                     
             Error::set_error(self::USER_ERROR_CODE, 'repass', (($rd['pass'] !== '' && $rd['repass'] === '') ? __('Required') :
                     (($rd['pass'] !== $rd['repass']) ? __('Password must match') : '')));

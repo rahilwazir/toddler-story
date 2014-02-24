@@ -42,7 +42,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
     content:'';
-    content:none;
 }
 a {
     margin:0;
@@ -476,8 +475,7 @@ input, select, textarea {
     padding: 20px 0 40px;
 }
 .blog_btn{
-    height: 35px;
-    width: 80px;
+    padding: 8px 10px;
     border:1px solid #D4D4D6;
     border-bottom:2px solid #D4D4D6;
     border-radius:3px;
@@ -533,11 +531,16 @@ input, select, textarea {
     font-weight: bold;
 }
 
-.blog_details p {
-    padding: 9px 0 0;
+.blog_details p.post-content {
+    padding: 9px 0;
 }
-.blog_details > h1 {
+h1 a {
     font-size: 18px;
+    text-decoration: none;
+    color: #76767a;
+}
+h1 a:hover {
+    text-decoration: underline;
 }
 .no-bordrad {
     border-radius: 0;
@@ -577,4 +580,18 @@ small {
 }
 .tab_content table tr td {
     text-align: center;
+}
+.comment-box {
+    background: #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+.comment-box textarea {
+    margin-bottom: 10px;
+    width: 100%;
+}
+.comment-box input {
+    float: right;
 }
