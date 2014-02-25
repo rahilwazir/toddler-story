@@ -657,8 +657,6 @@ var Toddler = (function() {
                                 });
 
                                 if (result.commentTotal >= 0) $('.comment-count').text(result.commentTotal);
-
-                                if (result.commentTotal == 0) $('.comments-list').html('<h3 id="no-comments-yet">No comments yet.</h3>');
                             }
                         },
                         completeCallback: function() {
