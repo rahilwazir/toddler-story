@@ -631,8 +631,6 @@ var Toddler = (function() {
                 $(this).find('.remove-comment').addClass('disable');
             });
 
-            var _comment_id = 0;
-
             $(document).on('click', '.remove-comment', function() {
                 var _comment_id = Math.abs($(this).parents('.single-comment').attr('data-comment-id')),
                     _elem_parent = $(this).parents('.single-comment[data-comment-id="' + _comment_id + '"]'),
