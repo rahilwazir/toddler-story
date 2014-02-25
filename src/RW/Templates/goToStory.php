@@ -44,9 +44,10 @@
                                                 if ( !empty($comments) ) {
                                                     foreach ($comments as $comment) {
                                             ?>
-                                                <article class="single-comment comment-input" data-comment-id="<?php echo $comment->comment_ID; ?>">
+                                                <article class="single-comment removal-input specific-loader comment-input" data-comment-id="<?php echo $comment->comment_ID; ?>">
                                                     <span class="comment-meta">Commented by: <?php echo $comment->comment_author; ?>, <?php echo $comment->comment_date; ?></span>
                                                     <div class="comment-content"><?php echo $comment->comment_content; ?></div>
+                                                    <div class="remove-comment remove-icon disable" data-action='{"action" : "delete_comment", "id" : <?php echo $comment->comment_ID; ?>}'>Remove Comment</div>
                                                 </article>
                                             <?php   }
                                                 } else {

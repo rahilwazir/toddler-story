@@ -105,7 +105,7 @@
         <input type="file" name="baby_img" id="baby_img" class="disable" />
         <div id="preview-image" class="clearfix">
             <?php echo $array_builder['thumbnail']; ?>
-            <span class="remove disable"></span>
+            <span class="remove remove-icon disable"></span>
         </div>
         <label for="baby_img" class="submit-button clearfix">Upload a Child photo</label>
     </section>

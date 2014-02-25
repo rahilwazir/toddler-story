@@ -18,7 +18,7 @@
                             $chmng_dp = get_bloginfo('template_url') . '/images/avatar.png';
                         }
                         ?>
-                        <span class="remove disable"></span>
+                        <span class="remove-icon remove disable"></span>
                         <img src="<?php echo $chmng_dp; ?>"/>
                     </div>
                     <input type="file" name="user_profile_pic" class="disable" id="user_profile_pic">

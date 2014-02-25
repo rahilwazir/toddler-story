@@ -587,3 +587,38 @@ function trimIt($content, $start = 0, $end = 100, $cStr = '...')
 {
     return substr($content, $start, $end) . $cStr;
 }
+
+/**
+ * Count post comment
+ * @param int $id
+ * @return int Comment ID otherwise 0
+ */
+function countComment($id = 0)
+{
+    $comments_count = wp_count_comments($id);
+    if ( $comments_count->approved > 0 ) {
+        return $comments_count->approved;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * Set session for Wordpress.
+ * @param string $key
+ * @param string $value
+ */
+function setSession($key, $value)
+{
+    $_SESSION[$key] = $value;
+}
+
+/**
+ * Retrieve session for Wordpress
+ * @param string $key
+ * @return mixed
+ */
+function getSession($key)
+{
+    return $_SESSION[$key];
+}

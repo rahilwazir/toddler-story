@@ -23,6 +23,7 @@ add_filter('wp_mail_content_type', function () {
  * @return void
  */
 add_action('wp_logout', function () {
+    session_destroy();
     wp_redirect(get_permalink_by_slug( 'login' ));
     exit;
 });
@@ -117,3 +118,12 @@ add_action('rcp_after_password_registration_field', function () {
 add_action('rcp_form_processing', function ($global_post, $user_id, $price) {
     update_user_meta($user_id, 'user_default_lang', sanitize_text_field($_POST['reg_lang']));
 }, 10, 3);
+
+/**
+ * Initialize the session
+ */
+add_action( 'init', function() {
+    if ( ! session_id() && is_user_logged_in() ) {
+        session_start();
+    }
+});

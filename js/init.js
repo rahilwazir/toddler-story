@@ -87,21 +87,25 @@ var RW_Utils = {
     loaderElem: null,
 
     initLoader: function(elem) {
-        if ( this.loaderElem === null ) {
+        if ( this.loaderElem === null && elem ) {
             this.loaderElem = elem;
+            this.loaderElem.prepend('<div class="process-loading"></div>');
         }
-        this.loaderElem.prepend('<div class="process-loading"></div>');
     },
 
     removeLoader: function() {
-        this.loaderElem.find('.process-loading').remove();
-        this.loaderElem = null;
+        if ( this.loaderElem !== null ) {
+            this.loaderElem.find('.process-loading').remove();
+            this.loaderElem = null;
+        }
     }
 
 };
 
 var Toddler = (function() {
     return {
+        currentTab: null,
+
         init: function() {
             var self = this;
 
@@ -150,6 +154,8 @@ var Toddler = (function() {
                             RW_Utils.initLoader(this.loader);
                         },
                         successCallback: function(responseText) {
+                            RW_Utils.removeLoader();
+
                             var result = JSON.parse(responseText), resulted_errors = result.errors, my_array = {}, count_array_length, obj_keys;
 
                             _.each(resulted_errors, function(value, index) {
@@ -227,6 +233,7 @@ var Toddler = (function() {
                             });
                         });
                     } else {
+                        // comment adder
                         if ( $(this).hasClass('specific') ) {
                             var $elem = $(this);
 
@@ -237,7 +244,7 @@ var Toddler = (function() {
                             ajaxifying_data.dataSet = JSON.parse(ajaxifying_data.dataSet);
 
                             _.each(extraData, function(value, index) {
-                                ajaxifying_data.dataSet[index] = value;
+                                ajaxifying_data.dataSet[index] = $.trim(value);
                             });
 
                             ajaxifying_data.dataSet = JSON.stringify(ajaxifying_data.dataSet);
@@ -308,7 +315,7 @@ var Toddler = (function() {
                 },
 
                 beforeCallback: function() {
-                    RW_Utils.initLoader(obj.loader || Defaults.loader);
+                    RW_Utils.initLoader(obj.loader);
                     $('#form-section').empty().removeClass('nothing-cool');
                 },
                 successCallback: function(data) {
@@ -326,6 +333,8 @@ var Toddler = (function() {
                     self.datePicker();
                 }
             };
+
+            obj.loader = (obj.loader || Defaults.loader);
 
             obj.data.action = obj.data.action || 'hash_load';
 
@@ -397,7 +406,6 @@ var Toddler = (function() {
                 } else if ( $(this).parents('#value_R')[0] ) {
                     $('.simplemodal-close').trigger('click');
                     $('a[data-load-popup="value"]').trigger('click');
-                    console.log('q123');
                 }
             });
 
@@ -554,6 +562,8 @@ var Toddler = (function() {
             $(document).on('click', '.tabs > .submit-button', function(e) {
                 e.preventDefault();
 
+                self.currentTab = $(this).val();
+
                 var currentIndex = $(this).index();
 
                 $(this).parents('.tabs').find(' > .submit-button.active').removeClass('active');
@@ -562,7 +572,18 @@ var Toddler = (function() {
                 $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content').removeClass('enable');
                 $(this).parents('.tab_action').next('.middle_hash_content').find(' > .tab_content:eq(' + currentIndex + ')').addClass('enable');
 
-                self.changeMainTitle( $(this).val() );
+                self.currentTab = $(this).val();
+
+                if (self.currentTab === 'Blog') {
+                    $('.blog-list .blog_post').each(function () {
+                        var originalContent = $('.post-content').text(),
+                            trimmedContent = originalContent.substring(0, 100);
+
+                        $('.post-content').text(trimmedContent);
+
+                    })
+                }
+
             });
         },
 
@@ -590,6 +611,8 @@ var Toddler = (function() {
         },
 
         blogUtils: function() {
+            var self = this;
+
             $(document).on('click', '.read-blog', function(e) {
                 e.preventDefault();
 
@@ -598,8 +621,51 @@ var Toddler = (function() {
                     blogValueOfArticle = Math.abs( parentArticle.attr('data-id') );
 
                 if (blogValue === blogValueOfArticle) {
-                    parentArticle.find('.disable').removeClass('disable');
+                    parentArticle.find('.comment-box.disable').removeClass('disable').addClass('enable');
                 }
+            });
+
+            $(document).on('mouseenter', '.removal-input', function() {
+                $(this).find('.remove-comment').removeClass('disable');
+            }).on('mouseleave', '.removal-input', function() {
+                $(this).find('.remove-comment').addClass('disable');
+            });
+
+            var _comment_id = 0;
+
+            $(document).on('click', '.remove-comment', function() {
+                var _comment_id = Math.abs($(this).parents('.single-comment').attr('data-comment-id')),
+                    _elem_parent = $(this).parents('.single-comment[data-comment-id="' + _comment_id + '"]'),
+                    data_action = $(this).attr('data-action'),
+                    ajaxifying_data = {
+                        hashTag: sessionStorage.getItem('current_hash'),
+                        dataSet: (_.isJSON(data_action)) ? data_action : ''
+                    };
+
+                RW_Utils.confirm('Delete this comment?', function() {
+                    self.ajaxifying({
+                        loader: $(this).parents('.specific-loader'),
+                        data: ajaxifying_data,
+                        beforeCallback: function() {
+                            RW_Utils.initLoader( this.loader );
+                        },
+                        successCallback: function(data) {
+                            var result = JSON.parse(data);
+                            if (result.deleted) {
+                                _elem_parent.addClass('removing').fadeOut(700, function() {
+                                    _elem_parent.remove();
+                                });
+
+                                if (result.commentTotal >= 0) $('.comment-count').text(result.commentTotal);
+
+                                if (result.commentTotal == 0) $('.comments-list').html('<h3 id="no-comments-yet">No comments yet.</h3>');
+                            }
+                        },
+                        completeCallback: function() {
+                            RW_Utils.initLoader( this.loader );
+                        }
+                    });
+                });
             });
         }
     };
