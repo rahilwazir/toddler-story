@@ -90,9 +90,12 @@ class HashTagContent
     
     public static function childmanagement()
     {
+        global $hashtags;
+
         createHiddenTitle( 'My Children Management' );
 
         $data['postType'] = Children::$post_type;
+        $data['hashtags'] = $hashtags;
 
         Template::load('childManagement', $data);
 

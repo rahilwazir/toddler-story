@@ -14,7 +14,7 @@ class InnerHashTagContent extends HashTagContent
 
     public static function goToStory(array $data)
     {
-        if ( (string) __FUNCTION__ === (string) $data['action']) {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::exists($data['id']) ) {
 
                 Child::getCurrent( $data['id'] );
@@ -26,14 +26,14 @@ class InnerHashTagContent extends HashTagContent
 
                 createHiddenTitle( Child::fullName(), 'Gallery' );
 
-                Template::load($data['action'], $data);
+                Template::load($data['hashTag'], $data);
             }
         }
     }
 
     public static function editInfo(array $data)
     {
-        if ( (string) __FUNCTION__ === (string) $data['action']) {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::exists($data['id']) ) {
                 self::create(true, $data['id']);
             }
@@ -42,7 +42,7 @@ class InnerHashTagContent extends HashTagContent
 
     public static function deleteChild(array $data)
     {
-        if ( (string) __FUNCTION__ === (string) $data['action']) {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::exists($data['id']) ) {
                 if (wp_trash_post($data['id'])) {
                     echo json_encode(array('status' => 'Child deleted successfully.'));
@@ -53,7 +53,7 @@ class InnerHashTagContent extends HashTagContent
 
     public static function addComment(array $data)
     {
-        if ( (string) __FUNCTION__ === (string) $data['action']) {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
 
             Comments::add($data);
             $_comment_id = Comments::$lastInsertedCommentID;
@@ -66,7 +66,7 @@ class InnerHashTagContent extends HashTagContent
 
     public static function deleteComment(array $data)
     {
-        if ( (string) __FUNCTION__ === (string) $data['action']) {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             $total_comment = Comments::delete( $data['id'] );
 
             if ( $total_comment ) {

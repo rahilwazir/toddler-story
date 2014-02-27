@@ -15,25 +15,30 @@ class HashTagLoader
 
         self::$action = $action;
         add_action('wp_ajax_' . self::$action, array(__CLASS__, __METHOD__));
-        $hash_tag = filter_input(0, 'hashTag');
 
-        //If there is any data
-        if ( filter_input(0, 'dataSet') ) {
-            $full_data = json_decode(filter_input(0, 'dataSet'), TRUE);
+        $hash_tag = sanitize_text_field(filter_input(0, 'hashTag'));
+
+        //If there is dataID
+        if ( filter_input(0, 'id') ) {
+
+            $full_data = $_POST;
 
             foreach ($full_data as $key => $value) {
-                if ($key === 'action') $full_data['action'] = convert_to_cc($value); break;
+                $full_data[$key] = sanitize_text_field($value);
             }
 
-            $inner_action = $full_data['action'];
+            $inner_action = $full_data['hashTag'];
             if (method_exists(__NAMESPACE__ . '\InnerHashTagContent', $inner_action)) {
                 InnerHashTagContent::$inner_action($full_data);
             }
             exit;
-        }
 
-        if (in_array($hash_tag, $hashtags)) {
-            HashTagContent::$hash_tag();
+        } else {
+
+            if (in_array($hash_tag, $hashtags)) {
+                HashTagContent::$hash_tag();
+            }
+
         }
 
         exit;

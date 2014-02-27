@@ -14,9 +14,23 @@ _.mixin({
 var $ = jQuery;
 
 var RW_Utils = {
-    getHash: function() {
-        return location.hash.replace(/[^\w]/g, '');
+    getHash: function(str) {
+        var hashURI = (str || location.hash.split('#/')[1]),
+            expectString = hashURI.replace(/[^\w]/g, ''),
+            expectNumeric = hashURI.match(/([^\W]+)-(\d+$)/);
+
+        if ( expectNumeric && expectNumeric[1] && expectNumeric[2] ) {
+            return {
+                hashTag: expectNumeric[1],
+                id: expectNumeric[2]
+            };
+        }
+
+        return {
+            hashTag: expectString
+        };
     },
+
     navigateTo: function(_index) {
         $(document).find('a.ajaxify').attr('href', function(index, attr) {
             if (attr.indexOf(Toddler_Conf.link_pages[_index]) !== -1) {
@@ -27,6 +41,7 @@ var RW_Utils = {
             }
         });
     },
+
     confirm: function(message, callback) {
         $('#confirm').modal({
             closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -188,35 +203,26 @@ var Toddler = (function() {
                     });
                 });
 
-                var hashTag = '', ajaxifying_data = {hashTag: RW_Utils.getHash()}, data_action;
+                var hashTag = '', ajaxifying_data = (RW_Utils.getHash() || {}), data_action;
 
-                $(document).on('click', 'a.ajaxify, button.ajaxify, input.ajaxify[type="button"]', function(e) {
-                    if ($(e.target).is('a.ajaxify') || $(e.target).parent().is('a.ajaxify')) {
-                        hashTag = $(this).attr('href').replace(/[^\w]/g, '');
+                $(document).on('click', 'a.ajaxify, input.ajaxify', function(e) {
+                    var hashTag = null, dataSet = null,
+                        expect = $(this).attr('href'),
+                        hashObj = RW_Utils.getHash(expect);
 
-                        if (sessionStorage.getItem('current_hash') !== hashTag) {
-                            sessionStorage.setItem('current_hash', hashTag);
-                        }
+                        ajaxifying_data = hashObj;
 
-                        ajaxifying_data = {
-                            hashTag: hashTag
-                        }
-
-                    } else if ($(e.target).is('button.ajaxify') || $(e.target).is('input.ajaxify[type="button"]')) {
-
-                        hashTag = sessionStorage.getItem('current_hash');
-                        data_action = $(this).attr('data-action');
-
-                        ajaxifying_data = {
-                            hashTag: hashTag,
-                            dataSet: (_.isJSON(data_action)) ? data_action : ''
-                        }
+                    if (sessionStorage.getItem('current_hash') !== hashTag) {
+                        sessionStorage.setItem('current_hash', hashTag);
                     }
 
                     //if (RW_Utils.getHash() !== hashTag) {
                     if ($(e.target).is('input.ajaxify[name="delete_child"]')) {
                         var confirm_message = 'Please confirm you wish to delete this childprofile. As once its deleted you are not able to restore any information, pictures or videos linked to this profile.';
+
                         RW_Utils.confirm(confirm_message, function() {
+                            ajaxifying_data.hashTag = 'deleteChild';
+
                             self.ajaxifying({
                                 data: ajaxifying_data,
                                 beforeCallback: function() {
@@ -284,12 +290,12 @@ var Toddler = (function() {
                 });
 
                 if (location.hash !== "") {
-                    hashTag = RW_Utils.getHash();
-                    if (sessionStorage.getItem('current_hash') !== hashTag) {
-                        sessionStorage.setItem('current_hash', hashTag);
+
+                    if (sessionStorage.getItem('current_hash') !== RW_Utils.getHash()) {
+                        sessionStorage.setItem('current_hash', RW_Utils.getHash());
                     }
                     self.ajaxifying({
-                        data: ajaxifying_data
+                        data: RW_Utils.getHash()
                     });
                 }
             }
