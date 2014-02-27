@@ -206,6 +206,8 @@ var Toddler = (function() {
                 var hashTag = '', ajaxifying_data = (RW_Utils.getHash() || {}), data_action;
 
                 $(document).on('click', 'a.ajaxify, input.ajaxify', function(e) {
+                    if ( $(this).hasClass('block') ) e.preventDefault();
+
                     var hashTag = null, dataSet = null,
                         expect = $(this).attr('href'),
                         hashObj = RW_Utils.getHash(expect);
@@ -241,19 +243,11 @@ var Toddler = (function() {
                     } else {
                         // comment adder
                         if ( $(this).hasClass('specific') ) {
-                            var $elem = $(this);
+                            var $elem = $(this), expect = $(this).attr('href');
 
-                            var extraData = {
-                                commentContent: $(this).prev().val()
-                            };
+                            ajaxifying_data = RW_Utils.getHash(expect);
 
-                            ajaxifying_data.dataSet = JSON.parse(ajaxifying_data.dataSet);
-
-                            _.each(extraData, function(value, index) {
-                                ajaxifying_data.dataSet[index] = $.trim(value);
-                            });
-
-                            ajaxifying_data.dataSet = JSON.stringify(ajaxifying_data.dataSet);
+                            ajaxifying_data.commentContent= $(this).prev().val();
 
                             self.ajaxifying({
                                 loader: $(this).parents('.specific-loader'),
@@ -637,14 +631,13 @@ var Toddler = (function() {
                 $(this).find('.remove-comment').addClass('disable');
             });
 
-            $(document).on('click', '.remove-comment', function() {
+            $(document).on('click', '.remove-comment', function(e) {
+                if ( $(this).hasClass('block') ) e.preventDefault();
+
                 var _comment_id = Math.abs($(this).parents('.single-comment').attr('data-comment-id')),
                     _elem_parent = $(this).parents('.single-comment[data-comment-id="' + _comment_id + '"]'),
                     data_action = $(this).attr('data-action'),
-                    ajaxifying_data = {
-                        hashTag: sessionStorage.getItem('current_hash'),
-                        dataSet: (_.isJSON(data_action)) ? data_action : ''
-                    };
+                    ajaxifying_data = RW_Utils.getHash( $(this).attr('href') );
 
                 RW_Utils.confirm('Delete this comment?', function() {
                     self.ajaxifying({

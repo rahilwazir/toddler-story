@@ -20,7 +20,9 @@ define('HASHTAGS', serialize(array(
     4 => 'childmanagement',
     5 => 'userinfo',
     6 => 'goToStory',
-    7 => 'editInfo'
+    7 => 'editInfo',
+    8 => 'deleteComment',
+    9 => 'addComment'
 )));
 
 $hashtags = unserialize(HASHTAGS);

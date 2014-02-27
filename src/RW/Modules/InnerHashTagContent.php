@@ -17,6 +17,8 @@ class InnerHashTagContent extends HashTagContent
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::exists($data['id']) ) {
 
+                global $hashtags;
+
                 Child::getCurrent( $data['id'] );
 
                 setSession( '_goto_story_post_id', $data['id'] );
@@ -25,6 +27,8 @@ class InnerHashTagContent extends HashTagContent
                 $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
 
                 createHiddenTitle( Child::fullName(), 'Gallery' );
+
+                $data['hashtags'] = $hashtags;
 
                 Template::load($data['hashTag'], $data);
             }

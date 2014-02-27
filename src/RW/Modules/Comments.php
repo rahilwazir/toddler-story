@@ -91,11 +91,14 @@ class Comments
 
     public static function renderHTML($comment)
     {
+        global $hashtags;
+
         $output = '';
-        $output .= '<article class="single-comment removal-input specific-loader comment-input" data-comment-id="' . $comment->comment_ID .'">';
+
+        $output .= '<article class="single-comment block removal-input specific-loader comment-input" data-comment-id="' . $comment->comment_ID .'">';
         $output .= '<span class="comment-meta">Commented by: ' . $comment->comment_author . ', ' . $comment->comment_date . '</span>';
         $output .= '<div class="comment-content">' . $comment->comment_content . '</div>';
-        $output .= '<div class="remove-comment remove-icon disable" data-action=\'{"action" : "delete_comment", "id" : ' . $comment->comment_ID . '}\'>Remove Comment</div>';
+        $output .= '<a href="#/' . $hashtags[8] . '-' . $comment->comment_ID.'" class="block remove-comment remove-icon disable">Remove Comment</a>';
         $output .= '</article>';
 
         return $output;

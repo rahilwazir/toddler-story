@@ -484,6 +484,7 @@ input, select, textarea {
     background:#fff;
     color: #6D6D6D;
     cursor:pointer;
+    text-decoration: none;
 }
 .blog_user h1{
     float:left;
@@ -596,9 +597,6 @@ small {
 .comment-input textarea {
     margin-bottom: 10px;
     display: block;
-}
-.comment-input input {
-    float: right;
 }
 .specific-loader {
     position: relative;

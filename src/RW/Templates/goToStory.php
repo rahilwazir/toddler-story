@@ -36,7 +36,7 @@
                                     <section class="comment-box disable">
                                         <div class="comment-input clearfix specific-loader">
                                             <textarea name="comment-content" rows="7" cols="30" required=""></textarea>
-                                            <input type="button" class="blog_btn ajaxify clearfix specific" value="Add Comment" data-action='{"action" : "add_comment", "id" : <?php echo $_post->ID; ?>}'>
+                                            <a href="#/<?php echo $hashtags[9] . '-' . $_post->ID; ?>" class="blog_btn fright ajaxify clearfix specific block">Add Comment</a>
                                         </div>
                                         <?php $comments = get_comments($_post->ID); ?>
                                         <section class="comments-list clearfix">
@@ -47,7 +47,7 @@
                                                 <article class="single-comment removal-input specific-loader comment-input" data-comment-id="<?php echo $comment->comment_ID; ?>">
                                                     <span class="comment-meta">Commented by: <?php echo $comment->comment_author; ?>, <?php echo $comment->comment_date; ?></span>
                                                     <div class="comment-content"><?php echo $comment->comment_content; ?></div>
-                                                    <div class="remove-comment remove-icon disable" data-action='{"action" : "delete_comment", "id" : <?php echo $comment->comment_ID; ?>}'>Remove Comment</div>
+                                                    <a href="#/<?php echo $hashtags[8] . '-' . $comment->comment_ID; ?>" class="remove-comment block remove-icon disable">Remove Comment</a>
                                                 </article>
                                             <?php   }
                                                 } else {
