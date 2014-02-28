@@ -473,8 +473,8 @@ input, select, textarea {
     width: 100%;
 }
 .tab_action {
-    margin: 0 auto;
-    padding: 20px 0 40px;
+    margin: 20px 0;
+    width: 100%
 }
 .blog_btn{
     padding: 8px 10px;

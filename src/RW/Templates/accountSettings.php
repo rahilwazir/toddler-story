@@ -1,5 +1,5 @@
 <section id="form-top-puts" class="clearfix">
-    <section class="tab_action">
+    <section class="tab_action clearfix">
         <div class="tabs">
             <input type="button" class="submit-button no-bordrad active" value="Edit Info"/>
             <input type="button" class="submit-button no-bordrad" value="Subscription"/>
