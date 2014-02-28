@@ -859,7 +859,6 @@ a.logo {
     line-height: 40px;
     font-size: 16px;
     color: #585858;
-    text-transform: uppercase;
     font-family: 'splektaRegular';
     list-style: none;
     float: left;
@@ -1084,16 +1083,6 @@ a.join {
     transition: all 0.6s ease-out;
 
 }
-
-.forum:hover {
-    margin-top: -20px;
-    margin-bottom: 0px;
-}
-
-.home_content .four_box .forum:hover {
-
-}
-
 .home_content .four_box .forum .img_sec {
     height: 106px;
 }

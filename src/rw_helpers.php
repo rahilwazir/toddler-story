@@ -526,12 +526,12 @@ function qtrans_language_dropdown($params = array())
     $atts .= ' class="' . (( $class ) ? $class : 'lang_selector') . '" ';
     $atts .= ' name="' . (( $name ) ? $name : 'reg_lang') . '" ';
     
-    $selected = ($selected) ? $selected : qtrans_getLanguage();
+    $selected = ($selected) ? $selected : rw_qtrans_getLanguage();
     
     if ( qtrans_getAvailableLanguages(',') ) :
         $output = '<' . $selector . $atts . '>';
             foreach ( qtrans_getAvailableLanguages(',') as $lang ) :
-                
+
                 if ( $selector === 'select' ) {
                     $active = selected($selected, $lang, false);
                     $value = 'value="' . $lang . '"';
@@ -539,12 +539,12 @@ function qtrans_language_dropdown($params = array())
                     $active = active_class($lang, $selected, false);
                     $value = 'data-lang-value="' . $lang . '"';
                 }
-                
+
                 $output .= '<' . $selectorChild . ' ' . $value . ' ' . $active . '>' . qtrans_getLanguageName($lang) . '</' . $selectorChild . '>';
             endforeach;
         $output .= '</'.$selector.'>';
     endif;
-    
+
     return $output;
 }
 
@@ -565,7 +565,7 @@ function generate_language_dropdown($params = array())
 
     echo qtrans_language_dropdown(array (
         'class' => 'lang_selector',
-        'selected' => qtrans_getLanguage()
+        'selected' => rw_qtrans_getLanguage()
     ));
 }
 
@@ -634,4 +634,14 @@ function arrayContainNeedle($needle, $array)
     return array_keys(array_filter($array, function($var) use ($needle){
         if ( !empty($needle) ) return (strpos($var, $needle) !== false) ? true : false;
     }));
+}
+
+function rw_qtrans_getLanguage()
+{
+    return (function_exists('qtrans_getLanguage')) ? qtrans_getLanguage() : '';
+}
+
+function rw_qtrans_getLanguageName()
+{
+    return (function_exists('qtrans_getLanguageName')) ? qtrans_getLanguageName() : '';
 }

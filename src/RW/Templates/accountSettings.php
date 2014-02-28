@@ -5,9 +5,9 @@
             <input type="button" class="submit-button no-bordrad" value="Subscription"/>
             <input type="button" class="submit-button no-bordrad" value="Message"/>
         </div>
-        <?php echo do_shortcode('[fib appid="191514454376991" text="Invite Facebook friends" align="right"]'); ?>
+        <?php echo do_shortcode('[fib appid="'.get_option('jfb_api_key').'" text="Invite Facebook friends" align="right"]'); ?>
     </section>
-    <section class="middle_hash_content clearfix">
+    <section class="middle_hash_content">
         <section class="tab_content enable">
             <form method="post" name="update_user">
                 <input type="hidden" name="rw_nonce" value="<?php echo wp_create_nonce('update_user'); ?>">
@@ -82,7 +82,7 @@
             </form>
         </section>
         <section class="tab_content">
-            <section class="tab_action">
+            <section class="tab_action clearfix">
                 <div class="tabs">
                     <input type="button" value="Subscription" class="submit-button small no-bordrad active">
                     <input type="button" value="Payments" class="submit-button small no-bordrad">

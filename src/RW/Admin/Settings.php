@@ -144,8 +144,8 @@ class Settings
             'parentAdminPage'   => (is_admin_pages()) ? 'true' : 'false',
             'link_pages'        => $hashtags,
             'defaultLanguage'  => array (
-                'langCode' => qtrans_getLanguage(),
-                'langName' => qtrans_getLanguageName( qtrans_getLanguage() ) 
+                'langCode' => rw_qtrans_getLanguage(),
+                'langName' => rw_qtrans_getLanguageName()
             ),
         );
 
