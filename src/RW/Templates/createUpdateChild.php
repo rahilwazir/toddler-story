@@ -121,7 +121,7 @@
 
     <section id="form_action_buttons" class="clearfix">
         <div class="fright">
-            <input type="button" name="cancel" class="submit-button cancel-btn ajaxify" value="Cancel" />
+            <input type="button" name="cancel" class="submit-button cancel-btn" value="Cancel" />
             <?php
             if ($update) {
                 echo '<input type="button" value="Delete Child" data-action=\'{"action" : "delete_child", "id" : '.$post->ID.'}\' class="ajaxify submit-button danger" name="delete_child">';

@@ -20,7 +20,7 @@
         <!--[if lt IE 9]>
         <script src="<?php echo get_template_directory_uri(); ?>/js/html5.js"></script>
         <![endif]-->
-        <?php wp_head(); ?>
+        <?php wp_head(); global $hashtags; ?>
     </head>
     <body <?php body_class(); ?> id="user-profile">      
         <header id="header">
@@ -30,10 +30,10 @@
                         <img src="<?php echo bloginfo('template_url'); ?>/images/logo_parent_admin.png">
                     </a>
                     <nav class="fright" id="parent_main_links">
-                        <a href="#/create" class="ajaxify">Create Child Profile</a>
-                        <a href="#/lifestory" class="ajaxify">Life Story</a>
-                        <a href="#/relation" class="ajaxify">My Relationship</a>
-                        <a href="#/babybook" class="ajaxify">Baby Book</a>
+                        <a href="<?php echo $hashtags[0]; ?>">Create Child Profile</a>
+                        <a href="<?php echo $hashtags[1]; ?>">Life Story</a>
+                        <a href="<?php echo $hashtags[2]; ?>">My Relationship</a>
+                        <a href="<?php echo $hashtags[3]; ?>">Baby Book</a>
                         <a href="<?php echo wp_logout_url(); ?>">Logout</a>
                     </nav>
                 </div>
@@ -42,13 +42,13 @@
         <section id="secondary_menu">
             <section class="container">
                 <nav id="secondary_menu_links">
-                    <a href="#/childmanagement" class="ajaxify">
+                    <a href="<?php echo $hashtags[4]; ?>">
                         <span id="child_mng">My Children Management</span>
                     </a>
-                    <a href="#/userinfo" class="ajaxify">
-                        <span id="user_info">User Information</span>
+                    <a href="<?php echo $hashtags[5]; ?>">
+                        <span id="user_info">Account Settings</span>
                     </a>
-                    <a href="#/sharing" class="ajaxify">
+                    <a href="<?php echo $hashtags[10]; ?>">
                         <span id="user_sharing">Sharing</span>
                     </a>
                 </nav>
@@ -58,7 +58,7 @@
             <section class="container">
                 <div class="wrap_simple">
                     <h1 class="fleft">Welcome! Create Your First child's Story.</h1>
-                    <a href="#/create" class="ajaxify fright make-me-button">Add Child</a>
+                    <a href="<?php echo $hashtags[0]; ?>" class="ajaxify fright make-me-button">Add Child</a>
                 </div>
             </section>
         </section>

@@ -78,7 +78,6 @@ if ( is_user_logged_in() ) {
     /**
      * Remove facebook for signup
      */
-    remove_action('wp_footer', 'jfb_output_facebook_init');
     remove_action('wp_footer', 'jfb_output_facebook_callback');
     remove_action('wp_footer', 'jfb_output_facebook_init');
 }

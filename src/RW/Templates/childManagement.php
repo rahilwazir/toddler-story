@@ -19,9 +19,9 @@
                     <p><?php echo $child->age; ?></p>
                     <p><?php echo $child->permalink; ?></p>
                     <br clear="all">
-                    <a href="#/<?php echo $hashtags[6] . '-' . $child->ID; ?>" class="classic-btn ajaxify">Go to story</a>
+                    <a href="<?php echo $hashtags[6] . '-' . $child->ID; ?>" class="classic-btn ajaxify">Go to story</a>
                 </div>
-                <a href="#/<?php echo $hashtags[7] . '-' . $child->ID; ?>" class="downtown classic-btn ajaxify">Edit Information</a>
+                <a href="<?php echo $hashtags[7] . '-' . $child->ID; ?>" class="downtown classic-btn ajaxify">Edit Information</a>
             </li>
         <?php
         endforeach;

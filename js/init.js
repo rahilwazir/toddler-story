@@ -14,32 +14,37 @@ _.mixin({
 var $ = jQuery;
 
 var RW_Utils = {
+
+    hashString: Toddler_Conf.link_pages[4],
+
     getHash: function(str) {
-        var hashURI = (str || location.hash.split('#/')[1]),
+        var hashURI = (str || location.hash.split('#')[1] || ''),
             expectString = hashURI.replace(/[^\w]/g, ''),
             expectNumeric = hashURI.match(/([^\W]+)-(\d+$)/);
 
         if ( expectNumeric && expectNumeric[1] && expectNumeric[2] ) {
+
+            this.hashString = expectNumeric[1];
+
             return {
                 hashTag: expectNumeric[1],
                 id: expectNumeric[2]
             };
         }
 
-        return {
-            hashTag: expectString
-        };
+        if ( expectString && expectString !== '' ) {
+            this.hashString = expectString;
+
+            return {
+                hashTag: expectString
+            };
+        }
+
+        return false;
     },
 
     navigateTo: function(_index) {
-        $(document).find('a.ajaxify').attr('href', function(index, attr) {
-            if (attr.indexOf(Toddler_Conf.link_pages[_index]) !== -1) {
-                var _self = $(this);
-                setTimeout(function() {
-                    _self.trigger('click');
-                }, 400);
-            }
-        });
+        location.hash = Toddler_Conf.link_pages[_index];
     },
 
     confirm: function(message, callback) {
@@ -122,7 +127,10 @@ var Toddler = (function() {
         currentTab: null,
 
         init: function() {
+
             var self = this;
+
+            this.preventPound();
 
             // remove empty <p></p> tags
             $('p:empty').remove();
@@ -203,22 +211,11 @@ var Toddler = (function() {
                     });
                 });
 
-                var hashTag = '', ajaxifying_data = (RW_Utils.getHash() || {}), data_action;
+                var hashTag = '', ajaxifying_data = (RW_Utils.getHash() || {});
 
-                $(document).on('click', 'a.ajaxify, input.ajaxify', function(e) {
+                $(document).on('click', 'input.ajaxify', function(e) {
                     if ( $(this).hasClass('block') ) e.preventDefault();
 
-                    var hashTag = null, dataSet = null,
-                        expect = $(this).attr('href'),
-                        hashObj = RW_Utils.getHash(expect);
-
-                        ajaxifying_data = hashObj;
-
-                    if (sessionStorage.getItem('current_hash') !== hashTag) {
-                        sessionStorage.setItem('current_hash', hashTag);
-                    }
-
-                    //if (RW_Utils.getHash() !== hashTag) {
                     if ($(e.target).is('input.ajaxify[name="delete_child"]')) {
                         var confirm_message = 'Please confirm you wish to delete this childprofile. As once its deleted you are not able to restore any information, pictures or videos linked to this profile.';
 
@@ -271,27 +268,28 @@ var Toddler = (function() {
                             });
                         }
                     }
-                    //}
+                });
 
-                    if ($(e.target).is('input[name="cancel"]')) {
+                $(document).on('click', 'input[name="cancel"]', function(){
+                    RW_Utils.navigateTo(4);
+                })
+
+                $(window).hashchange( function(){
+                    if (sessionStorage.getItem('current_hash') !== RW_Utils.hashString) {
+                        sessionStorage.setItem('current_hash', RW_Utils.hashString);
+                    }
+
+                    var windowHash = RW_Utils.getHash();
+
+                    if ( windowHash ) {
                         self.ajaxifying({
-                            data: {
-                                hashTag: sessionStorage.getItem('current_hash')
-                            }
+                            data: RW_Utils.getHash()
                         });
                     }
 
                 });
 
-                if (location.hash !== "") {
-
-                    if (sessionStorage.getItem('current_hash') !== RW_Utils.getHash()) {
-                        sessionStorage.setItem('current_hash', RW_Utils.getHash());
-                    }
-                    self.ajaxifying({
-                        data: RW_Utils.getHash()
-                    });
-                }
+                $(window).hashchange();
             }
 
             if (Toddler_Conf.is_user_logged_in === "false") {
@@ -300,6 +298,13 @@ var Toddler = (function() {
 
             this.tabSwitcher();
         },
+
+        preventPound: function() {
+            $(document).on('click', 'a[href="#"]', function(e) {
+                e.preventDefault();
+            });
+        },
+
         ajaxifying: function(obj) {
             var self = this;
 

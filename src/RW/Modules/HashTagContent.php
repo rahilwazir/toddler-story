@@ -73,7 +73,7 @@ class HashTagContent
         wp_reset_postdata();
     }
     
-    public static function lifestory()
+    public static function lifeStory()
     {
 
     }
@@ -83,12 +83,12 @@ class HashTagContent
 
     }
     
-    public static function babybook()
+    public static function babyBook()
     {
 
     }
     
-    public static function childmanagement()
+    public static function childManagement()
     {
         global $hashtags;
 
@@ -101,10 +101,15 @@ class HashTagContent
 
     }
 
-    public static function userinfo()
+    public static function accountSettings()
     {
         createHiddenTitle( 'User Account Setting' );
 
-        Template::load('userInfo');
+        Template::load('accountSettings');
+    }
+
+    public static function sharing()
+    {
+        //
     }
 }

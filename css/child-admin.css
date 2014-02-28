@@ -618,3 +618,9 @@ small {
     background-color: #FF0000;
     color: #FFFFFF;
 }
+.tab_action .tabs {
+    float: left;
+}
+#fib-container {
+    float: right;
+}

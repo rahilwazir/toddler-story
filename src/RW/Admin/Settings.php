@@ -174,7 +174,11 @@ class Settings
             wp_enqueue_style('confirm', get_template_directory_uri() . '/css/lib/confirm.css');
             wp_enqueue_style('child-admin', get_template_directory_uri() . '/css/child-admin.css');
             wp_enqueue_style('jquery-ui-css', ADMIN_URI . '/css/jquery-ui.css');
-            
+
+            wp_enqueue_script('jquery-hashchange-js', get_template_directory_uri() . '/js/lib/jquery.hashchange.js', array('jquery'), '', true);
+
+            wp_enqueue_script('fb-inviter', '//connect.facebook.net/en_US/all.js', array('jquery'), '', true);
+
             /**
              * Removing woocommerce scripts/styles enqueue
              */
@@ -191,9 +195,6 @@ class Settings
              * Remove social sharing script
              */
             wp_dequeue_script('mr_social_sharing');
-            
-            // wp_enqueue_script('history-jquery', get_template_directory_uri() . '/js/lib/history.adapter.jquery.js', array('jquery'), '', true);
-            // wp_enqueue_script('history-js', get_template_directory_uri() . '/js/lib/history.js', array('jquery'), '', true);
         }
 
         if (Child::page()) {
@@ -211,7 +212,7 @@ class Settings
     }
 
     /**
-     * Back end view load scripts and styles
+     * Admin load scripts and styles
      */
     public function admin_scripts_styles($hook)
     {
@@ -331,7 +332,6 @@ class Settings
                 }
 
                 $final_result['success'] = 'You have been registered successfully. You have recieved an email.';
-//                $final_result['debug'] = $_new_user_id;
             }
 
             if ($this->registered === true) {
@@ -391,7 +391,7 @@ class Settings
                 else :
                     $final_result['success'] = array(
                         'message'       => 'Logged in successfully. Please wait while you\'re being redirecting...',
-                        'redirect_to'   => in_array('parent', $user->roles) ? get_parent_admin_profile('#' . $hashtags[4]) : admin_url(),
+                        'redirect_to'   => in_array('parent', $user->roles) ? get_parent_admin_profile($hashtags[4]) : admin_url(),
                     );
                 endif;
             }

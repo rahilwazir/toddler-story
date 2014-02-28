@@ -12,17 +12,26 @@ define('RW_DIR', SRC_DIR . '/RW');
 define('ADMIN_DIR', RW_DIR . '/Admin');
 
 //HASHTAGS for dynamic contents
-define('HASHTAGS', serialize(array(
+define('URLHASH', '#/');
+
+$pagesConstants = array (
     0 => 'create',
-    1 => 'lifestory',
+    1 => 'lifeStory',
     2 => 'relation',
-    3 => 'babybook',
-    4 => 'childmanagement',
-    5 => 'userinfo',
+    3 => 'babyBook',
+    4 => 'childManagement',
+    5 => 'accountSettings',
     6 => 'goToStory',
     7 => 'editInfo',
     8 => 'deleteComment',
-    9 => 'addComment'
-)));
+    9 => 'addComment',
+    10 => 'sharing'
+);
+
+$pagesConstants = array_map(function($val) {
+    return URLHASH . $val;
+}, $pagesConstants);
+
+define('HASHTAGS', serialize($pagesConstants));
 
 $hashtags = unserialize(HASHTAGS);

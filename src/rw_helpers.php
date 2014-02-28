@@ -359,7 +359,7 @@ function get_parent_admin_profile($str = '')
     global $hashtags;
     
     if ( '' === $str ) {
-        $str = '#' . $hashtags[4];
+        $str = $hashtags[4];
     }
     
     return esc_url(get_permalink(351) . $str);
@@ -621,4 +621,17 @@ function setSession($key, $value)
 function getSession($key)
 {
     return $_SESSION[$key];
+}
+
+/**
+ * Search the needle in array (it also searches substrings in the array)
+ * @param string $needle
+ * @param array $array
+ * @return bool
+ */
+function arrayContainNeedle($needle, $array)
+{
+    return array_keys(array_filter($array, function($var) use ($needle){
+        if ( !empty($needle) ) return (strpos($var, $needle) !== false) ? true : false;
+    }));
 }

@@ -34,8 +34,7 @@ class HashTagLoader
             exit;
 
         } else {
-
-            if (in_array($hash_tag, $hashtags)) {
+            if (arrayContainNeedle($hash_tag, $hashtags)) {
                 HashTagContent::$hash_tag();
             }
 
