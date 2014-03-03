@@ -191,6 +191,7 @@ class Child extends ParentModule
 
     public static function setCurrent()
     {
+        global $post;
         $post = self::$global_post_id;
     }
 }

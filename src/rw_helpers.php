@@ -645,3 +645,38 @@ function rw_qtrans_getLanguageName()
 {
     return (function_exists('qtrans_getLanguageName')) ? qtrans_getLanguageName() : '';
 }
+
+function deepLinking($hashname)
+{
+    global $hashtags;
+    return  ( in_array($hashname, $hashtags) ) ? get_parent_admin_profile($hashtags) : get_parent_admin_profile();
+}
+
+/**
+ * Generate nonce
+ * @param string $token
+ * @param bool $params
+ * @return string
+ */
+function generateToken($token, $params = true)
+{
+    $output = '';
+
+    $output = wp_create_nonce($token);
+
+    if ($params)
+        $output = '?token=' . wp_create_nonce($token);
+
+    return $output;
+}
+
+/**
+ * Verify nonce
+ * @param string $token
+ * @param string $value
+ * @return bool
+ */
+function verifyToken($token, $value)
+{
+    return ( !wp_verify_nonce($token, $value) ) ? true : false;
+}

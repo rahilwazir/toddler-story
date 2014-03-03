@@ -12,25 +12,37 @@ use RW\Modules\Comments;
 class InnerHashTagContent extends HashTagContent
 {
 
+    private static function _load($template = '', $data = array())
+    {
+        global $hashtags;
+
+        $menus = Children::$lifeStoryMenu;
+
+        Child::getCurrent( $data['id'] );
+
+        setSession( '_goto_story_post_id', $data['id'] );
+
+        $data['tabMenus'] = $menus;
+        $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
+
+        createHiddenTitle( Child::fullName(), 'Gallery' );
+
+        $data['hashtags'] = $hashtags;
+
+        Template::load($data['hashTag'] . '.gts_header', $data);
+
+        Template::load($template);
+
+        Template::load($data['hashTag'] . '.gts_footer');
+    }
+
     public static function goToStory(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::exists($data['id']) ) {
+                $defaultHomePage = 'gallery';
 
-                global $hashtags;
-
-                Child::getCurrent( $data['id'] );
-
-                setSession( '_goto_story_post_id', $data['id'] );
-
-                $data['tabMenus'] = Children::$lifeStoryMenu; $i = 0;
-                $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
-
-                createHiddenTitle( Child::fullName(), 'Gallery' );
-
-                $data['hashtags'] = $hashtags;
-
-                Template::load($data['hashTag'], $data);
+                self::_load($data['hashTag'] . '.' . $defaultHomePage, $data);
             }
         }
     }

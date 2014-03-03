@@ -58,7 +58,7 @@
             <section class="container">
                 <div class="wrap_simple">
                     <h1 class="fleft">Welcome! Create Your First child's Story.</h1>
-                    <a href="<?php echo $hashtags[0]; ?>" class="ajaxify fright make-me-button">Add Child</a>
+                    <a href="<?php echo $hashtags[0]; ?>" class="fright make-me-button">Add Child</a>
                 </div>
             </section>
         </section>

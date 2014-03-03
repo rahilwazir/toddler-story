@@ -18,26 +18,30 @@ var RW_Utils = {
     hashString: Toddler_Conf.link_pages[4],
 
     getHash: function(str) {
-        var hashURI = (str || location.hash.split('#')[1] || ''),
+        var hashURI = (str || location.hash.split('#')[1] || this.hashString),
             expectString = hashURI.replace(/[^\w]/g, ''),
-            expectNumeric = hashURI.match(/([^\W]+)-(\d+$)/);
+            expectNumeric = hashURI.match(/([^\W]+)-(\d+)(?:\/?(?=([^\W]+)))?/), o = {};
 
         if ( expectNumeric && expectNumeric[1] && expectNumeric[2] ) {
 
             this.hashString = expectNumeric[1];
 
-            return {
-                hashTag: expectNumeric[1],
-                id: expectNumeric[2]
-            };
+            o.hashTag = expectNumeric[1];
+            o.id = expectNumeric[2];
+
+            if (expectNumeric[3]) {
+                o.deeplink = expectNumeric[3];
+            }
+
+            return o;
         }
 
         if ( expectString && expectString !== '' ) {
             this.hashString = expectString;
 
-            return {
-                hashTag: expectString
-            };
+            o.hashTag = expectString;
+
+            return o;
         }
 
         return false;
@@ -160,6 +164,8 @@ var Toddler = (function() {
                     data_set.append("hashTag", RW_Utils.getHash());
                     data_set.append("full_data", JSON.stringify($(this).serializeArray()));
 
+                    data_set.append('token', Toddler_Conf.token);
+
                     if ($(e.target).is('form[name="update_child"]') || $(e.target).is('form[name="add_child"]')) {
                         data_set.append("action", 'add_children');
                         data_set.append("baby_img", $(this).find('input[type="file"]')[0].files[0]);
@@ -213,7 +219,7 @@ var Toddler = (function() {
 
                 var hashTag = '', ajaxifying_data = (RW_Utils.getHash() || {});
 
-                $(document).on('click', 'input.ajaxify', function(e) {
+                $(document).on('click', '.ajaxify', function(e) {
                     if ( $(this).hasClass('block') ) e.preventDefault();
 
                     if ($(e.target).is('input.ajaxify[name="delete_child"]')) {
@@ -323,11 +329,13 @@ var Toddler = (function() {
                     RW_Utils.initLoader(obj.loader);
                     $('#form-section').empty().removeClass('nothing-cool');
                 },
+
                 successCallback: function(data) {
                     $('#form-section').html(data);
 
                     self.changeMainTitle();
                 },
+
                 completeCallback: function() {
                     RW_Utils.removeLoader();
 
@@ -342,6 +350,8 @@ var Toddler = (function() {
             obj.loader = (obj.loader || Defaults.loader);
 
             obj.data.action = obj.data.action || 'hash_load';
+
+            obj.data.token = Toddler_Conf.token;
 
             var all_setup = {
                 type: obj.req_method || Defaults.req_method,
@@ -565,7 +575,7 @@ var Toddler = (function() {
             var self = this;
 
             $(document).on('click', '.tabs > .submit-button', function(e) {
-                e.preventDefault();
+                if ( !$(this).hasClass('unblock') ) e.preventDefault();
 
                 self.currentTab = $(this).val();
 
@@ -594,10 +604,12 @@ var Toddler = (function() {
 
         changeMainTitle: function ( custom_default ) {
             var childName = $('#title_name').val(),
-                childDesc = $('#title_desc').val();
+                childDesc = $('#title_desc').val(),
+                finaltitle = childName + ( ( (custom_default || childDesc) ) ? ' ' + (custom_default || childDesc) : '');
 
             if ( childName ) {
-                $('.wrap_simple .fleft').text( childName + ( ( (custom_default || childDesc) ) ? ' ' + (custom_default || childDesc) : '') );
+                $('.wrap_simple .fleft').text(finaltitle);
+                document.title = finaltitle;
             }
         },
 
