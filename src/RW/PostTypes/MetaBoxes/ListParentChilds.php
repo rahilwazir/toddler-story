@@ -1,6 +1,7 @@
 <?php
 namespace RW\PostTypes\MetaBoxes;
 
+use RW\Modules\Child;
 use RW\PostTypes\Children;
 use RW\PostTypes\ChildBlog;
 
@@ -57,6 +58,7 @@ class ListParentChilds extends Children
 
                 $output .= '</select>';
                 echo $output;
+
             ?>
             <p class="description">Select the parent child to assign this blog post.</p>
         </div>

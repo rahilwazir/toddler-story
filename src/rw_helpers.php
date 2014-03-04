@@ -390,6 +390,7 @@ function convert_to_cc($str)
  * @param string $current
  * @param string $new_value
  * @param string $class_name
+ * @param bool $echo
  * @return string
  */
 function active_class($current, $new_value, $class_name='active', $echo = true)
@@ -597,7 +598,7 @@ function countComment($id = 0)
 {
     $comments_count = wp_count_comments($id);
     if ( $comments_count->approved > 0 ) {
-        return $comments_count->approved;
+        return absint($comments_count->approved);
     } else {
         return 0;
     }
@@ -646,10 +647,16 @@ function rw_qtrans_getLanguageName()
     return (function_exists('qtrans_getLanguageName')) ? qtrans_getLanguageName() : '';
 }
 
-function deepLinking($hashname)
+/**
+ * Deeplinking
+ * @param int $keyid
+ * @param string $to
+ * @return string
+ */
+function deepLinking($keyid, $to)
 {
     global $hashtags;
-    return  ( in_array($hashname, $hashtags) ) ? get_parent_admin_profile($hashtags) : get_parent_admin_profile();
+    return $hashtags[$keyid] . '-' . getSession('_goto_id') . '/' . $to;
 }
 
 /**

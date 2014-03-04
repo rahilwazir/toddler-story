@@ -9,7 +9,7 @@ fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
-time, mark, audio, video, a, select, input {
+time, mark, audio, video, a {
     margin:0;
     padding:0;
     border:0;
@@ -250,6 +250,9 @@ input, select, textarea {
     display: inline-block;
     vertical-align: middle;
 }
+.blog_details .input-box-wrap .form-control {
+    vertical-align: top;
+}
 .form-control.form-input {
     width: 270px;
 }
@@ -452,9 +455,6 @@ input, select, textarea {
     float: left;
     margin: 0 0 0 34px;
 }
-.user_info_form .form-control {
-    width: 110px;
-}
 .user_info_form .form-control label {
     display: block;
     padding: 20px 0;
@@ -500,7 +500,7 @@ input, select, textarea {
 }
 .life-story-section {
     background: none repeat scroll 0 0 #FFFFFF;
-    padding: 20px 0;
+    padding: 20px 10px;
 }
 .bl_user {
     float: right;
@@ -512,7 +512,8 @@ input, select, textarea {
 .date_box {
     background: none repeat scroll 0 0 #F1F1F3;
     float: left;
-    padding: 10px;
+    padding: 5px;
+    width: 90px;
 }
 
 .blog_details {
@@ -530,6 +531,7 @@ input, select, textarea {
 .blog_post {
     padding: 11px 0;
     border-bottom:1px dashed #ddd;
+    display: block;
 }
 .date {
     font-size: 22px;
@@ -567,9 +569,6 @@ small {
 }
 .middle_hash_content .tab_content {
     display: none;
-}
-.life-story-section .tab_content {
-    padding: 0 20px 30px;
 }
 .offset1 {
     margin-left: 10px;
@@ -616,6 +615,9 @@ small {
     bottom: 0;
     right: 5px;
 }
+input.remove-comment {
+    border: 0;
+}
 .removing {
     background-color: #FF0000;
     color: #FFFFFF;
@@ -625,4 +627,13 @@ small {
 }
 #fib-container {
     float: right;
+}
+.refresh-icon {
+    background: url(../images/refresh.png) no-repeat;
+    display: block;
+    text-indent: -9999em;
+    text-decoration: none;
+    width: 29px;
+    height: 29px;
+    background-size: 100%;
 }

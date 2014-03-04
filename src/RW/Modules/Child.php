@@ -145,22 +145,25 @@ class Child extends ParentModule
                 ? get_post_meta($post->ID, '_toddler_ata', true)
                 : '';
     }
-    
+
     /**
      * Check if child post is exists with the id given optionally with the post author
      * @param int $id
      * @param int $user_id
+     * @param string $post_type
      * @return bool
      */
-    public static function exists($id, $user_id = 0)
+    public static function existAt($id, $user_id = 0, $post_type = '')
     {
         $args = array(
-            'post_type' => Children::$post_type,
+            'post_type' => ($post_type === '') ? Children::$post_type : $post_type,
             'p' => intval($id),
             'posts_per_page' => 1,
         );
 
         if ($user_id > 0) {
+            $args['post_author'] = $user_id;
+        } else {
             $args['post_author'] = user_info('ID');
         }
 
@@ -176,11 +179,12 @@ class Child extends ParentModule
             'author__in' => array($id),
             'meta_key' => '_toddler_parent_child_user',
             'meta_value' => $id,
+            'posts_per_page' => 10
         ));
-        
+
         return $blog_posts;
     }
-    
+
     public static function getCurrent($id)
     {
         global $post;

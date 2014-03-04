@@ -22,7 +22,7 @@
         <![endif]-->
         <?php wp_head(); global $hashtags; ?>
     </head>
-    <body <?php body_class(); ?> id="user-profile">      
+    <body id="user-profile">
         <header id="header">
             <section class="container">
                 <div class="wrap">

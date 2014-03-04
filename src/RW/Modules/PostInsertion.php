@@ -5,7 +5,7 @@ namespace RW\Modules;
 interface PostInsertion
 {
     /**
-     * Insert posts to database
+     * Insert post
      */
     public static function insertPosts();
     

@@ -1,4 +1,4 @@
-/* Underscore custom functions */
+// Underscore custom functions
 _.mixin({
     isJSON: function(str) {
         try {
@@ -21,6 +21,7 @@ var RW_Utils = {
         var hashURI = (str || location.hash.split('#')[1] || this.hashString),
             expectString = hashURI.replace(/[^\w]/g, ''),
             expectNumeric = hashURI.match(/([^\W]+)-(\d+)(?:\/?(?=([^\W]+)))?/), o = {};
+            location.hash.split('/').splice(1);
 
         if ( expectNumeric && expectNumeric[1] && expectNumeric[2] ) {
 
@@ -29,7 +30,7 @@ var RW_Utils = {
             o.hashTag = expectNumeric[1];
             o.id = expectNumeric[2];
 
-            if (expectNumeric[3]) {
+            if ( expectNumeric[3] ) {
                 o.deeplink = expectNumeric[3];
             }
 
@@ -68,8 +69,9 @@ var RW_Utils = {
                     if ($.isFunction(callback)) {
                         callback.apply();
                     }
+
                     // close the dialog
-                    modal.close(); // or $.modal.close();
+                    modal.close();
                 });
             }
         });
@@ -156,11 +158,12 @@ var Toddler = (function() {
 
                 self.fileHandler();
 
-                $(document).on('submit', 'form[name="add_child"], form[name="update_child"], form[name="update_user"]', function(e) {
+                $(document).on('submit', 'form[name]', function(e) {
                     e.preventDefault();
                     $(this).find('.rw-error').removeClass('rw-error').end().find('p.error').remove();
 
                     var data_set = new FormData();
+
                     data_set.append("hashTag", RW_Utils.getHash());
                     data_set.append("full_data", JSON.stringify($(this).serializeArray()));
 
@@ -169,10 +172,11 @@ var Toddler = (function() {
                     if ($(e.target).is('form[name="update_child"]') || $(e.target).is('form[name="add_child"]')) {
                         data_set.append("action", 'add_children');
                         data_set.append("baby_img", $(this).find('input[type="file"]')[0].files[0]);
-
                     } else if ($(e.target).is('form[name="update_user"]')) {
                         data_set.append("action", 'update_user_parent');
                         data_set.append("user_profile_pic", $(this).find('input[type="file"]')[0].files[0]);
+                    } else if ($(e.target).is('form[name="add_new_child_blog"]')) {
+                        data_set.append('action', 'add_new_child_blog');
                     }
 
                     self.ajaxifying({
@@ -246,7 +250,12 @@ var Toddler = (function() {
                     } else {
                         // comment adder
                         if ( $(this).hasClass('specific') ) {
-                            var $elem = $(this), expect = $(this).attr('href');
+                            var $elem = $(this),
+                                expect = (
+                                    $elem.attr('href') ||
+                                    $elem.attr('data-value')
+                                ),
+                                parentElement = $(this).parents('article.blog_post');
 
                             ajaxifying_data = RW_Utils.getHash(expect);
 
@@ -259,10 +268,12 @@ var Toddler = (function() {
                                     RW_Utils.initLoader( this.loader );
                                 },
                                 successCallback: function(data) {
-                                    var commentLength = $('.comments-list').prepend(data).children('.single-comment').length;
-                                    $('.comment-counter .comment-count').text(commentLength);
-                                    $('#no-comments-yet').remove();
-                                    $elem.prev().val('');
+                                    if ( data ) {
+                                        var commentLength = parentElement.find('.comments-list').prepend(data).children('.single-comment').length;
+                                        parentElement.find('.comment-counter .comment-count').text(commentLength);
+                                        parentElement.find('.no-comments-yet').remove();
+                                        $elem.prev().val('');
+                                    }
                                 },
                                 completeCallback: function() {
                                     RW_Utils.removeLoader();
@@ -630,6 +641,7 @@ var Toddler = (function() {
         blogUtils: function() {
             var self = this;
 
+            // blog reading
             $(document).on('click', '.read-blog', function(e) {
                 e.preventDefault();
 
@@ -637,10 +649,30 @@ var Toddler = (function() {
                     parentArticle = $(this).parents('article[data-id="' + blogValue + '"]'),
                     blogValueOfArticle = Math.abs( parentArticle.attr('data-id') );
 
+                $('input.read-blog').removeClass('disable');
+                parentArticle.find('input.read-blog').addClass('disable');
+
+                $('.comment-box').addClass('disable');
+
                 if (blogValue === blogValueOfArticle) {
-                    parentArticle.find('.comment-box.disable').removeClass('disable').addClass('enable');
+                    parentArticle.find('.comment-box').removeClass('disable');
                 }
+
             });
+
+            $(document).on('click', '.refresh-icon', function(e) {
+                e.preventDefault();
+                alert('Its not working!!! Hahahah Made you fool.');
+            });
+
+            //blog new post
+            $(document).on('click', '#add_new_blog', function(e) {
+                e.preventDefault();
+
+                $('#new-post-screen').removeClass('disable');
+                $('.blog-list').addClass('disable');
+            })
+
 
             $(document).on('mouseenter', '.removal-input', function() {
                 $(this).find('.remove-comment').removeClass('disable');
@@ -648,13 +680,16 @@ var Toddler = (function() {
                 $(this).find('.remove-comment').addClass('disable');
             });
 
+            // comment removing
             $(document).on('click', '.remove-comment', function(e) {
                 if ( $(this).hasClass('block') ) e.preventDefault();
 
                 var _comment_id = Math.abs($(this).parents('.single-comment').attr('data-comment-id')),
                     _elem_parent = $(this).parents('.single-comment[data-comment-id="' + _comment_id + '"]'),
-                    data_action = $(this).attr('data-action'),
-                    ajaxifying_data = RW_Utils.getHash( $(this).attr('href') );
+                    ajaxifying_data = RW_Utils.getHash( $(this).attr('data-value')),
+                    superParentID = $(this).parents('article.blog_post').attr('data-id');
+
+                ajaxifying_data.parentPostID = superParentID;
 
                 RW_Utils.confirm('Delete this comment?', function() {
                     self.ajaxifying({

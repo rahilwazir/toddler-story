@@ -66,7 +66,7 @@ class LifeStoryMenu
                 if (!\array_key_exists('cid', $_GET)) {
                     wp_die('Child is not selected.');
                 } else {
-                    if (!Child::exists(rw_get('cid'))) wp_die('Child is not selected.');
+                    if (!Child::existAt(rw_get('cid'))) wp_die('Child is not selected.');
                 }
             ?>
 

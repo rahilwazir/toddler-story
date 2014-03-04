@@ -112,7 +112,7 @@ class Settings
     }
 
     /**
-     * Front end view load scripts and styles
+     * Front view, load scripts and styles
      */
     public function front_scripts_styles($hook)
     {
@@ -126,6 +126,13 @@ class Settings
         wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/lib/modernizr.custom.63321.js', array('jquery'), '', true);
         wp_enqueue_script('slickNav', get_template_directory_uri() . '/js/jquery.slicknav.min.js', array('jquery'), '', true);
         wp_enqueue_script('dropdown-js', get_template_directory_uri() . '/js/lib/jquery.dropdown.js', array('jquery'), '', true);
+
+        if (Child::page()) {
+            $child_page = "true";
+            wp_enqueue_style('child-style', get_template_directory_uri() . '/css/child-style.css');
+        } else {
+            $child_page = "false";
+        }
         
         $localize_args = array(
             'theme_uri'         => get_stylesheet_directory_uri(),
@@ -153,9 +160,7 @@ class Settings
             $localize_args['token'] = generateToken( user_info('ID') . '_' . user_info('login'), false );
         }
 
-        /**
-         * Public child viewing page
-         */
+        // Public child viewing page
         if ( Child::page() || is_admin_pages() ) {
             wp_dequeue_style('slickNav');
             wp_dequeue_style('main-style');
@@ -170,10 +175,8 @@ class Settings
             if (!current_user_can('administrator'))
                 wp_deregister_style('dashicons');
         }
-        
-        /**
-         * Parent users admin panel
-         */
+
+        // Parent users admin panel
         if (is_user_logged_in() && is_admin_pages()) {
             wp_enqueue_style('confirm', get_template_directory_uri() . '/css/lib/confirm.css');
             wp_enqueue_style('child-admin', get_template_directory_uri() . '/css/child-admin.css');
@@ -183,29 +186,16 @@ class Settings
 
             wp_enqueue_script('fb-inviter', '//connect.facebook.net/en_US/all.js', array('jquery'), '', true);
 
-            /**
-             * Removing woocommerce scripts/styles enqueue
-             */
+            // Removing woocommerce scripts/styles enqueue
             wp_dequeue_script('woocommerce');
             wp_dequeue_script('wc-cart-fragments');
             wp_dequeue_script('wc-add-to-cart');
             
-            /**
-             * Remove contact form script
-             */
+            // Remove contact form script
             wp_deregister_script('jquery-form');
             
-            /**
-             * Remove social sharing script
-             */
+            // Remove social sharing script
             wp_dequeue_script('mr_social_sharing');
-        }
-
-        if (Child::page()) {
-            $child_page = "true";
-            wp_enqueue_style('child-style', get_template_directory_uri() . '/css/child-style.css');
-        } else {
-            $child_page = "false";
         }
 
         
@@ -216,7 +206,7 @@ class Settings
     }
 
     /**
-     * Admin load scripts and styles
+     * Admin view, load scripts and styles
      */
     public function admin_scripts_styles($hook)
     {

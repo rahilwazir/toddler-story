@@ -1,13 +1,13 @@
-<section id="blog" class="tab_content">
+<section id="blog">
     <div class="blog_user">
         <h1>Blogs</h1>
-        <div class="bl_user"><input type="button" class="blog_btn" value="Add Post"/></div>
+        <div class="bl_user"><input type="button" class="blog_btn" id="add_new_blog" value="Add Post"/></div>
         <span class="clearfix"></span>
 
         <?php if ( $childBlogPosts ) { ?>
             <section class="blog-list">
                 <?php foreach ($childBlogPosts as $_post) { ?>
-                    <article class="blog_post" data-id="<?php echo $_post->ID; ?>">
+                    <article class="blog_post clearfix" data-id="<?php echo $_post->ID; ?>">
                         <div class="date_box">
                             <span class="date"><?php echo $_post->day ?></span>
                             <span><?php echo $_post->month ?></span>
@@ -22,10 +22,10 @@
 
                             <section class="comment-box disable">
                                 <div class="comment-input clearfix specific-loader">
-                                    <textarea name="comment-content" rows="7" cols="30" required=""></textarea>
-                                    <a href="<?php echo $hashtags[9] . '-' . $_post->ID; ?>" class="blog_btn fright ajaxify clearfix specific block">Add Comment</a>
+                                    <textarea class="child_inputs" name="comment-content" rows="7" cols="30" required=""></textarea>
+                                    <input type="button" data-value="<?php echo $hashtags[9] . '-' . $_post->ID; ?>" class="blog_btn fright ajaxify clearfix specific block" value="Add Comment">
                                 </div>
-                                <?php $comments = get_comments($_post->ID); ?>
+                                <?php $comments = get_comments(array('post_id' => $_post->ID)); ?>
                                 <section class="comments-list clearfix">
                                     <?php
                                     if ( !empty($comments) ) {
@@ -34,11 +34,11 @@
                                             <article class="single-comment removal-input specific-loader comment-input" data-comment-id="<?php echo $comment->comment_ID; ?>">
                                                 <span class="comment-meta">Commented by: <?php echo $comment->comment_author; ?>, <?php echo $comment->comment_date; ?></span>
                                                 <div class="comment-content"><?php echo $comment->comment_content; ?></div>
-                                                <a href="<?php echo $hashtags[8] . '-' . $comment->comment_ID; ?>" class="remove-comment block remove-icon disable">Remove Comment</a>
+                                                <input data-value="<?php echo $hashtags[8] . '-' . $comment->comment_ID; ?>" class="remove-comment block remove-icon disable" value="Remove Comment">
                                             </article>
                                         <?php   }
                                     } else {
-                                        echo '<h3 id="no-comments-yet">No comments yet.</h3>';
+                                        echo '<h3 class="no-comments-yet">No comments yet.</h3>';
                                     }
                                     ?>
                                 </section>
@@ -53,5 +53,46 @@
             echo '<p>No blog posts found. Click add post to create new blog post for your child.</p>';
         }
         ?>
+
+        <!-- child adding/updating form -->
+        <section class="disable clearfix" id="new-post-screen">
+            <article class="blog_post clearfix">
+                <div class="date_box">
+                    <span class="date"><?php echo date('d'); ?></span>
+                    <span><?php echo date('F'); ?></span>
+                    <span><?php echo date('Y'); ?></span>
+                </div>
+
+                <div class="blog_details">
+                    <form name="add_new_child_blog" method="post">
+                        <div class="input-box-wrap">
+                            <div class="form-control">
+                                <label for="child_blog_title">Title:</label>
+                            </div>
+                            <div class="form-control form-input">
+                                <input type="text" name="child_blog_title" id="child_blog_title" class="child_inputs">
+                            </div>
+                        </div>
+                        <div class="input-box-wrap">
+                            <div class="form-control">
+                                <label for="child_blog_description">Description</label>
+                            </div>
+                            <div class="form-control form-input">
+                                <textarea class="child_inputs" name="child_blog_description" id="child_blog_description" rows="15" cols="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="input-box-wrap">
+                            <div class="form-control fright">
+                                <input type="hidden" value="<?php echo wp_create_nonce('add_new_child_blog'); ?>" name="rw_nonce" />
+                                <input type="hidden" name="child_token" value="<?php echo wp_create_nonce(getSession('_goto_id')); ?>">
+                                <input type="hidden" name="child_id" value="<?php echo getSession('_goto_id'); ?>">
+                                <input type="submit" class="submit-button" name="publish_child_blog">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </article>
+        </section>
     </div>
 </section>

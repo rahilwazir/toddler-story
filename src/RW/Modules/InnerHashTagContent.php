@@ -11,38 +11,35 @@ use RW\Modules\Comments;
 
 class InnerHashTagContent extends HashTagContent
 {
-
-    private static function _load($template = '', $data = array())
-    {
-        global $hashtags;
-
-        $menus = Children::$lifeStoryMenu;
-
-        Child::getCurrent( $data['id'] );
-
-        setSession( '_goto_story_post_id', $data['id'] );
-
-        $data['tabMenus'] = $menus;
-        $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
-
-        createHiddenTitle( Child::fullName(), 'Gallery' );
-
-        $data['hashtags'] = $hashtags;
-
-        Template::load($data['hashTag'] . '.gts_header', $data);
-
-        Template::load($template);
-
-        Template::load($data['hashTag'] . '.gts_footer');
-    }
-
     public static function goToStory(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
-            if ( Child::exists($data['id']) ) {
+            if ( Child::existAt($data['id']) ) {
                 $defaultHomePage = 'gallery';
 
-                self::_load($data['hashTag'] . '.' . $defaultHomePage, $data);
+                if ( $data['deeplink'] ) $defaultHomePage = $data['deeplink'];
+
+                global $hashtags;
+
+                $menus = Children::$lifeStoryMenu;
+
+                Child::getCurrent( $data['id'] );
+
+                setSession( '_goto_id', $data['id'] );
+
+                $data['tabMenus'] = $menus;
+                $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
+
+                $data['hashtags'] = $hashtags;
+
+                createHiddenTitle( Child::fullName() . ' ' . $menus->tabs_menu[$defaultHomePage] );
+
+                Template::load(array(
+                    $data['hashTag'] . '.gts_header',
+                    $data['hashTag'] . '.' . $defaultHomePage,
+                    $data['hashTag'] . '.gts_footer'
+                ), $data);
+
             }
         }
     }
@@ -50,7 +47,7 @@ class InnerHashTagContent extends HashTagContent
     public static function editInfo(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
-            if ( Child::exists($data['id']) ) {
+            if ( Child::existAt($data['id']) ) {
                 self::create(true, $data['id']);
             }
         }
@@ -59,7 +56,7 @@ class InnerHashTagContent extends HashTagContent
     public static function deleteChild(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
-            if ( Child::exists($data['id']) ) {
+            if ( Child::existAt($data['id']) ) {
                 if (wp_trash_post($data['id'])) {
                     echo json_encode(array('status' => 'Child deleted successfully.'));
                 }
@@ -83,13 +80,15 @@ class InnerHashTagContent extends HashTagContent
     public static function deleteComment(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
-            $total_comment = Comments::delete( $data['id'] );
+            if ( Comments::exists( $data['parentPostID'], $data['id'] ) ) {
+                $comment_trashed = Comments::delete( $data['id'] );
 
-            if ( $total_comment ) {
-                echo json_encode(array(
-                    'deleted' => true,
-                    'commentTotal' => Comments::$lastDeletedCommentID
-                ));
+                if ( $comment_trashed ) {
+                    echo json_encode(array(
+                        'deleted' => true,
+                        'commentTotal' => Comments::$lastDeletedCommentID
+                    ));
+                }
             }
         }
     }

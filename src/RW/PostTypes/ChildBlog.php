@@ -5,9 +5,14 @@ namespace RW\PostTypes;
 use RW\Admin\LifeStoryMenu;
 use RW\Modules\ParentModule;
 use RW\PostTypes\MetaBoxes\ListParentChilds;
+use RW\ErrorHandling\Error;
 
 class ChildBlog
 {
+    private static $_action = null;
+    private static $_event = null;
+
+    const USER_ERROR_CODE = 57;
 
     private $shows_type;
 
@@ -117,5 +122,81 @@ class ChildBlog
     public function removePostTypeSlug()
     {
         //;
+    }
+
+    public static function update($action)
+    {
+        self::$_action = $action;
+        add_action('wp_ajax_' . self::$_action, array(__CLASS__, __METHOD__));
+        $full_data = filter_input(0, 'full_data');
+
+        $rd = process_serialize_data($full_data);
+
+        if (wp_verify_nonce($rd['rw_nonce'], self::$_action)) {
+            self::$_event = 'add';
+        } else if (wp_verify_nonce($rd['rw_nonce'], self::$_action . '_update')) {
+            self::$_event = 'update';
+        } else {
+            exit('What the heck are you trying to do?');
+        }
+
+        if (filter_input(0, 'action') === self::$_action &&
+            wp_verify_nonce($rd['rw_nonce'], self::$_action) &&
+            wp_verify_nonce($rd['child_token'], $rd['child_id'])
+            ) {
+
+            $final_result = array();
+
+            /**
+             * Remove error code if already contain
+             */
+            Error::remove_error(self::USER_ERROR_CODE);
+
+            Error::set_error(self::USER_ERROR_CODE, 'child_blog_title', ($rd['child_blog_title'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'child_blog_description', ($rd['child_blog_description'] === '') ? __('Required.') : '');
+
+            $final_result['errors'] = Error::get_error(self::USER_ERROR_CODE);
+
+            if ( count($final_result['errors']) < 1 ) {
+
+                if (self::$_event === 'add') {
+                    $my_post = array (
+                        'post_title' => $rd['child_blog_title'],
+                        'post_content' => $rd['child_blog_description'],
+                        'post_author' => user_info('ID'),
+                        'post_type' => self::$post_type,
+                        'post_status' => 'publish'
+                    );
+
+                    $_post_id = wp_insert_post($my_post);
+
+                } else if (self::$_event === 'update') {
+
+                    if (!Child::existAt($rd['post_id'], user_info('ID'), self::$post_type)) {
+                        exit('The post is not yours');
+                    }
+
+                    $my_post = array(
+                        'post_title' => $rd['child_blog_title'],
+                        'post_content' => $rd['child_blog_description'],
+                        'post_author' => user_info('ID'),
+                        'post_type' => self::$post_type,
+                        'post_status' => 'publish'
+                    );
+
+                    $_post_id = wp_update_post($my_post);
+                }
+
+                if (!is_wp_error($_post_id) && $_post_id !== 0) {
+                    update_post_meta($_post_id, '_toddler_parent_child_user', $rd['child_id']);
+
+                    $final_result['ok'] = 'Blog added successfully';
+                }
+            }
+
+            echo json_encode($final_result);
+        }
+
+        exit;
     }
 }

@@ -69,7 +69,7 @@ class CreateChild implements PostInsertion
                     
                 } else if (self::$_event === 'update') {
                     
-                    if (!Child::exists($rd['post_id'], user_info('ID'))) {
+                    if (!Child::existAt($rd['post_id'], user_info('ID'))) {
                         exit('The post is not yours');
                     }
 

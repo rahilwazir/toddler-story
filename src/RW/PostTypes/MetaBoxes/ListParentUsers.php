@@ -65,7 +65,7 @@ class ListParentUsers extends Children
                 'ID' => $post_id,
                 'post_author' => $parent_id
             ));
-            
+
             add_action('save_post', array($this, __FUNCTION__));
         }
     }
