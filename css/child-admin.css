@@ -478,7 +478,7 @@ input, select, textarea {
     margin: 20px 0;
     width: 100%
 }
-.blog_btn{
+.blog_btn {
     padding: 8px 10px;
     border:1px solid #D4D4D6;
     border-bottom:2px solid #D4D4D6;
@@ -487,6 +487,11 @@ input, select, textarea {
     color: #6D6D6D;
     cursor:pointer;
     text-decoration: none;
+}
+.blog_btn.danger {
+    background-color: #CE1B1B;
+    border: 1px solid #FF0000;
+    color: #FFFFFF;
 }
 .blog_user h1{
     float:left;

@@ -44,7 +44,11 @@
                                 </section>
                             </section>
                         </div>
-                        <div class="bl_user"><input type="button" class="blog_btn read-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Read Blog"/></div>
+                        <div class="bl_user">
+                            <input type="button" class="blog_btn read-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Read Blog"/>
+                            <input type="button" class="blog_btn disable edit-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Edit"/>
+                            <input type="button" class="blog_btn disable danger delete-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Delete"/>
+                        </div>
                         <span class="clearfix"></span>
                     </article>
                 <?php } ?>
@@ -64,7 +68,7 @@
                 </div>
 
                 <div class="blog_details">
-                    <form name="add_new_child_blog" method="post">
+                    <form name="au_child_blog" method="post">
                         <div class="input-box-wrap">
                             <div class="form-control">
                                 <label for="child_blog_title">Title:</label>
@@ -83,7 +87,7 @@
                         </div>
                         <div class="input-box-wrap">
                             <div class="form-control fright">
-                                <input type="hidden" value="<?php echo wp_create_nonce('add_new_child_blog'); ?>" name="rw_nonce" />
+                                <input type="hidden" value="<?php echo wp_create_nonce('au_child_blog'); ?>" name="rw_nonce" />
                                 <input type="hidden" name="child_token" value="<?php echo wp_create_nonce(getSession('_goto_id')); ?>">
                                 <input type="hidden" name="child_id" value="<?php echo getSession('_goto_id'); ?>">
                                 <input type="submit" class="submit-button" name="publish_child_blog">

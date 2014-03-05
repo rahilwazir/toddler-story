@@ -175,8 +175,10 @@ var Toddler = (function() {
                     } else if ($(e.target).is('form[name="update_user"]')) {
                         data_set.append("action", 'update_user_parent');
                         data_set.append("user_profile_pic", $(this).find('input[type="file"]')[0].files[0]);
-                    } else if ($(e.target).is('form[name="add_new_child_blog"]')) {
-                        data_set.append('action', 'add_new_child_blog');
+                    } else if ($(e.target).is('form[name="aucb"]')) {
+                        data_set.append('action', 'aucb');
+                    } else  if ($(e.target).is('form[name="ucb"]')) {
+                        data_set.append('action', 'ucb');
                     }
 
                     self.ajaxifying({
@@ -295,6 +297,8 @@ var Toddler = (function() {
                     if (sessionStorage.getItem('current_hash') !== RW_Utils.hashString) {
                         sessionStorage.setItem('current_hash', RW_Utils.hashString);
                     }
+
+                    console.log('changed');
 
                     var windowHash = RW_Utils.getHash();
 
@@ -650,7 +654,9 @@ var Toddler = (function() {
                     blogValueOfArticle = Math.abs( parentArticle.attr('data-id') );
 
                 $('input.read-blog').removeClass('disable');
-                parentArticle.find('input.read-blog').addClass('disable');
+                parentArticle.find('input.read-blog').addClass('disable').end().find('.edit-blog').removeClass('disable');
+
+                $('.blog_post').not(parentArticle).addClass('disable');
 
                 $('.comment-box').addClass('disable');
 

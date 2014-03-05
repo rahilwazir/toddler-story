@@ -15,7 +15,7 @@ class HashTagContent
      * Add/Update data holder
      * @var array
      */
-    public static $array_builder = array();
+    private static $array_builder = array();
     
     /**
      * Create/Update childs
