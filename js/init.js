@@ -175,10 +175,8 @@ var Toddler = (function() {
                     } else if ($(e.target).is('form[name="update_user"]')) {
                         data_set.append("action", 'update_user_parent');
                         data_set.append("user_profile_pic", $(this).find('input[type="file"]')[0].files[0]);
-                    } else if ($(e.target).is('form[name="aucb"]')) {
-                        data_set.append('action', 'aucb');
-                    } else  if ($(e.target).is('form[name="ucb"]')) {
-                        data_set.append('action', 'ucb');
+                    } else if ($(e.target).is('form[name="au_child_blog"]')) {
+                        data_set.append('action', 'au_child_blog');
                     }
 
                     self.ajaxifying({

@@ -45,8 +45,8 @@ if (ParentModule::currentUserisParent()) {
                     ParentModule::update('update_user_parent');
                     break;
 
-                case 'add_new_child_blog':
-                    ChildBlog::update('add_new_child_blog');
+                case 'au_child_blog':
+                    ChildBlog::update('au_child_blog');
                     break;
 
                 default:
