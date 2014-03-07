@@ -786,12 +786,16 @@ var Toddler = (function() {
 
             // comment removing
             $(document).on('click', '.remove-comment', function(e) {
-                if ( $(this).hasClass('block') ) e.preventDefault();
+                if ( $(this).hasClass('block') ) {
+                    e.preventDefault();
+                }
 
                 var _comment_id = Math.abs($(this).parents('.single-comment').attr('data-comment-id')),
                     _elem_parent = $(this).parents('.single-comment[data-comment-id="' + _comment_id + '"]'),
                     ajaxifying_data = RW_Utils.getHash( $(this).attr('data-value')),
-                    superParentID = $(this).parents('article.blog_post').attr('data-id');
+                    topParentElem = $(this).parents('article.blog_post'),
+                    superParentID = topParentElem.attr('data-id');
+
 
                 ajaxifying_data.parentPostID = superParentID;
 
@@ -809,7 +813,9 @@ var Toddler = (function() {
                                     _elem_parent.remove();
                                 });
 
-                                if (result.commentTotal >= 0) $('.comment-count').text(result.commentTotal);
+                                if (result.commentTotal >= 0) {
+                                    topParentElem.find('.comment-count').text(result.commentTotal);
+                                }
                             }
                         },
                         completeCallback: function() {
