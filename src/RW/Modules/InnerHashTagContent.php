@@ -4,6 +4,7 @@ namespace RW\Modules;
 
 use RW\Modules\HashTagContent;
 use RW\Modules\Child;
+use RW\PostTypes\ChildBlog;
 use RW\PostTypes\LifeStoryMenu;
 use RW\PostTypes\Children;
 use RW\TemplatesPackage\Template;
@@ -59,6 +60,19 @@ class InnerHashTagContent extends HashTagContent
             if ( Child::existAt($data['id']) ) {
                 if (wp_trash_post($data['id'])) {
                     echo json_encode(array('status' => 'Child deleted successfully.'));
+                }
+            }
+        }
+    }
+
+    public static function deleteChildBlogPost(array $data)
+    {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
+            if ( wp_verify_nonce($data['blogToken'], $data['id']) ) {
+                if ( Child::existAt($data['id'], null, ChildBlog::$post_type) ) {
+                    if (wp_trash_post($data['id'])) {
+                        echo json_encode(array('status' => 'Blog post deleted successfully.'));
+                    }
                 }
             }
         }

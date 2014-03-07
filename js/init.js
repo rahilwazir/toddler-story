@@ -17,6 +17,9 @@ var RW_Utils = {
 
     hashString: Toddler_Conf.link_pages[4],
 
+    delay: (3 * 1000),
+    rd: true,
+
     getHash: function(str) {
         var hashURI = (str || location.hash.split('#')[1] || this.hashString),
             expectString = hashURI.replace(/[^\w]/g, ''),
@@ -124,6 +127,35 @@ var RW_Utils = {
             this.loaderElem.find('.process-loading').remove();
             this.loaderElem = null;
         }
+    },
+
+    refresh: function() {
+        var self = this;
+
+        if ( this.rd ) {
+            var currentURL = location.href,
+                testHash = /[#]+$/.test(currentURL);
+
+            if ( testHash ) {
+                location.href = currentURL.replace(/[#]+$/, '');
+            } else {
+                location.href = currentURL.replace(/[#]+$/, '') + '#';
+            }
+
+            this.rd = false;
+        } else {
+            alert('Please wait 5 seconds.');
+        }
+
+        setTimeout(function () {
+            self.rd = true;
+        }, this.delay);
+    },
+
+    textOnly: function(obj) {
+        return obj.contents().filter(function (s) {
+            return s.nodeType === 3;
+        }).text();
     }
 
 };
@@ -162,7 +194,7 @@ var Toddler = (function() {
                     e.preventDefault();
                     $(this).find('.rw-error').removeClass('rw-error').end().find('p.error').remove();
 
-                    var data_set = new FormData();
+                    var data_set = new FormData(), refresh = false;
 
                     data_set.append("hashTag", RW_Utils.getHash());
                     data_set.append("full_data", JSON.stringify($(this).serializeArray()));
@@ -177,6 +209,7 @@ var Toddler = (function() {
                         data_set.append("user_profile_pic", $(this).find('input[type="file"]')[0].files[0]);
                     } else if ($(e.target).is('form[name="au_child_blog"]')) {
                         data_set.append('action', 'au_child_blog');
+                        refresh = true;
                     }
 
                     self.ajaxifying({
@@ -204,7 +237,12 @@ var Toddler = (function() {
                                     location.replace(result.redirect);
                                 }
 
-                                RW_Utils.navigateTo(4);
+                                if ( refresh ) {
+                                    RW_Utils.refresh();
+                                } else {
+                                    RW_Utils.navigateTo(4);
+                                }
+
 
                             } else {
                                 obj_keys = _.keys(my_array);
@@ -213,7 +251,7 @@ var Toddler = (function() {
                                     $('input[name="' + obj_keys[i] + '"],\n\
                                         select[name="' + obj_keys[i] + '"],\n\
                                         textarea[name="' + obj_keys[i] + '"]')
-                                            .addClass('rw-error').parent().append( '<p class="error">' + my_array[obj_keys[i]] + '</p>' );
+                                        .addClass('rw-error').parent().append( '<p class="error">' + my_array[obj_keys[i]] + '</p>' );
                                 }
 
                             }
@@ -295,8 +333,6 @@ var Toddler = (function() {
                     if (sessionStorage.getItem('current_hash') !== RW_Utils.hashString) {
                         sessionStorage.setItem('current_hash', RW_Utils.hashString);
                     }
-
-                    console.log('changed');
 
                     var windowHash = RW_Utils.getHash();
 
@@ -385,7 +421,11 @@ var Toddler = (function() {
                 }
             }
 
-            $.ajax(all_setup);
+//            try {
+                $.ajax(all_setup);
+//            } catch (e) {
+//                alert('Some error occurred. Please try again.');
+//            }
         },
 
         checkBoxChecker: function() {
@@ -644,38 +684,98 @@ var Toddler = (function() {
             var self = this;
 
             // blog reading
-            $(document).on('click', '.read-blog', function(e) {
+            $(document).on('click', '.read-blog, .edit-blog, .delete-blog', function(e) {
                 e.preventDefault();
 
                 var blogValue = Math.abs( $(this).attr('data-blog-value')),
                     parentArticle = $(this).parents('article[data-id="' + blogValue + '"]'),
-                    blogValueOfArticle = Math.abs( parentArticle.attr('data-id') );
+                    blogValueOfArticle = Math.abs( parentArticle.attr('data-id')),
+                    blogToken = parentArticle.find('input[name="blog_token"]').clone(true, true),
+                    blogUpdateToken = parentArticle.find('input[name="blog_update_token"]').clone(true, true),
+                    blogID = parentArticle.find('input[name="blog_id"]').clone(true, true);
 
-                $('input.read-blog').removeClass('disable');
-                parentArticle.find('input.read-blog').addClass('disable').end().find('.edit-blog').removeClass('disable');
+                if ( $(e.target).is('.read-blog') ) {
+                    $('input.read-blog').removeClass('disable');
+                    parentArticle.find('input.read-blog').addClass('disable').end().find('.edit-blog, .delete-blog').removeClass('disable');
 
-                $('.blog_post').not(parentArticle).addClass('disable');
+                    $('.blog_post').not(parentArticle).addClass('disable');
 
-                $('.comment-box').addClass('disable');
+                    $('.comment-box').addClass('disable');
 
-                if (blogValue === blogValueOfArticle) {
-                    parentArticle.find('.comment-box').removeClass('disable');
+                    if (blogValue === blogValueOfArticle) {
+                        parentArticle.find('.comment-box').removeClass('disable');
+                    }
+                }
+
+                if ($(e.target).is('.edit-blog')) {
+                    var editParent = $('#new-post-screen');
+
+                    $(this).addClass('disable');
+
+                    $('.blog-list').addClass('disable');
+                    $('.blog_post').removeClass('disable');
+                    $('#new-post-screen').removeClass('disable');
+
+                    var title = parentArticle.find('.post-title').text(),
+                        description = parentArticle.find('.post-content').text();
+
+                    var postdate = parentArticle.find('.date').text(),
+                        postmonth = parentArticle.find('.date_month').text(),
+                        postyear = parentArticle.find('.date_year').text();
+
+                    editParent.find('.date').text(postdate)
+                        .end().find('.date_month').text(postmonth)
+                        .end().find('.date_year').text(postyear);
+
+                    $('input[name="child_id"]').after(blogToken, blogUpdateToken, blogID);
+
+                    $('input[name="child_blog_title"]').val(title);
+
+                    $('textarea[name="child_blog_description"]').val(description);
+                }
+
+                if ($(e.target).is('.delete-blog')) {
+                    var ajaxifying_data = {},
+                        confirm_message = 'Delete this blog post? It cannot be undone.';
+
+                    RW_Utils.confirm(confirm_message, function() {
+                        ajaxifying_data.hashTag = 'deleteChildBlogPost',
+                        ajaxifying_data.id = blogID.val();
+                        ajaxifying_data.blogToken = blogToken.val();
+
+                        self.ajaxifying({
+                            data: ajaxifying_data,
+                            beforeCallback: function() {
+                                RW_Utils.initLoader(this.loader);
+                            },
+                            successCallback: function(data) {
+                                var result = JSON.parse(data);
+                                if (result.status) {
+                                    alert(result.status);
+
+                                    RW_Utils.refresh();
+                                }
+                            }
+                        });
+                    });
                 }
 
             });
 
             $(document).on('click', '.refresh-icon', function(e) {
                 e.preventDefault();
-                alert('Its not working!!! Hahahah Made you fool.');
+
+                RW_Utils.refresh();
             });
 
             //blog new post
             $(document).on('click', '#add_new_blog', function(e) {
                 e.preventDefault();
 
-                $('#new-post-screen').removeClass('disable');
                 $('.blog-list').addClass('disable');
-            })
+                $('#new-post-screen').removeClass('disable');
+                $('#new-post-screen').find('input[type="text"], textarea').val('');
+            });
 
 
             $(document).on('mouseenter', '.removal-input', function() {

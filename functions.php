@@ -185,7 +185,7 @@ add_action('wp_enqueue_scripts', 'twentythirteen_scripts_styles');
  * @since Twenty Thirteen 1.0
  *
  * @param string $title Default title text for current view.
- * @param string $sep   Optional separator.
+ * @param string $sep Optional separator.
  * @return string The filtered title.
  */
 function twentythirteen_wp_title($title, $sep)
@@ -200,7 +200,7 @@ function twentythirteen_wp_title($title, $sep)
 
     // Add the site description for the home/front page.
     $site_description = get_bloginfo('description', 'display');
-    if ($site_description && ( is_home() || is_front_page() ))
+    if ($site_description && (is_home() || is_front_page()))
         $title = "$title $sep $site_description";
 
     // Add a page number if necessary.
@@ -281,19 +281,23 @@ if (!function_exists('twentythirteen_paging_nav')) :
         ?>
         <nav class="navigation paging-navigation" role="navigation">
             <h1 class="screen-reader-text"><?php _e('Posts navigation', 'rw'); ?></h1>
+
             <div class="nav-links">
 
-        <?php if (get_next_posts_link()) : ?>
-                    <div class="nav-previous"><?php next_posts_link(__('<span class="meta-nav">&larr;</span> Older posts', 'rw')); ?></div>
-        <?php endif; ?>
+                <?php if (get_next_posts_link()) : ?>
+                    <div
+                        class="nav-previous"><?php next_posts_link(__('<span class="meta-nav">&larr;</span> Older posts', 'rw')); ?></div>
+                <?php endif; ?>
 
-        <?php if (get_previous_posts_link()) : ?>
-                    <div class="nav-next"><?php previous_posts_link(__('Newer posts <span class="meta-nav">&rarr;</span>', 'rw')); ?></div>
-        <?php endif; ?>
+                <?php if (get_previous_posts_link()) : ?>
+                    <div
+                        class="nav-next"><?php previous_posts_link(__('Newer posts <span class="meta-nav">&rarr;</span>', 'rw')); ?></div>
+                <?php endif; ?>
 
-            </div><!-- .nav-links -->
+            </div>
+            <!-- .nav-links -->
         </nav><!-- .navigation -->
-        <?php
+    <?php
     }
 
 endif;
@@ -312,7 +316,7 @@ if (!function_exists('twentythirteen_post_nav')) :
         global $post;
 
         // Don't print empty markup if there's nowhere to navigate.
-        $previous = ( is_attachment() ) ? get_post($post->post_parent) : get_adjacent_post(false, '', true);
+        $previous = (is_attachment()) ? get_post($post->post_parent) : get_adjacent_post(false, '', true);
         $next = get_adjacent_post(false, '', false);
 
         if (!$next && !$previous)
@@ -320,14 +324,16 @@ if (!function_exists('twentythirteen_post_nav')) :
         ?>
         <nav class="navigation post-navigation" role="navigation">
             <h1 class="screen-reader-text"><?php _e('Post navigation', 'rw'); ?></h1>
+
             <div class="nav-links">
 
-        <?php previous_post_link('%link', _x('<span class="meta-nav">&larr;</span> %title', 'Previous post link', 'rw')); ?>
-        <?php next_post_link('%link', _x('%title <span class="meta-nav">&rarr;</span>', 'Next post link', 'rw')); ?>
+                <?php previous_post_link('%link', _x('<span class="meta-nav">&larr;</span> %title', 'Previous post link', 'rw')); ?>
+                <?php next_post_link('%link', _x('%title <span class="meta-nav">&rarr;</span>', 'Next post link', 'rw')); ?>
 
-            </div><!-- .nav-links -->
+            </div>
+            <!-- .nav-links -->
         </nav><!-- .navigation -->
-        <?php
+    <?php
     }
 
 endif;
@@ -419,8 +425,8 @@ if (!function_exists('twentythirteen_the_attached_image')) :
          * @since Twenty thirteen 1.0
          *
          * @param array $size {
-         *     @type int The attachment height in pixels.
-         *     @type int The attachment width in pixels.
+         * @type int The attachment height in pixels.
+         * @type int The attachment width in pixels.
          * }
          */
         $attachment_size = apply_filters('twentythirteen_attachment_size', array(724, 724));
@@ -442,7 +448,7 @@ if (!function_exists('twentythirteen_the_attached_image')) :
             'post_mime_type' => 'image',
             'order' => 'ASC',
             'orderby' => 'menu_order ID'
-                ));
+        ));
 
         // If there is more than 1 attachment in a gallery...
         if (count($attachment_ids) > 1) {
@@ -485,7 +491,7 @@ function twentythirteen_get_link_url()
     $content = get_the_content();
     $has_url = get_url_in_content($content);
 
-    return ( $has_url ) ? $has_url : apply_filters('the_permalink', get_permalink());
+    return ($has_url) ? $has_url : apply_filters('the_permalink', get_permalink());
 }
 
 /**

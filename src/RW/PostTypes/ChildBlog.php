@@ -6,6 +6,7 @@ use RW\Admin\LifeStoryMenu;
 use RW\Modules\ParentModule;
 use RW\PostTypes\MetaBoxes\ListParentChilds;
 use RW\ErrorHandling\Error;
+use RW\Modules\Child;
 
 class ChildBlog
 {
@@ -132,18 +133,21 @@ class ChildBlog
 
         $rd = process_serialize_data($full_data);
 
-        if (wp_verify_nonce($rd['rw_nonce'], self::$_action)) {
-            self::$_event = 'add';
-        } else if (wp_verify_nonce($rd['rw_nonce'], self::$_action . '_update')) {
+        if (($rd['blog_id'] > 0) &&
+            wp_verify_nonce($rd['blog_token'], $rd['blog_id']) &&
+            wp_verify_nonce($rd['blog_update_token'], self::$_action . '_update')) {
+
             self::$_event = 'update';
-        } else {
-            exit('What the heck are you trying to do?');
+
+        } else if (wp_verify_nonce($rd['rw_nonce'], self::$_action) &&
+            wp_verify_nonce($rd['child_token'], $rd['child_id']) ) {
+
+            self::$_event = 'add';
+
         }
 
         if (filter_input(0, 'action') === self::$_action &&
-            wp_verify_nonce($rd['rw_nonce'], self::$_action) &&
-            wp_verify_nonce($rd['child_token'], $rd['child_id'])
-            ) {
+            (self::$_event === 'add' || self::$_event === 'update') ) {
 
             $final_result = array();
 
@@ -177,6 +181,7 @@ class ChildBlog
                     }
 
                     $my_post = array(
+                        'ID' => $rd['blog_id'],
                         'post_title' => $rd['child_blog_title'],
                         'post_content' => $rd['child_blog_description'],
                         'post_author' => user_info('ID'),
@@ -198,5 +203,14 @@ class ChildBlog
         }
 
         exit;
+    }
+
+    /**
+     * @param array $data
+     * return int
+     */
+    public static function delete($data = array())
+    {
+
     }
 }

@@ -10,8 +10,8 @@
                     <article class="blog_post clearfix" data-id="<?php echo $_post->ID; ?>">
                         <div class="date_box">
                             <span class="date"><?php echo $_post->day ?></span>
-                            <span><?php echo $_post->month ?></span>
-                            <span><?php echo $_post->year ?></span>
+                            <span class="date_month"><?php echo $_post->month ?></span>
+                            <span class="date_year"><?php echo $_post->year ?></span>
                         </div>
                         <div class="blog_details">
                             <h1 class="post-title"><a href="#" data-blog-value="<?php echo $_post->ID; ?>" class="read-blog"><?php echo $_post->title; ?></a></h1>
@@ -48,6 +48,9 @@
                             <input type="button" class="blog_btn read-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Read Blog"/>
                             <input type="button" class="blog_btn disable edit-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Edit"/>
                             <input type="button" class="blog_btn disable danger delete-blog" data-blog-value="<?php echo $_post->ID; ?>" value="Delete"/>
+                            <input type="hidden" name="blog_id" value="<?php echo $_post->ID; ?>">
+                            <input type="hidden" name="blog_token" value="<?php echo wp_create_nonce($_post->ID); ?>">
+                            <input type="hidden" name="blog_update_token" value="<?php echo wp_create_nonce('au_child_blog_update'); ?>">
                         </div>
                         <span class="clearfix"></span>
                     </article>
@@ -63,8 +66,8 @@
             <article class="blog_post clearfix">
                 <div class="date_box">
                     <span class="date"><?php echo date('d'); ?></span>
-                    <span><?php echo date('F'); ?></span>
-                    <span><?php echo date('Y'); ?></span>
+                    <span class="date_month"><?php echo date('F'); ?></span>
+                    <span class="date_year"><?php echo date('Y'); ?></span>
                 </div>
 
                 <div class="blog_details">
