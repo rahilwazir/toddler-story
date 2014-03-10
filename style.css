@@ -2925,3 +2925,7 @@ div.wpcf7-validation-errors {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
+#shaon-pricing-table a.signup {
+    clear: both;
+    height: auto !important;
+}

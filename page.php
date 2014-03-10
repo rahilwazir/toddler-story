@@ -9,7 +9,7 @@ get_header();
         <div class="wrapper">
         <?php if (have_posts()): while (have_posts()): the_post(); ?>
                 <h1 class="coni"><?php the_title();?></h1>
-            <?php if ( !is_bbpress() ) { ?>
+            <?php if ( function_exists('is_bbpress') && !is_bbpress() ) { ?>
                 <div class="coni_para"><p >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean interdum tellus ac velit faucibus dignissim, eros elementum porttitor tempor, massa ligula cursus libero, vel ullamcorper dui ipsum </p></div><br clear="all"/>
             <?php } ?>
         </div>
@@ -27,7 +27,7 @@ get_header();
 						</div>
 						<?php endif; ?>
 
-						<h1 class="entry-title"><?php the_title(); ?></h1>
+						<!--<h1 class="entry-title"><?php the_title(); ?></h1>-->
 					</header><!-- .entry-header -->
 
 					<div class="entry-content">
