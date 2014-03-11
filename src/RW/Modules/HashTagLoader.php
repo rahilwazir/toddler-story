@@ -2,8 +2,7 @@
 
 namespace RW\Modules;
 
-use RW\Modules\HashTagContent;
-use RW\Modules\InnerHashTagContent;
+use RW\TemplatesPackage\Template;
 
 class HashTagLoader
 {
@@ -28,16 +27,17 @@ class HashTagLoader
             }
 
             $inner_action = $full_data['hashTag'];
+
             if (method_exists(__NAMESPACE__ . '\InnerHashTagContent', $inner_action)) {
                 InnerHashTagContent::$inner_action($full_data);
             }
+
             exit;
 
         } else {
             if (arrayContainNeedle($hash_tag, $hashtags)) {
                 HashTagContent::$hash_tag();
             }
-
         }
 
         exit;

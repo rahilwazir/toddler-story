@@ -28,10 +28,10 @@ $pagesConstants = array (
     10 => 'sharing'
 );
 
-$pagesConstants = array_map(function($val) {
+$pagesConstantsMapped = array_map(function($val) {
     return URLHASH . $val;
 }, $pagesConstants);
 
-define('HASHTAGS', serialize($pagesConstants));
+define('HASHTAGS', serialize($pagesConstantsMapped));
 
 $hashtags = unserialize(HASHTAGS);

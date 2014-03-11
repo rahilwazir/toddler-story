@@ -2,17 +2,14 @@
 
 namespace RW\Modules;
 
-use RW\Modules\HashTagContent;
-use RW\Modules\Child;
 use RW\PostTypes\ChildBlog;
 use RW\PostTypes\LifeStoryMenu;
 use RW\PostTypes\Children;
 use RW\TemplatesPackage\Template;
-use RW\Modules\Comments;
 
 class InnerHashTagContent extends HashTagContent
 {
-    public static function goToStory(array $data)
+    protected static function goToStory(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::existAt($data['id']) ) {
@@ -45,7 +42,7 @@ class InnerHashTagContent extends HashTagContent
         }
     }
 
-    public static function editInfo(array $data)
+    protected static function editInfo(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::existAt($data['id']) ) {
@@ -54,7 +51,7 @@ class InnerHashTagContent extends HashTagContent
         }
     }
 
-    public static function deleteChild(array $data)
+    protected static function deleteChild(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Child::existAt($data['id']) ) {
@@ -65,7 +62,7 @@ class InnerHashTagContent extends HashTagContent
         }
     }
 
-    public static function deleteChildBlogPost(array $data)
+    protected static function deleteChildBlogPost(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( wp_verify_nonce($data['blogToken'], $data['id']) ) {
@@ -78,7 +75,7 @@ class InnerHashTagContent extends HashTagContent
         }
     }
 
-    public static function addComment(array $data)
+    protected static function addComment(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
 
@@ -91,7 +88,7 @@ class InnerHashTagContent extends HashTagContent
         }
     }
 
-    public static function deleteComment(array $data)
+    protected static function deleteComment(array $data)
     {
         if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
             if ( Comments::exists( $data['parentPostID'], $data['id'] ) ) {

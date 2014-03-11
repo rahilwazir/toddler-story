@@ -6,7 +6,6 @@ use RW\PostTypes\MetaBoxes\BackgroundChooser;
 use RW\PostTypes\MetaBoxes\RelationMeta;
 use RW\PostTypes\Children;
 use RW\PostTypes\MetaBoxes\GenderMeta;
-use RW\Modules\Child;
 use RW\TemplatesPackage\Template;
 
 class HashTagContent
@@ -16,13 +15,30 @@ class HashTagContent
      * @var array
      */
     private static $array_builder = array();
+
+    public static function __callStatic($method, $args)
+    {
+        global $pagesConstants;
+
+        if (method_exists(get_called_class(), $method)) {
+
+            if (activePremiumSubscriber()) {
+                return call_user_func_array(get_called_class() . '::' . $method, $args);
+            } else if (!activePremiumSubscriber() && $pagesConstants[5] === $method) {
+                return call_user_func_array(get_called_class() . '::' . $method, $args);
+            } else {
+                Template::load('upgrade');
+            }
+
+        }
+    }
     
     /**
      * Create/Update childs
      * @param bool $update Decide whether to update or create new child
      * @param int $post_id Post id to process update
      */
-    public static function create($update = false, $post_id = 0)
+    protected static function create($update = false, $post_id = 0)
     {
         if ($post_id > 0) {
             global $post; 
@@ -56,7 +72,7 @@ class HashTagContent
         self::$array_builder['thumb_id'] = ($update) ? Child::bg(true) : 'none';
         self::$array_builder['d_url'] = ($update) ? Child::dURL() : '';
         self::$array_builder['thumbnail'] = Child::thumb('chmng_dp');
-        self::$array_builder['public_access'] = ($update) ? Child::publicAccess() : '';
+        self::$array_builder['protected_access'] = ($update) ? Child::publicAccess() : '';
 
         $data['update'] = $update;
         $data['post'] = $post;
@@ -73,22 +89,22 @@ class HashTagContent
         wp_reset_postdata();
     }
     
-    public static function lifeStory()
+    protected static function lifeStory()
     {
 
     }
     
-    public static function relation()
+    protected static function relation()
     {
 
     }
     
-    public static function babyBook()
+    protected static function babyBook()
     {
 
     }
     
-    public static function childManagement()
+    protected static function childManagement()
     {
         global $hashtags;
 
@@ -101,14 +117,14 @@ class HashTagContent
 
     }
 
-    public static function accountSettings()
+    protected static function accountSettings()
     {
         createHiddenTitle( 'User Account Setting' );
 
         Template::load('accountSettings');
     }
 
-    public static function sharing()
+    protected static function sharing()
     {
         //
     }

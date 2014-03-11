@@ -91,6 +91,14 @@ img {
     max-width: 100%;
 }
 /*==================================================================================================*/
+a:link, a:visited {
+    color: #336699;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: #F5A200;
+    text-decoration: underline;
+}
 select {
     color: #999;
 }
@@ -180,12 +188,14 @@ input, select, textarea {
 .wrap_simple {
     margin: 10px 0;
 }
-.make-me-button {
+.make-me-button,
+.make-me-button:hover,
+.make-me-button:focus {
     background-color: #76BB33;
     box-shadow: 0 6px 0 #5E9F1F;
     -moz-box-shadow: 0 6px 0 #5E9F1F;
     -webkit-box-shadow: 0 6px 0 #5E9F1F;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     font-size: 24px;
     padding: 10px 50px;
     text-decoration: none;
@@ -204,6 +214,7 @@ input, select, textarea {
     -moz-transform: translatey(6px);
     -webkit-transform: translatey(6px);
     box-shadow: 0 1px 0 #5E9F1F;
+    text-decoration: none;
 }
 #form-section {
     margin: 20px 0 10px 0;
@@ -327,8 +338,10 @@ input, select, textarea {
     padding: 4px 10px;
     cursor: pointer;
     outline: 0;
+    color: #000000 !important;
+}
+.submit-button:hover {
     text-decoration: none;
-    color: #000000;
 }
 .submit-button.danger {
     background-color: #CE1B1B;
@@ -375,7 +388,7 @@ input, select, textarea {
 .classic-btn {
     background-color: #f1f1f2;
     text-decoration: none;
-    color: #6d6d6e;
+    color: #6d6d6e !important;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 0 #e0e0e0;
     border-radius: 3px;
@@ -389,8 +402,10 @@ input, select, textarea {
     display: inline-block;
     outline: 0;
 }
-.classic-btn:hover {
+.classic-btn:hover,
+.classic-btn:focus {
     cursor: pointer;
+    text-decoration: none;
 }
 .classic-btn:active {
     transform: translatey(2px);
@@ -641,4 +656,17 @@ input.remove-comment {
     width: 29px;
     height: 29px;
     background-size: 100%;
+}
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h5 { font-size: .83em; }
+h6 { font-size: .75em; }
+
+.align-center {
+    line-height: 2;
+    text-align: center;
+}
+.post-title a.read-blog {
+    color: #585858;
 }

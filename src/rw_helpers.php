@@ -245,7 +245,7 @@ function unregister_post_type($post_type, $slug = '')
 /**
  * Get variable globally like $_GET, but safest way.
  * @param string $var
- * @param constant $filter
+ * @param mixed|constant $filter
  * @return mixed
  */
 function rw_get($var, $filter = FILTER_SANITIZE_STRING)
@@ -258,7 +258,7 @@ function rw_get($var, $filter = FILTER_SANITIZE_STRING)
 /**
  * Post variable globally like $_POST, but safest way.
  * @param string $var
- * @param constant $filter
+ * @param mixed|constant $filter
  * @return mixed
  */
 function rw_post($var, $filter = FILTER_SANITIZE_STRING)
@@ -290,12 +290,30 @@ function process_date($birthdate)
 }
 
 /**
+ * Retrieve permalink of registration page
+ * @return bool|string
+ */
+function registerPageLink()
+{
+    return get_permalink(330);
+}
+
+/**
+ * Retrieve permalink of login page
+ * @return bool|string
+ */
+function loginPageLink()
+{
+    return get_permalink(332);
+}
+
+/**
  * Display login link
  */
 function rw_login_link()
 {
     if (!is_user_logged_in()) {
-        echo '<p>Don\'t have an account? <a href="'.get_permalink(330).'">Register</a></p>';
+        echo '<p>Don\'t have an account? <a href="'.registerPageLink().'">Register</a></p>';
     }
 }
 
@@ -305,7 +323,7 @@ function rw_login_link()
 function rw_register_link()
 {
     if (!is_user_logged_in()) {
-        echo '<p>Already have an account? <a href="'.get_permalink(332).'">Log in</a></p>';
+        echo '<p>Already have an account? <a href="'.loginPageLink().'">Log in</a></p>';
     }
 }
 
@@ -342,6 +360,7 @@ function in_block_posts($id)
 
 /**
  * Retrieve boolean indicating is this post is within admin templates
+ * @param string $template
  * @return bool
  */
 function is_admin_pages($template = 'parent-admin-tpl')
@@ -686,4 +705,46 @@ function generateToken($token, $params = true)
 function verifyToken($token, $value)
 {
     return ( !wp_verify_nonce($token, $value) ) ? true : false;
+}
+
+/**
+ * Check current user package for premium subscriber
+ * @return bool
+ */
+function userIsPremium()
+{
+    if (function_exists('rcp_get_subscription_id') && function_exists('rcp_get_subscription')) {
+        global $user_ID;
+
+        $subscriptionID = rcp_get_subscription_id( $user_ID );
+        $subscriptionPackage = rcp_get_subscription( $user_ID );
+
+        if( (int) $subscriptionID === 1 && $subscriptionPackage === 'Premium' ) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+/**
+ * Check wether subscription is active/expire of current user
+ * @return bool
+ */
+function subscriptionIsExpired()
+{
+    if (function_exists('rcp_is_expired')) {
+        if(rcp_is_expired()) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+function activePremiumSubscriber()
+{
+    if (!subscriptionIsExpired() && userIsPremium()) return true;
+
+    return false;
 }
