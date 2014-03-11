@@ -346,7 +346,7 @@ input, select, textarea {
 .submit-button.danger {
     background-color: #CE1B1B;
     border: 1px solid #FF0000;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 .neat-space {
     margin: 10px 0;
