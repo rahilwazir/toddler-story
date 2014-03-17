@@ -1,7 +1,7 @@
 <?php
 namespace RW\PostTypes\MetaBoxes;
 
-use RW\Modules\Child;
+use RW\PostTypes\ChildJournal;
 use RW\PostTypes\Children;
 use RW\PostTypes\ChildBlog;
 
@@ -17,7 +17,7 @@ class ListParentChilds extends Children
 
     public function toddler_shows_metas()
     {
-        $post_types = array(ChildBlog::$post_type);
+        $post_types = array(ChildBlog::$post_type, ChildJournal::$post_type);
         foreach ($post_types as $post_type) {
             add_meta_box('toddler_parent_childs', __('Select Parent Child'), array($this, 'toddler_parent_child_meta_setup'), $post_type, 'side', 'high');
         }

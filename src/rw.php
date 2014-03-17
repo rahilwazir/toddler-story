@@ -9,6 +9,7 @@ use RW\Modules\CreateChild;
 use RW\Modules\HashTagLoader;
 use RW\Shortcodes\ShortcodePack;
 use RW\PostTypes\ChildBlog;
+use RW\PostTypes\ChildJournal;
 
 $rw_settings = new Settings();
 
@@ -17,6 +18,7 @@ new Children();
 new Background();
 new BlockAccessContent();
 new ChildBlog();
+new ChildJournal();
 
 if (ParentModule::currentUserisParent()) {
     /* On admin screen */
@@ -47,6 +49,10 @@ if (ParentModule::currentUserisParent()) {
 
                 case 'au_child_blog':
                     ChildBlog::update('au_child_blog');
+                    break;
+
+                case 'add_journal':
+                    ChildJournal::update('add_journal');
                     break;
 
                 default:

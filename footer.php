@@ -35,7 +35,7 @@
                 }
                 ?>
                 <br />
-                Not a member yet? <a href="<?php echo get_permalink(330); ?>" class="switch-modal">Register Now</a>
+                Not a member yet? <a href="<?php echo registerPageLink(); ?>" class="switch-modal">Register Now</a>
             </div>
             <section class="sec">
                 <div class="hr_mid"><p>OR</p></div>
@@ -83,7 +83,7 @@
                 }
                 ?>
                 <br />
-                Already a member? <a href="<?php echo get_permalink(332); ?>" class="switch-modal">Sign in</a>
+                Already a member? <a href="<?php echo loginPageLink(); ?>" class="switch-modal">Sign in</a>
             </div>
             <section class="sec">
                 <div class="hr_mid"><p>OR</p></div>

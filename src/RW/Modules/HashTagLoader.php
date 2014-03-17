@@ -2,8 +2,6 @@
 
 namespace RW\Modules;
 
-use RW\TemplatesPackage\Template;
-
 class HashTagLoader
 {
     public static $action = null;

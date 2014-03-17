@@ -121,8 +121,9 @@ class Settings
 
         wp_enqueue_style('slicknav', get_template_directory_uri() . '/css/slicknav.css');
         wp_enqueue_style('dropdown-css', get_template_directory_uri() . '/css/lib/dropdown.css');
+        wp_enqueue_style('simple-modal', get_stylesheet_directory_uri() . '/css/lib/simplemodal.css');
         wp_enqueue_style('main-style', get_stylesheet_uri());
-        
+
         wp_enqueue_script('modernizr', get_template_directory_uri() . '/js/lib/modernizr.custom.63321.js', array('jquery'), '', true);
         wp_enqueue_script('slickNav', get_template_directory_uri() . '/js/jquery.slicknav.min.js', array('jquery'), '', true);
         wp_enqueue_script('dropdown-js', get_template_directory_uri() . '/js/lib/jquery.dropdown.js', array('jquery'), '', true);

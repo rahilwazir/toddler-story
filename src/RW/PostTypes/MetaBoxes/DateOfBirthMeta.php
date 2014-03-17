@@ -1,6 +1,7 @@
 <?php
 namespace RW\PostTypes\MetaBoxes;
 
+use RW\PostTypes\ChildJournal;
 use RW\PostTypes\Children;
 
 class DateOfBirthMeta extends Children
@@ -15,9 +16,15 @@ class DateOfBirthMeta extends Children
 
     public function toddler_shows_metas()
     {
-        $post_types = array(self::$post_type);
+        $post_types = array(self::$post_type, ChildJournal::$post_type); $label = '';
         foreach ($post_types as $post_type) {
-            add_meta_box('toddler_dob', __('Date of birth'), array($this, 'toddler_dob_meta_setup'), $post_type, 'side', 'high');
+            if ($post_type === ChildJournal::$post_type) {
+                $label = 'Set date';
+            } else {
+                $label = 'Date of birth';
+            }
+
+            add_meta_box('toddler_dob', __($label), array($this, 'toddler_dob_meta_setup'), $post_type, 'side', 'high');
         }
     }
 

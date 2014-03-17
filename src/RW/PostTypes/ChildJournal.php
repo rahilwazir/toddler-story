@@ -2,16 +2,18 @@
 
 namespace RW\PostTypes;
 
+use RW\PostTypes\MetaBoxes\DateOfBirthMeta;
+use RW\PostTypes\MetaBoxes\ListJournalTypes;
 use RW\PostTypes\MetaBoxes\ListParentChilds;
 use RW\ErrorHandling\Error;
 use RW\Modules\Child;
 
-class ChildBlog
+class ChildJournal
 {
     private static $_action = null;
     private static $_event = null;
 
-    const USER_ERROR_CODE = 57;
+    const USER_ERROR_CODE = 87;
 
     private $shows_type;
 
@@ -19,25 +21,27 @@ class ChildBlog
      * Name for post type
      * @var string
      */
-    public static $post_type = 'child_blog';
+    public static $post_type = 'child_journal';
 
     /**
      * Label for post type
      * @var string 
      */
-    public static $label = 'Child Blog';
+    public static $label = 'Child Journal';
 
     /**
-     * Taxonomy name strign
+     * Taxonomy name string
      * @var string
      */
-    public static $taxonomy = 'childs_blog';
+    public static $taxonomy = 'childs_journal';
 
     
     public function __construct()
     {
         $this->registerPostType();
 
+        new DateOfBirthMeta();
+        new ListJournalTypes();
         new ListParentChilds();
     }
 
@@ -47,14 +51,14 @@ class ChildBlog
         $labels = array(
             'name' => _x(self::$label, self::$post_type),
             'singular_name' => _x(self::$label, self::$post_type),
-            'add_new' => _x('Add Blog', self::$post_type),
-            'add_new_item' => __('Add Blog'),
-            'edit_item' => __('Edit Blog'),
-            'new_item' => __('New Blog'),
-            'view_item' => __('View Blog'),
-            'search_items' => __('Search Blog'),
+            'add_new' => _x('Add Journal', self::$post_type),
+            'add_new_item' => __('Add Journal'),
+            'edit_item' => __('Edit Journal'),
+            'new_item' => __('New Journal'),
+            'view_item' => __('View Journal'),
+            'search_items' => __('Search Journal'),
             'not_found' => __('No Child found'),
-            'not_found_in_trash' => __('No Blog found in Trash'),
+            'not_found_in_trash' => __('No Journal found in Trash'),
             'parent_item_colon' => '',
             'menu_name' => __(self::$label)
         );
@@ -67,7 +71,7 @@ class ChildBlog
             'show_ui' => true,
             'show_in_menu' => 'edit.php?post_type=' . Children::$post_type,
             'query_var' => true,
-            'rewrite' => array('slug' => 'child-blog'),
+            'rewrite' => array('slug' => 'child-journal'),
             'capability_type' => 'post',
             'map_meta_cap' => true,
             'has_archive' => true,
@@ -130,9 +134,9 @@ class ChildBlog
 
         $rd = process_serialize_data($full_data);
 
-        if (($rd['blog_id'] > 0) &&
-            wp_verify_nonce($rd['blog_token'], $rd['blog_id']) &&
-            wp_verify_nonce($rd['blog_update_token'], self::$_action . '_update')) {
+        if (($rd['journal_id'] > 0) &&
+            wp_verify_nonce($rd['journal_token'], $rd['journal_id']) &&
+            wp_verify_nonce($rd['journal_update_token'], self::$_action . '_update')) {
 
             self::$_event = 'update';
 
@@ -153,8 +157,10 @@ class ChildBlog
              */
             Error::remove_error(self::USER_ERROR_CODE);
 
-            Error::set_error(self::USER_ERROR_CODE, 'child_blog_title', ($rd['child_blog_title'] === '') ? __('Required.') : '');
-            Error::set_error(self::USER_ERROR_CODE, 'child_blog_description', ($rd['child_blog_description'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'journal_type', ($rd['journal_type'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'journal_date', ($rd['journal_date'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'journal_title', ($rd['journal_title'] === '') ? __('Required.') : '');
+            Error::set_error(self::USER_ERROR_CODE, 'journal_description', ($rd['journal_description'] === '') ? __('Required.') : '');
 
             $final_result['errors'] = Error::get_error(self::USER_ERROR_CODE);
 
@@ -162,8 +168,8 @@ class ChildBlog
 
                 if (self::$_event === 'add') {
                     $my_post = array (
-                        'post_title' => $rd['child_blog_title'],
-                        'post_content' => $rd['child_blog_description'],
+                        'post_title' => $rd['journal_title'],
+                        'post_content' => $rd['journal_description'],
                         'post_author' => user_info('ID'),
                         'post_type' => self::$post_type,
                         'post_status' => 'publish'
@@ -171,28 +177,33 @@ class ChildBlog
 
                     $_post_id = wp_insert_post($my_post);
 
+                    $label = 'Journal added successfully';
+
                 } else if (self::$_event === 'update') {
 
-                    if (!Child::existAt($rd['post_id'], user_info('ID'), self::$post_type)) {
+                    if (!Child::existAt($rd['journal_id'], user_info('ID'), ChildJournal::$post_type)) {
                         exit('The post is not yours');
                     }
 
                     $my_post = array(
-                        'ID' => $rd['blog_id'],
-                        'post_title' => $rd['child_blog_title'],
-                        'post_content' => $rd['child_blog_description'],
+                        'ID' => $rd['journal_id'],
+                        'post_title' => $rd['journal_title'],
+                        'post_content' => $rd['journal_description'],
                         'post_author' => user_info('ID'),
                         'post_type' => self::$post_type,
                         'post_status' => 'publish'
                     );
 
                     $_post_id = wp_update_post($my_post);
+
+                    $label = 'Journal updated successfully';
                 }
 
                 if (!is_wp_error($_post_id) && $_post_id !== 0) {
-                    update_post_meta($_post_id, '_toddler_parent_child_user', $rd['child_id']);
+                    update_post_meta($_post_id, '_toddler_child_journal_type', $rd['journal_type']);
+                    update_post_meta($_post_id, '_dob_child', $rd['journal_date']);
 
-                    $final_result['ok'] = 'Blog added successfully';
+                    $final_result['ok'] = $label;
                 }
             }
 

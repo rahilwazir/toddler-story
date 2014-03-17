@@ -3,8 +3,10 @@
 namespace RW\Modules;
 
 use RW\PostTypes\ChildBlog;
+use RW\PostTypes\ChildJournal;
 use RW\PostTypes\LifeStoryMenu;
 use RW\PostTypes\Children;
+use RW\PostTypes\MetaBoxes\ListJournalTypes;
 use RW\TemplatesPackage\Template;
 
 class InnerHashTagContent extends HashTagContent
@@ -29,6 +31,13 @@ class InnerHashTagContent extends HashTagContent
                 $data['childBlogPosts'] = Child::blogPosts( $data['id'] );
 
                 $data['hashtags'] = $hashtags;
+
+                // Journal Posts
+                $data['journalTypes'] = ListJournalTypes::$journalTypes;
+                $data['journalPosts'] = get_custom_posts(array(
+                    'post_type' => ChildJournal::$post_type,
+                    'posts_per_page' => -1
+                ));
 
                 createHiddenTitle( Child::fullName() . ' ' . $menus->tabs_menu[$defaultHomePage] );
 
@@ -99,6 +108,19 @@ class InnerHashTagContent extends HashTagContent
                         'deleted' => true,
                         'commentTotal' => Comments::$lastDeletedCommentID
                     ));
+                }
+            }
+        }
+    }
+
+    protected static function deleteJournalPost(array $data)
+    {
+        if ( (string) __FUNCTION__ === (string) $data['hashTag']) {
+            if (wp_verify_nonce($data['journalToken'], $data['id'])) {
+                if (Child::existAt($data['id'], user_info('ID'), ChildJournal::$post_type)) {
+                    if (wp_trash_post($data['id'])) {
+                        echo json_encode(array('status' => 'Blog post deleted successfully.'));
+                    }
                 }
             }
         }
